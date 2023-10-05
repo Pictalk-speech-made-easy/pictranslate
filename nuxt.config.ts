@@ -104,7 +104,7 @@ export default defineNuxtConfig({
         {
           urlPattern: new RegExp(`^https://pictohub-api.gandi.asidiras.dev/collection/search*`, 'i'),
           handler: 'StaleWhileRevalidate',
-          strategyOptions: {
+          options: {
             cacheName: 'pictohub-api-cache',
             expiration: {
               maxEntries: 5000,
@@ -118,7 +118,7 @@ export default defineNuxtConfig({
         {
           urlPattern: new RegExp(`^https://api.arasaac.org/api/pictograms/*`, 'i'),
           handler: 'CacheFirst',
-          strategyOptions: {
+          options: {
             cacheName: 'arasaac-pictos-cache',
             expiration: {
               maxEntries: 5000,

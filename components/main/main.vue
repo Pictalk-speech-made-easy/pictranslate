@@ -12,7 +12,7 @@
       </div>
     </div>
     <ClipboardHelper ref="clipboardHelper" :sentence="translation" :pictograms="pictoResponses" />
-    <SpeechSynthesis ref="speechSynthesisHelper" :language="locale"/>
+    <SpeechSynthesis ref="speechSynthesisHelper" :language="localeIso(locale)"/>
   </div>
 </template>
 <script setup lang="ts">
@@ -20,6 +20,7 @@ import InputBox from './input-box.vue';
 import PictosViewer from './pictos-viewer.vue';
 import ClipboardHelper from '~/components/clipboard/clipboard.vue';
 import SpeechSynthesis from '../webSpeechApi/speechSynthesis.vue';
+import { localeIso } from '~/utils/i18n';
 import { removePrepositions } from '~/utils/language';
 const { locale } = useI18n()
 const config = useRuntimeConfig()
@@ -48,9 +49,8 @@ watch(translation, async (newValue, oldValue) => {
     return;
   }
 
-  const words = removePrepositions(newValue, 'en');
+  const words = removePrepositions(newValue.toLocaleLowerCase(), locale.value);
   let wordsPromise = words.map((word:string) => {
-    word = word.toLocaleLowerCase();
     return getPictoFromPictohub(word);
   });
 
@@ -61,7 +61,19 @@ watch(translation, async (newValue, oldValue) => {
 
 const getPictoFromPictohub = async (search: string) => {
   // Query parameters: search, path, index
-  data = await $fetch(config.public.pictohub.PICTOHUB_API_URL, {
+
+  let queryParams = [
+    `term=${search}`,
+    `path[]=keywords.${locale.value}.keyword`,
+    `index=default`,
+    `path[]=keywords.${locale.value}.synonymes`,
+    `path[]=keywords.${locale.value}.lexical_siblings`,
+    `path[]=keywords.${locale.value}.conjugates.verbe_m`,
+    `path[]=keywords.${locale.value}.conjugates.verbe_f`,
+    `path[]=keywords.${locale.value}.plural`
+  ].join('&');
+
+  data = await $fetch(`${config.public.pictohub.PICTOHUB_API_URL}?${queryParams}`, {
     method: 'GET',
     query: {
       term: search,

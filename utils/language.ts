@@ -70,6 +70,8 @@ export const prepositions: Object = {
     "trás",
   ],
   fr: [
+    "un",
+    "une",
     "le",
     "la",
     "les",
@@ -100,6 +102,11 @@ export const prepositions: Object = {
   ],
 };
 
+const personal_pronouns = {
+  fr: { je: "moi", tu: "toi", il: "il", elle: "she", nous: "nous", vous: "vous", ils: "ils", elles: "elles" },
+  en: { i: "me", you: "you", he: "him", she: "her", we: "us", they: "them" },
+}
+
 // Fonction qui prend en entrée une phrase et qui retourne un tableau de mots sans les prépositions
 // Exemple : "le chat est sur la table" => ["chat", "est", "table"]
 export function removePrepositions(sentence: string, lang: string) {
@@ -109,7 +116,17 @@ export function removePrepositions(sentence: string, lang: string) {
     return words;
   }
   const preps = prepositions[lang];
-  const filteredWords = words.filter((word) => !preps.includes(word));
+  let filteredWords = words.filter((word) => !preps.includes(word));
+  filteredWords = filteredWords.map((word) => {
+    if (Object.keys(personal_pronouns[lang]).includes(word)) {
+      return personal_pronouns[lang][word];
+    }
+    return word;
+  }
+  )
+  console.log(filteredWords)
+
+
   return filteredWords;
 }
 

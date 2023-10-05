@@ -64,6 +64,12 @@ onMounted(() => {
     });
 });
 
+watch(language, (newValue, oldValue) => {
+  console.log(`[speechSynthesis]: Old voice changed ${speech_synthesis_voice.value?.voiceURI}`)
+  searchForPreferredVoices();
+  console.log(`[speechSynthesis]: New voice changed ${speech_synthesis_voice.value?.voiceURI}`)
+});
+
 const speak = (speech: string, pitch: number = 1, rate: number = 1) => {
     console.debug(`[speak]: ${speech}, ${pitch}, ${rate}`);
     let message = new SpeechSynthesisUtterance(speech);
