@@ -124,7 +124,6 @@ export function removePrepositions(sentence: string, lang: string) {
     return word;
   }
   )
-  console.log(filteredWords)
 
 
   return filteredWords;

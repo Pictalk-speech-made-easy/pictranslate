@@ -3,7 +3,7 @@ import axios from 'axios';
 const keycloakConfig = {
         url: 'https://auth.picmind.org',
         realm: 'master',
-        clientId: 'pictime',
+        clientId: 'pictranslate',
 };
 const keycloak = new Keycloak(keycloakConfig);
 const initOptions = {
@@ -23,25 +23,7 @@ export const useAuth = defineStore('authentication', {
         actions: {
                 async login() {
                         if (await authenticated) {
-                                // User is authenticated
-                                if (this.davUsername === undefined || this.davPassword === undefined) {
-                                        const userProfile: KeycloakProfile = await keycloak.loadUserProfile()
-                                        if (userProfile.email && userProfile.attributes.pictime_password) {
-                                                this.davUsername = userProfile.email;
-                                                this.davPassword = userProfile.attributes.pictime_password;
-                                        } else {
-                                                const response = await axios.post('https://api.pictime.org', undefined, {
-                                                        headers: {
-                                                                "Authorization": `Bearer ${keycloak.token}`,
-                                                        },
-                                                });
-                                                if (response.status === 201) {
-                                                        // Create CalDAV account with the parameters
-                                                        this.davUsername = userProfile.email!;
-                                                        this.davPassword = response.data.pictime_password;
-                                                }
-                                        }
-                                }
+                                return;
                         } else {
                                 // User is not authenticated
                                 keycloak.login(); // Redirect to the login page if needed
@@ -50,8 +32,6 @@ export const useAuth = defineStore('authentication', {
                 async logout() {
                         console.log("logging out of keycloak");
                         await keycloak.logout();
-                        this.davUsername = '';
-                        this.davPassword = '';
                 },
         },
 });
