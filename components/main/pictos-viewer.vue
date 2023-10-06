@@ -9,6 +9,7 @@
             </div>
 </template>
 <script setup lang="ts">
+const stimulusDatabase = useStimulusDatabase();
 const { locale } = useI18n()
 const props = defineProps({
   pictograms: {
@@ -16,4 +17,21 @@ const props = defineProps({
     required: true,
   },
 });
+
+const { pictograms } = toRefs(props);
+
+watch(pictograms, async (value) => {
+  if (value.length == 0) {
+    return;
+  }
+  const picto = value[value.length - 1];
+  console.log("[pictogram-viewer] pictogram",picto)
+  const stimulus = picto['keywords']['en'][0]['keyword']
+  const response = await stimulusDatabase.getStimulus(stimulus)
+  console.log("[pictogram-viewer] response",value)
+  if (response) {
+    stimulusDatabase.suggestion = response[0]['word']
+  }
+});
+
 </script>

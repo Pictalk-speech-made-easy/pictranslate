@@ -22,6 +22,7 @@ import ClipboardHelper from '~/components/clipboard/clipboard.vue';
 import SpeechSynthesis from '../webSpeechApi/speechSynthesis.vue';
 import { localeIso } from '~/utils/i18n';
 import { removePrepositions } from '~/utils/language';
+const stimulusDatabase = useStimulusDatabase();
 const { locale } = useI18n()
 const config = useRuntimeConfig()
 
@@ -29,8 +30,14 @@ let data: any;
 
 const clipboardHelper = ref<InstanceType<typeof ClipboardHelper> | null>(null)
 const speechSynthesisHelper = ref<InstanceType<typeof SpeechSynthesis> | null>(null)
-  const translation: globalThis.Ref<string> = ref('');
+const translation: globalThis.Ref<string> = ref('');
 const pictoResponses: globalThis.Ref<Array<any>> = ref([]);
+
+const { suggestion } = storeToRefs(stimulusDatabase)
+  
+onMounted(() => {
+  stimulusDatabase.startWorker();
+})
 
 const copyPictogramsToClipboard = () => {
   if (clipboardHelper.value == null) {
@@ -42,6 +49,20 @@ const copyPictogramsToClipboard = () => {
 const speakSentence = () => {
   speechSynthesisHelper.value?.speak(translation.value);
 }
+
+watch(suggestion, async (value) => {
+  console.log("[main] pictohub value",value)
+  if (value == '') {
+    return;
+  }
+  const picto = await getPictoFromPictohub(value);
+  if (picto == undefined) {
+    return;
+  }
+  console.log("[main] pictohub",picto)
+  // Need to make a popup suggestion while typing...
+  //TODO ADRI
+});
 
 watch(translation, async (newValue, oldValue) => {
   if (newValue == '') {

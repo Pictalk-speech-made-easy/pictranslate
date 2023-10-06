@@ -56,6 +56,7 @@ export default defineNuxtConfig({
       // automatically imports `defineStore`
       'defineStore', // import { defineStore } from 'pinia'
       ['defineStore', 'definePiniaStore'], // import { defineStore as definePiniaStore } from 'pinia'
+      'storeToRefs'
     ],
   },
   imports: {
@@ -100,6 +101,8 @@ export default defineNuxtConfig({
       ],
     },
     workbox: {
+      // Register the stimulus-db.worker.js file in the service worker
+      importScripts: ['stimulus-db.worker.js'],
       runtimeCaching: [
         {
           urlPattern: new RegExp(`^https://pictohub-api.gandi.asidiras.dev/collection/search*`, 'i'),

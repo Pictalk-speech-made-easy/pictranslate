@@ -3,7 +3,7 @@ import axios from 'axios';
 const keycloakConfig = {
         url: 'https://auth.picmind.org',
         realm: 'master',
-        clientId: 'pictranslate',
+        clientId: 'pictime',
 };
 const keycloak = new Keycloak(keycloakConfig);
 const initOptions = {
