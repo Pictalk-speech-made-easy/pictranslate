@@ -110,6 +110,12 @@ const personal_pronouns = {
 // Fonction qui prend en entrée une phrase et qui retourne un tableau de mots sans les prépositions
 // Exemple : "le chat est sur la table" => ["chat", "est", "table"]
 export function removePrepositions(sentence: string, lang: string) {
+  // If the language is french, we remove the l'
+  if (lang === "fr") {
+    sentence = sentence.replace("l'", "");
+    sentence = sentence.replace("d'", "");
+  }
+
   sentence = cleanSentence(sentence);
   const words = sentence.split(" ");
   if (!prepositions[lang]) {
