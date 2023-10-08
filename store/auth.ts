@@ -3,7 +3,7 @@ import axios from 'axios';
 const keycloakConfig = {
         url: 'https://auth.picmind.org',
         realm: 'master',
-        clientId: 'pictime',
+        clientId: 'pictranslate',
 };
 const keycloak = new Keycloak(keycloakConfig);
 const initOptions = {
@@ -33,6 +33,9 @@ export const useAuth = defineStore('authentication', {
                         console.log("logging out of keycloak");
                         await keycloak.logout();
                 },
+                async getAuthenticated() {
+                        return authenticated;
+                }
         },
 });
 

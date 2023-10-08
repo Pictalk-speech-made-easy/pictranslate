@@ -23,6 +23,7 @@ import SpeechSynthesis from '../webSpeechApi/speechSynthesis.vue';
 import { localeIso } from '~/utils/i18n';
 import { removePrepositions } from '~/utils/language';
 const stimulusDatabase = useStimulusDatabase();
+const auth = useAuth();
 const { locale } = useI18n()
 const config = useRuntimeConfig()
 
@@ -35,8 +36,11 @@ const pictoResponses: globalThis.Ref<Array<any>> = ref([]);
 
 const { suggestion } = storeToRefs(stimulusDatabase)
   
-onMounted(() => {
-  stimulusDatabase.startWorker();
+onMounted(async () => {
+  const authenticated = await  auth.getAuthenticated();
+  if (authenticated) {
+    stimulusDatabase.startWorker();
+  }
 })
 
 const copyPictogramsToClipboard = () => {
@@ -86,7 +90,7 @@ const getPictoFromPictohub = async (search: string) => {
   let queryParams = [
     `term=${search}`,
     `path[]=keywords.${locale.value}.keyword`,
-    `index=default`,
+    `index=keyword`,
     `path[]=keywords.${locale.value}.synonymes`,
     `path[]=keywords.${locale.value}.lexical_siblings`,
     `path[]=keywords.${locale.value}.conjugates.verbe_m`,
@@ -96,11 +100,6 @@ const getPictoFromPictohub = async (search: string) => {
 
   data = await $fetch(`${config.public.pictohub.PICTOHUB_API_URL}?${queryParams}`, {
     method: 'GET',
-    query: {
-      term: search,
-      path: `keywords.${locale.value}.keyword`,
-      index: 'default'
-    },
     headers: {
       'x-api-key': config.public.pictohub.PICTOHUB_API_KEY
     }
