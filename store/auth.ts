@@ -1,5 +1,4 @@
 import Keycloak, { KeycloakInitOptions, KeycloakProfile } from 'keycloak-js';
-import axios from 'axios';
 const keycloakConfig = {
         url: 'https://auth.picmind.org',
         realm: 'master',

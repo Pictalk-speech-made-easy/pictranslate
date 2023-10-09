@@ -122,7 +122,8 @@ export function removePrepositions(sentence: string, lang: string) {
     return words;
   }
   const preps = prepositions[lang];
-  let filteredWords = words.filter((word) => !preps.includes(word));
+  // We need to filter empty strings
+  let filteredWords = words.filter((word) => !preps.includes(word) && word !== "");
   filteredWords = filteredWords.map((word) => {
     if (Object.keys(personal_pronouns[lang]).includes(word)) {
       return personal_pronouns[lang][word];
@@ -131,13 +132,12 @@ export function removePrepositions(sentence: string, lang: string) {
   }
   )
 
-
   return filteredWords;
 }
 
 // Fonction qui nettoie une phrase de caractères spéciaux
 // Exemple : "le chat est, sur la table !?" => "le chat est sur la table"
 export function cleanSentence(sentence: string) {
-  const clean = sentence.replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ");
+  const clean = sentence.replace(/[^A-zÀ-ÿ\s]|_/g, "").replace(/\s+/g, " ");
   return clean;
 }
