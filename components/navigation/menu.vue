@@ -1,6 +1,10 @@
 <template>
     <div class="menu menu-compact mt-16 h-full">
         <div class="divider my-1"></div>
+        <select v-model="locale" class="select bg-indigo-100 dark:bg-indigo-900">
+            <option value="en">{{ getEmoji('en-US') }}</option>
+            <option value="fr">{{ getEmoji('fr-FR') }}</option>
+        </select>
         <div class="flex flex-col rounded-lg p-2">
             <button @click="logout()" class="btn btn-ghost btn-circle">
                 <svg class="h-6 fill-secondary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -34,6 +38,8 @@
 <script setup lang="ts">
 import { useOptions } from '~/store/option';
 import { useAuth } from "~/store/auth";
+import { getEmoji } from '~/utils/emoji';
+const { locale } = useI18n();
 const { logout } = useAuth();
 const toggle = ref(false);
 const options = useOptions();
