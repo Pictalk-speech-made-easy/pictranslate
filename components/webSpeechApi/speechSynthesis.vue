@@ -2,7 +2,7 @@
 
 const speech_synthesis_voices = ref<SpeechSynthesisVoice[]>([]);
 const speech_synthesis_voice = ref<SpeechSynthesisVoice>();
-
+const speaking = ref(false);
 const props = defineProps({
     language: {
         type: String,
@@ -71,12 +71,17 @@ watch(language, (newValue, oldValue) => {
 });
 
 const speak = (speech: string, pitch: number = 1, rate: number = 1) => {
+    if(speaking.value) return;
+    speaking.value = true;
     console.debug(`[speak]: ${speech}, ${pitch}, ${rate}`);
     let message = new SpeechSynthesisUtterance(speech);
     message.pitch = pitch;
     message.rate = rate;
     message.voice = speech_synthesis_voice.value ? speech_synthesis_voice.value : null;
     window.speechSynthesis.speak(message);
+    message.onend = () => {
+        speaking.value = false;
+    }
 }
 
 const searchForPreferredVoices = () => {
@@ -202,7 +207,8 @@ const searchForPreferredVoicesApple = () => {
     }
 
     defineExpose({
-    speak
+    speak,
+    speaking,
   });
 </script>
 <template>

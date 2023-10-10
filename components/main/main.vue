@@ -10,7 +10,7 @@
             d="M9 18q-.825 0-1.413-.588T7 16V4q0-.825.588-1.413T9 2h9q.825 0 1.413.588T20 4v12q0 .825-.588 1.413T18 18H9Zm-4 4q-.825 0-1.413-.588T3 20V6h2v14h11v2H5Z" />
         </svg>
       </button>
-      <Speak :animated="speaking" class="btn rounded-full h-14 w-14 mx-2 p-4 bg-indigo-100 dark:bg-grey-base-50"
+      <Speak :animated="speechSynthesisHelper?.speaking!" class="btn rounded-full h-14 w-14 mx-2 p-4 bg-indigo-100 dark:bg-grey-base-50"
         @click="speakSentence"> {{ $t('speakButton') }}></Speak>
     </div>
     <ClipboardHelper ref="clipboardHelper" :sentence="translation" :pictograms="pictoResponses" />
@@ -29,7 +29,6 @@ const stimulusDatabase = useStimulusDatabase();
 const auth = useAuth();
 const { locale } = useI18n()
 const config = useRuntimeConfig()
-const speaking = ref(false);
 let data: any;
 
 const clipboardHelper = ref<InstanceType<typeof ClipboardHelper> | null>(null)
@@ -54,20 +53,9 @@ const copyPictogramsToClipboard = () => {
 }
 
 const speakSentence = () => {
-  if (speaking.value) return;
   if (translation.value == '') return;
-  speaking.value = true;
-
-  if (speechSynthesisHelper.value &&
-    typeof speechSynthesisHelper.value.speak === 'function') {
+  if (speechSynthesisHelper.value && typeof speechSynthesisHelper.value.speak === 'function') {
     speechSynthesisHelper.value.speak(translation.value);
-
-    // Check if 'onend' event property is available to assign a handler
-    if ('onend' in speechSynthesisHelper.value) {
-      speechSynthesisHelper.value.onend = () => {
-        speaking.value = false;
-      }
-    }
   }
 }
 
