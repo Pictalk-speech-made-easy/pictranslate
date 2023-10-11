@@ -9,10 +9,11 @@
             </label>
         </div>
         <div class="navbar-center">
-            <NuxtImg
+            <!-- <NuxtImg
                 src="/images/logo-full.png"
                 class="h-14 rounded"
-            />
+            /> -->
+            <img src="/images/logo-full.png" class="h-14 rounded" />
         </div>
         <div class="navbar-end">
             
