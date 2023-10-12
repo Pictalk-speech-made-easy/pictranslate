@@ -114,8 +114,8 @@ export function removePrepositions(sentence: string, lang: string) {
   if (lang === "fr") {
     sentence = sentence.replace("l'", "");
     sentence = sentence.replace("d'", "");
+    sentence = sentence.replace("j'", "je ");
   }
-
   sentence = cleanSentence(sentence);
   const words = sentence.split(" ");
   if (!prepositions[lang]) {
