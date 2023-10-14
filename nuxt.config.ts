@@ -21,11 +21,21 @@ export default defineNuxtConfig({
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
       title: 'Pictranslate',
-      link: [ { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }, { rel: 'apple-touch-icon', sizes: "180x180", href: '/apple-touch-icon.png' }, {rel:"mask-icon", href:"/safari-pinned-tab.svg", color:"#8296ff"}, { rel:"icon", type:"image/png", sizes:"32x32", href:"/favicon-32x32.png"}, { rel:"icon", type:"image/png", sizes:"16x16", href:"/favicon-16x16.png"} ],
+      link: [ { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }, { rel: 'apple-touch-icon', sizes: "180x180", href: '/apple-touch-icon.png' }, {rel:"mask-icon", href:"/safari-pinned-tab.svg", color:"#8296ff"}, { rel:"icon", type:"image/png", sizes:"32x32", href:"/favicon-32x32.png"}, { rel:"icon", type:"image/png", sizes:"16x16", href:"/favicon-16x16.png"}, {
+        rel: 'canonical',
+        href: 'https://www.pictranslate.org'
+      } ],
       meta: [
+        { hid: 'url', name: 'url', content: 'https://www.pictranslate.org' },
+        { hid: 'keywords', name: 'keywords', content: 'AAC,autism,pictograms,speech,text-to-speech,communication,online,translate,sentences,free,open-source' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'msapplication-TileColor', content: '#8296FF' },
         { name: 'theme-color', content: '#8296FF' },
+        { hid: 'image', name: 'image', content: 'https://www.pictranslate.org/android-chrome-512x512.png' },
+        { hid: 'og-type', property: 'og:type', content: 'website' },
+        { hid: 'og-url', property: 'og:url', content: 'https://www.pictranslate.org' },
+        { hid: 'og-image', property: 'og:image', content: 'https://www.pictranslate.org/android-chrome-512x512.png' },
+        { hid: 'author', name: 'author', content: 'Alexandros & Adrianos SIDIRAS GALANTE' },
       ],
       noscript: [
         {
@@ -75,6 +85,9 @@ export default defineNuxtConfig({
       name: 'Pictranslate AAC',
       short_name: 'Pictranslate',
       theme_color: '#8296FF',
+      orientation: "any",
+      display: 'standalone',
+      lang: 'en',
       icons: [
         {
           src: 'android-chrome-192x192.png',
@@ -99,6 +112,25 @@ export default defineNuxtConfig({
           purpose: 'maskable',
         },
       ],
+      background_color: '#ffffff',
+      description: 'Pictranslate is an online tool to translate sentences into pictograms.',
+      screenshots: [
+        {
+          src: "https://www.pictranslate.org/screenshots/screenshot1.png",
+          sizes: "360x740",
+          type: "image/png"
+        },
+        {
+          src: "https://www.pictranslate.org/screenshots/screenshot2.png",
+          sizes: "360x740",
+          type: "image/png"
+        },
+        {
+          src: "https://www.pictranslate.org/screenshots/screenshot3.png",
+          sizes: "360x740",
+          type: "image/png"
+        },
+      ]
     },
     workbox: {
       // Register the stimulus-db.worker.js file in the service worker
