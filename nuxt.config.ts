@@ -82,11 +82,32 @@ export default defineNuxtConfig({
     strategies: 'generateSW',
     registerType: 'autoUpdate',
     manifest: {
+      dir: 'ltr',
+      related_applications: [
+        {
+          platform: 'web',
+          url: 'https://www.pictranslate.org',
+        }/* ,
+        {
+          platform: 'play',
+          url: 'https://play.google.com/store/apps/details?id=org.pictranslate.www.twa',
+        },
+        {
+          platform: 'itunes',
+          url: 'https://apps.apple.com/us/app/pictranslate-aac/id1586091798',
+        } */
+      ],
+      shortcuts: [
+        { name: 'Pictranslate', short_name: 'Pictranslate', url: '/', icons: [{ src: '/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' }] },
+      ],
+      id: 'org.pictranslate.www.twa',
+      categories: ['education', 'productivity', 'utilities', 'communication', 'social'],
       name: 'Pictranslate AAC',
       short_name: 'Pictranslate',
       theme_color: '#8296FF',
       orientation: "any",
       display: 'standalone',
+      display_override: ['standalone'],
       lang: 'en',
       icons: [
         {
