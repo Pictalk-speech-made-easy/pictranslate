@@ -24,13 +24,18 @@ export const useAuth = defineStore('authentication', {
                         if (await authenticated) {
                                 return;
                         } else {
-                                // User is not authenticated
-                                keycloak.login(); // Redirect to the login page if needed
+                                return;
+                                // TODO Popup showing login advantages
+                                //keycloak.login(); // Redirect to the login page if needed
                         }
                 },
                 async logout() {
-                        console.log("logging out of keycloak");
-                        await keycloak.logout();
+                        if (await authenticated) {
+                                console.log("logging out of keycloak");
+                                await keycloak.logout();
+                        } else {
+                                return;
+                        }
                 },
                 async getAuthenticated() {
                         return authenticated;
