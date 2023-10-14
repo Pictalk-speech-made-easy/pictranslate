@@ -21,7 +21,7 @@ export default defineNuxtConfig({
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
       title: 'Pictranslate',
-      link: [ { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }, { rel: 'apple-touch-icon', sizes: "180x180", href: '/apple-touch-icon.png' }, {rel:"mask-icon", href:"/safari-pinned-tab.svg", color:"#8296ff"}, { rel:"icon", type:"image/png", sizes:"32x32", href:"/favicon-32x32.png"}, { rel:"icon", type:"image/png", sizes:"16x16", href:"/favicon-16x16.png"}, {
+      link: [ { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }, { rel: 'apple-touch-icon', sizes: "180x180", href: '/apple-touch-icon.png' }, {rel:"mask-icon", href:"/safari-pinned-tab.svg", color:"#6A97DF"}, { rel:"icon", type:"image/png", sizes:"32x32", href:"/favicon-32x32.png"}, { rel:"icon", type:"image/png", sizes:"16x16", href:"/favicon-16x16.png"}, {
         rel: 'canonical',
         href: 'https://www.pictranslate.org'
       } ],
@@ -29,8 +29,8 @@ export default defineNuxtConfig({
         { hid: 'url', name: 'url', content: 'https://www.pictranslate.org' },
         { hid: 'keywords', name: 'keywords', content: 'AAC,autism,pictograms,speech,text-to-speech,communication,online,translate,sentences,free,open-source' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'msapplication-TileColor', content: '#8296FF' },
-        { name: 'theme-color', content: '#8296FF' },
+        { name: 'msapplication-TileColor', content: '#6A97DF' },
+        { name: 'theme-color', content: '#6A97DF' },
         { hid: 'image', name: 'image', content: 'https://www.pictranslate.org/android-chrome-512x512.png' },
         { hid: 'og-type', property: 'og:type', content: 'website' },
         { hid: 'og-url', property: 'og:url', content: 'https://www.pictranslate.org' },
@@ -82,6 +82,13 @@ export default defineNuxtConfig({
     strategies: 'generateSW',
     registerType: 'autoUpdate',
     manifest: {
+      protocol_handlers: [
+        {
+          protocol: 'web+pictranslate',
+          url: '/?url=%s',
+        },
+      ],
+      prefer_related_applications: false,
       dir: 'ltr',
       related_applications: [
         {
@@ -104,7 +111,7 @@ export default defineNuxtConfig({
       categories: ['education', 'productivity', 'utilities', 'communication', 'social'],
       name: 'Pictranslate AAC',
       short_name: 'Pictranslate',
-      theme_color: '#8296FF',
+      theme_color: '#6A97DF',
       orientation: "any",
       display: 'standalone',
       display_override: ['standalone'],
