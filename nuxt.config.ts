@@ -212,7 +212,7 @@ export default defineNuxtConfig({
   i18n: {
     strategy: 'no_prefix',
     lazy: true,
-    baseUrl: 'https://pictime.org',
+    baseUrl: 'https://www.pictranslate.org',
     locales: [
       {
         code: 'en',
