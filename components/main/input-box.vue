@@ -12,9 +12,21 @@
 import debounce from 'lodash.debounce';
 const emit = defineEmits(['pictohubSearch']);
 const search = ref('');
+let activateWatcher = true;
 watch(search, debounce(() => {
-    emit('pictohubSearch', search.value)
+    if (activateWatcher) {
+        emit('pictohubSearch', search.value)
+    }
+    activateWatcher = true;
 }, 500), { immediate: true })
+
+const injectAdditionnalSearch = (input: string) => {
+    activateWatcher = false;
+    search.value += ' ' + input;
+}
+defineExpose({
+    injectAdditionnalSearch
+  });
 </script>
 <style scoped>
 .loading-input {

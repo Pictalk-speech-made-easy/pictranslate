@@ -1,6 +1,7 @@
 <template>
   <div class="mt-20 h-[calc(100vh - 64px)] max-w-lg mx-auto">
-    <InputBox @pictohubSearch="translation = $event" />
+    <InputBox @pictohubSearch="translation = $event" ref="inputBox" />
+    <SuggestionBox @suggestion="suggestionConfirmed($event)" :pictograms="pictogramsSuggestions"/>
     <PictosViewer :pictograms="pictoResponses" />
 
     <div class="flex justify-end items-center mt-8 mx-4">
@@ -20,6 +21,7 @@
 <script setup lang="ts">
 import Speak from '~/components/webSpeechApi/speak.vue';
 import InputBox from './input-box.vue';
+import SuggestionBox from './suggestion-box.vue';
 import PictosViewer from './pictos-viewer.vue';
 import ClipboardHelper from '~/components/clipboard/clipboard.vue';
 import SpeechSynthesis from '../webSpeechApi/speechSynthesis.vue';
@@ -33,10 +35,12 @@ let data: any;
 
 const clipboardHelper = ref<InstanceType<typeof ClipboardHelper> | null>(null)
 const speechSynthesisHelper = ref<InstanceType<typeof SpeechSynthesis> | null>(null)
+const inputBox = ref<InstanceType<typeof InputBox> | null>(null)
 const translation: globalThis.Ref<string> = ref('');
 const pictoResponses: globalThis.Ref<Array<any>> = ref([]);
+const pictogramsSuggestions: globalThis.Ref<Array<any>> = ref([]);
+const { suggestions } = storeToRefs(stimulusDatabase)
 
-const { suggestion } = storeToRefs(stimulusDatabase)
 
 onMounted(async () => {
   const authenticated = await auth.getAuthenticated();
@@ -44,6 +48,11 @@ onMounted(async () => {
     stimulusDatabase.startWorker();
   }
 })
+
+const suggestionConfirmed = (event:any) => {
+  pictoResponses.value.push(event);
+  inputBox.value?.injectAdditionnalSearch(event['keywords'][locale.value][0]['keyword'])
+}
 
 const copyPictogramsToClipboard = () => {
   if (clipboardHelper.value == null) {
@@ -59,19 +68,21 @@ const speakSentence = () => {
   }
 }
 
-
-watch(suggestion, async (value) => {
+watch(suggestions, async (value) => {
   console.log("[main] pictohub value", value)
-  if (value == '') {
+  if (value.length == 0 || value == undefined) {
     return;
   }
-  const picto = await getPictoFromPictohub(value);
-  if (picto == undefined) {
-    return;
-  }
-  console.log("[main] pictohub", picto)
-  // Need to make a popup suggestion while typing...
-  //TODO ADRI
+  // Only get the first 5 elements
+  value = value.slice(0, 5);
+  let wordsPromise = value.map((suggestion: string) => {
+    return getPictoFromPictohub(suggestion.toLocaleLowerCase(), 'en', [locale.value]);
+  });
+  console.log("[main] pictohub wordsPromise", wordsPromise)
+  wordsPromise = await Promise.all(wordsPromise);
+  // Remove the empty elements and only keep the first 3 elements
+  wordsPromise = wordsPromise.filter((picto: any) => (picto != undefined && picto.external_alt_image != undefined)).slice(0, 3);
+  pictogramsSuggestions.value = wordsPromise;
 });
 
 watch(translation, async (newValue, oldValue) => {
@@ -82,7 +93,7 @@ watch(translation, async (newValue, oldValue) => {
 
   const words = removePrepositions(newValue.toLocaleLowerCase(), locale.value);
   let wordsPromise = words.map((word: string) => {
-    return getPictoFromPictohub(word);
+    return getPictoFromPictohub(word, locale.value);
   });
 
   let pictos = await Promise.all(wordsPromise);
@@ -90,19 +101,26 @@ watch(translation, async (newValue, oldValue) => {
   pictoResponses.value = pictos
 });
 
-const getPictoFromPictohub = async (search: string) => {
+const getPictoFromPictohub = async (search: string, searchLocale: string, additionnalLocales: string[] = []) => {
   // Query parameters: search, path, index
 
   let queryParams = [
     `term=${search}`,
-    `path[]=keywords.${locale.value}.keyword`,
+    `path[]=keywords.${searchLocale}.keyword`,
     `index=keyword`,
-    `path[]=keywords.${locale.value}.synonymes`,
-    `path[]=keywords.${locale.value}.lexical_siblings`,
-    `path[]=keywords.${locale.value}.conjugates.verbe_m`,
-    `path[]=keywords.${locale.value}.conjugates.verbe_f`,
-    `path[]=keywords.${locale.value}.plural`
+    `path[]=keywords.${searchLocale}.synonymes`,
+    `path[]=keywords.${searchLocale}.lexical_siblings`,
+    `path[]=keywords.${searchLocale}.conjugates.verbe_m`,
+    `path[]=keywords.${searchLocale}.conjugates.verbe_f`,
+    `path[]=keywords.${searchLocale}.plural`,
+    `lang[]=${searchLocale}`
   ].join('&');
+
+  if (additionnalLocales.length > 0) {
+    additionnalLocales.forEach((additionnalLocale) => {
+      queryParams += `&lang[]=${additionnalLocale}`
+    })
+  }
 
   data = await $fetch(`${config.public.pictohub.PICTOHUB_API_URL}?${queryParams}`, {
     method: 'GET',

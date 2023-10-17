@@ -10,6 +10,7 @@
 </template>
 <script setup lang="ts">
 const stimulusDatabase = useStimulusDatabase();
+const { suggestion, suggestions } = storeToRefs(stimulusDatabase)
 const { locale } = useI18n()
 const props = defineProps({
   pictograms: {
@@ -30,7 +31,8 @@ watch(pictograms, async (value) => {
   const response = await stimulusDatabase.getStimulus(stimulus)
   console.log("[pictogram-viewer] response",value)
   if (response) {
-    stimulusDatabase.suggestion = response[0]['word']
+    suggestion.value = response[0]['word']
+    suggestions.value = response.map((r: any) => r['word'])
   }
 });
 
