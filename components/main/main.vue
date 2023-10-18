@@ -113,7 +113,8 @@ const getPictoFromPictohub = async (search: string, searchLocale: string, additi
     `path[]=keywords.${searchLocale}.conjugates.verbe_m`,
     `path[]=keywords.${searchLocale}.conjugates.verbe_f`,
     `path[]=keywords.${searchLocale}.plural`,
-    `lang[]=${searchLocale}`
+    `lang[]=${searchLocale}`,
+    `completeIfEmpty=true`
   ].join('&');
 
   if (additionnalLocales.length > 0) {
