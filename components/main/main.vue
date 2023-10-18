@@ -129,7 +129,7 @@ watch(translation, async (newValue, oldValue) => {
 
   const words = removePrepositions(newValue.toLocaleLowerCase(), locale.value);
   let wordsPromise = words.map((word: string) => {
-    return getPictoFromPictohub(word, locale.value);
+    return getPictoFromPictohub(word, locale.value, [locale.value, 'en']);
   });
 
   let pictos = await Promise.all(wordsPromise);
