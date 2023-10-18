@@ -76,8 +76,13 @@ const navigatorAskWritePermission = async () => {
         return false;
       }
 }
+
+const getPreGeneratedBlob = () => {
+    return preGeneratedBlob;
+}
 defineExpose({
-    copyPictosToClipboard
+    copyPictosToClipboard,
+    getPreGeneratedBlob
   });
 </script>
 <template>
