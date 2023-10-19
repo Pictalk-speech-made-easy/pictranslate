@@ -55,7 +55,7 @@ onMounted(async () => {
 const suggestionConfirmed = (event:any) => {
   console.debug("[main] suggestionConfirmed", event);
   pictoResponses.value.push(event);
-  inputBox.value?.injectAdditionnalSearch(event['keywords'][locale.value][0]['keyword'])
+  inputBox.value?.injectAdditionnalSearch(event['pictograms'][event['selected']]['keywords'][locale.value][0]['keyword'])
 }
 
 const copyPictogramsToClipboard = () => {
@@ -114,12 +114,13 @@ watch(suggestions, async (value) => {
   // Only get the first 5 elements
   value = value.slice(0, 5);
   let wordsPromise = value.map((suggestion: string) => {
-    return getPictoFromPictohub(suggestion.toLocaleLowerCase(), 'en', [locale.value]);
+    return getPictoFromPictohub(suggestion.toLocaleLowerCase(), 'en', [locale.value], 3);
   });
   console.debug("[main] pictohub wordsPromise", wordsPromise)
   wordsPromise = await Promise.all(wordsPromise);
+  wordsPromise = wordsPromise.map((picto) => { return {'selected': 0, 'pictograms': picto}})
+  wordsPromise = wordsPromise.filter((picto: any) => (picto.pictograms != undefined && picto.pictograms[0]?.external_alt_image != undefined)).slice(0, 3);
   // Remove the empty elements and only keep the first 3 elements
-  wordsPromise = wordsPromise.filter((picto: any) => (picto != undefined && picto.external_alt_image != undefined)).slice(0, 3);
   pictogramsSuggestions.value = wordsPromise;
 }, { immediate: true, deep: true });
 
@@ -133,16 +134,17 @@ watch(translation, async (newValue, oldValue) => {
   const words = removePrepositions(newValue.toLocaleLowerCase(), locale.value);
   if (words.length != pictoResponses.value.length) {
     let wordsPromise = words.map((word: string) => {
-      return getPictoFromPictohub(word, locale.value, [locale.value, 'en']);
+      return getPictoFromPictohub(word, locale.value, [locale.value, 'en'], 3);
     });
 
     let pictos = await Promise.all(wordsPromise);
-    pictos = pictos.filter((picto: any) => (picto != undefined && picto.external_alt_image != undefined))
+    pictos = pictos.map((picto) => { return {'selected': 0, 'pictograms': picto}})
+    pictos = pictos.filter((picto: any) => (picto.pictograms != undefined && picto.pictograms[0]?.external_alt_image != undefined))
     pictoResponses.value = pictos
   }
 }, { immediate: true});
 
-const getPictoFromPictohub = async (search: string, searchLocale: string, additionnalLocales: string[] = []) => {
+const getPictoFromPictohub = async (search: string, searchLocale: string, additionnalLocales: string[] = [], limit=1) => {
   // Query parameters: search, path, index
   //TODO Suggestion bugfix with spaces
   search = search.replace('-', ' ');
@@ -157,7 +159,8 @@ const getPictoFromPictohub = async (search: string, searchLocale: string, additi
     `path[]=keywords.${searchLocale}.conjugates.verbe_f`,
     `path[]=keywords.${searchLocale}.plural`,
     `lang[]=${searchLocale}`,
-    `completeIfEmpty=true`
+    `completeIfEmpty=true`,
+    `limit=${limit}`,
   ].join('&');
 
   if (additionnalLocales.length > 0) {
@@ -172,7 +175,10 @@ const getPictoFromPictohub = async (search: string, searchLocale: string, additi
       'x-api-key': config.public.pictohub.PICTOHUB_API_KEY
     }
   });
-  return data[0];
+  if (limit == 1) {
+    return data[0];
+  }
+  return data;
 }
 
 

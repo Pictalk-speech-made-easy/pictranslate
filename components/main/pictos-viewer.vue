@@ -1,12 +1,14 @@
 <template>
     <div class="flex items-center min-h-[20vh] bg-base-100 mx-4 mt-2 shadow-xl rounded-xl bg-dotted-light">
                 <div class="flex flex-wrap mx-1 p-1 items-center">
-                  <div class="items-center" tabindex="0" v-for="(picto, index) in pictograms" crossorigin="anonymous" :key="picto.external_alt_image.toString()">
+                  <div class="items-center" tabindex="0" v-for="(picto, index) in pictograms" crossorigin="anonymous" :key="picto['pictograms'][0].external_alt_image.toString()">
+                    <div v-for="pictogram in picto['pictograms']">
                     <img 
-                        class="!m-0 aspect-square object-contain h-12 rounded-sm zoom-in" :src="picto.external_alt_image.toString()"
-                        :alt="picto['keywords'][locale][0]['keyword']"/>
-                        <div class="mx-4 mt-2 shadow-xl rounded-xl">{{ picto['keywords'][locale][0]['keyword'] }}</div>
+                        class="!m-0 aspect-square object-contain h-12 rounded-sm zoom-in" :src="pictogram.external_alt_image.toString()"
+                        :alt="pictogram['keywords'][locale][0]['keyword']"/>
+                        <div class="mx-4 mt-2 shadow-xl rounded-xl">{{ pictogram['keywords'][locale][0]['keyword'] }}</div>
                       </div>
+                    </div>
                 </div>
                 
             </div>
@@ -25,6 +27,7 @@ const props = defineProps({
 const { pictograms } = toRefs(props);
 
 watch(pictograms, async (value) => {
+  console.log("[pictogram-viewer],", value)
   console.log("[pictogram-viewer] watch triggered")
   if (value.length == 0) {
     console.log("[pictogram-viewer] empty pictograms")
@@ -34,7 +37,7 @@ watch(pictograms, async (value) => {
   }
   const picto = value[value.length - 1];
   console.debug("[pictogram-viewer] pictogram",picto)
-  const stimulus = picto['keywords']['en'][0]['keyword']
+  const stimulus = picto['pictograms'][picto['selected']]['keywords']['en'][0]['keyword']
   const response = await stimulusDatabase.getStimulus(stimulus)
   console.debug("[pictogram-viewer] response",value)
   if (response) {
