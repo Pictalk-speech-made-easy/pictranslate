@@ -1,9 +1,12 @@
 <template>
     <div class="flex items-center min-h-[80px] bg-base-100 mx-4 mt-2 shadow-xl rounded-xl bg-dotted-light">
                 <div class="flex flex-wrap mx-1 p-1 items-center">
-                    <img tabindex="0" v-for="(picto, index) in pictograms" crossorigin="anonymous" :key="picto.external_alt_image.toString()"
+                  <div class="items-center" tabindex="0" v-for="(picto, index) in pictograms" crossorigin="anonymous" :key="picto.external_alt_image.toString()">
+                    <img 
                         class="!m-0 aspect-square object-contain h-12 rounded-sm zoom-in" :src="picto.external_alt_image.toString()"
-                        :alt="picto.keywords[locale]">
+                        :alt="picto['keywords'][locale][0]['keyword']"/>
+                        <div class="mx-4 mt-2 shadow-xl rounded-xl">{{ picto['keywords'][locale][0]['keyword'] }}</div>
+                      </div>
                 </div>
                 
             </div>
