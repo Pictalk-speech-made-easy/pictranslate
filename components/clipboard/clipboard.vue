@@ -10,7 +10,7 @@ onMounted(async () => {
 
 const props = defineProps({
     pictograms: {
-        type: Array,
+        type: Array<any>,
         required: true,
     },
     sentence: {
@@ -19,11 +19,12 @@ const props = defineProps({
     },
 });
 
-const { pictograms } = toRefs(props)
-const { sentence } = toRefs(props)
+const { pictograms, sentence } = toRefs(props)
 
 watch(pictograms, async (value) => {
+  console.log("[Clipboard] watch triggered")
   if (value.length > 0) {
+    console.debug("[Clipboard] Pictograms changed, generating new blob")
     const paths = value.map((picto) => picto.external_alt_image);
     try {
       const b64 = await mergeImages(paths, {
@@ -35,8 +36,10 @@ watch(pictograms, async (value) => {
     } catch (e) {
       console.error(e);
     }  
+  } else {
+    preGeneratedBlob = null;
   }
-}, { immediate: true });
+}, { immediate: true, deep: true });
 
 const b64toBlob = (dataURI) => {
       const byteString = atob(dataURI.split(",")[1]);
