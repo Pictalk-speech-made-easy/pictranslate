@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/vue'
 export default defineNuxtPlugin((nuxtApp) => {
   const router = useRouter()
   const { public: { sentry } } = useRuntimeConfig()
-  if (!sentry.dsn) {
+  if (!sentry.dsn || sentry.environment == 'development') {
     return
   }
   Sentry.init({

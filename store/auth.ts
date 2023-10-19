@@ -31,7 +31,7 @@ export const useAuth = defineStore('authentication', {
                 },
                 async logout() {
                         if (await authenticated) {
-                                console.log("logging out of keycloak");
+                                console.debug("logging out of keycloak");
                                 await keycloak.logout();
                         } else {
                                 return;

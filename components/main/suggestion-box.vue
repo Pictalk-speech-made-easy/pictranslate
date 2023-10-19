@@ -10,7 +10,7 @@ const { locale } = useI18n()
 const emit = defineEmits(['suggestion']);
 const props = defineProps({
   pictograms: {
-    type: Object,
+    type: Array<any>,
     required: true,
   },
 });

@@ -10,7 +10,7 @@ onMounted(async () => {
 
 const props = defineProps({
     pictograms: {
-        type: Array<Object>,
+        type: Array,
         required: true,
     },
     sentence: {
@@ -25,14 +25,18 @@ const { sentence } = toRefs(props)
 watch(pictograms, async (value) => {
   if (value.length > 0) {
     const paths = value.map((picto) => picto.external_alt_image);
+    try {
       const b64 = await mergeImages(paths, {
         crossOrigin: "Anonymous",
         text: sentence.value,
         color: "white",
       });
       preGeneratedBlob = b64toBlob(b64);
+    } catch (e) {
+      console.error(e);
+    }  
   }
-});
+}, { immediate: true });
 
 const b64toBlob = (dataURI) => {
       const byteString = atob(dataURI.split(",")[1]);
@@ -47,7 +51,7 @@ const b64toBlob = (dataURI) => {
 
 const copyPictosToClipboard = () => {
     if (!navigatorPermission && detectBrowser(navigator.userAgent) != "Safari") {
-        console.log("No permission to write to clipboard");
+        console.debug("No permission to write to clipboard");
         return false;
     }
     try {
@@ -58,7 +62,7 @@ const copyPictosToClipboard = () => {
           navigator.clipboard.write(data);
           return true;
       } catch (e) {
-        console.log(e);
+        console.debug(e);
         return false;
       }
 }

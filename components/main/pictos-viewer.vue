@@ -14,7 +14,7 @@ const { suggestion, suggestions } = storeToRefs(stimulusDatabase)
 const { locale } = useI18n()
 const props = defineProps({
   pictograms: {
-    type: Object,
+    type: Array<any>,
     required: true,
   },
 });
@@ -22,19 +22,23 @@ const props = defineProps({
 const { pictograms } = toRefs(props);
 
 watch(pictograms, async (value) => {
+  console.log("[pictogram-viewer] watch triggered")
   if (value.length == 0) {
+    console.log("[pictogram-viewer] empty pictograms")
+    suggestion.value = '';
+    suggestions.value = [];
     return;
   }
   const picto = value[value.length - 1];
-  console.log("[pictogram-viewer] pictogram",picto)
+  console.debug("[pictogram-viewer] pictogram",picto)
   const stimulus = picto['keywords']['en'][0]['keyword']
   const response = await stimulusDatabase.getStimulus(stimulus)
-  console.log("[pictogram-viewer] response",value)
+  console.debug("[pictogram-viewer] response",value)
   if (response) {
     suggestion.value = response[0]['word']
     suggestions.value = response.map((r: any) => r['word'])
   }
-});
+}, { immediate: true, deep: true });
 
 </script>
 <style scoped>

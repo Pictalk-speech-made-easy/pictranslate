@@ -15,7 +15,7 @@ module.exports = {
 		themes: [{
 			dark: {
 				"color-scheme": "dark",
-				primary: '#8397fe',
+				primary: '#6a97df',
 				"primary-content": "#ffffff",
 				secondary: '#ff5757',
 				"secondary-content": "#ffffff",
@@ -32,7 +32,7 @@ module.exports = {
 			},
 			light: {	
 				"color-scheme": "light",
-				primary: '#8397fe',
+				primary: '#6a97df',
 				"primary-content": "#ffffff",
 				secondary: '#ff5757',
 				"secondary-content": "#ffffff",
@@ -55,7 +55,7 @@ module.exports = {
 				'icon': 'clamp(1.5rem, 7vw, 2.5rem)',
 			},
 			colors: {
-				'primary': '#8397fe',
+				'primary': '#6a97df',
 				'accent': '#8397fe50',
 				'secondary': '#a6adbb',
 				'tertiary': '#ff5757',

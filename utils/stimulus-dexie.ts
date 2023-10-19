@@ -21,7 +21,7 @@ export const initialize_indexeddb = async () => {
     })
     return db
     } catch (error) {
-        console.log(error)
+        console.debug(error)
     }
     
 }

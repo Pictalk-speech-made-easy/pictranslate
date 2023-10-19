@@ -1,4 +1,4 @@
-console.log('Worker started')
+console.debug('Worker started')
 
 importScripts('https://npmcdn.com/dexie@3.2.4/dist/dexie.min.js');
 importScripts('https://unpkg.com/pako@2.1.0/dist/pako_inflate.min.js');
@@ -7,7 +7,7 @@ self.addEventListener('message', async (e) => {
     const { action, payload } = e.data;
     if (action === 'populateStimulusDatabase') {
         let db = await initialize_indexeddb();
-        if (db && await db.stimulus_response.count() === 0) {
+        if (db && await db.stimulus_response.count() !== 8211) {
             // Download the GZIP file
             // Unzip the GZIP file
             try {
@@ -26,7 +26,7 @@ self.addEventListener('message', async (e) => {
             // Post message to the main thread
             self.postMessage({ action: 'populateStimulusDatabase', success: true });
             } catch (error) {
-                console.log(error)
+                console.debug(error)
             }
         } else {
             self.postMessage({ action: 'populateStimulusDatabase', success: true });
@@ -42,7 +42,7 @@ const initialize_indexeddb = async () => {
     })
     return db
     } catch (error) {
-        console.log(error)
+        console.debug(error)
     }
     
 }

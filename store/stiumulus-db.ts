@@ -40,7 +40,7 @@ export const useStimulusDatabase = defineStore('stimulus', {
                 await db.open();
                 this.db = db;
             } catch (error) {
-                console.log(error);
+                console.debug(error);
                 this.db = undefined;
             }
         },
