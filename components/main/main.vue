@@ -144,7 +144,9 @@ watch(translation, async (newValue, oldValue) => {
 
 const getPictoFromPictohub = async (search: string, searchLocale: string, additionnalLocales: string[] = []) => {
   // Query parameters: search, path, index
-
+  //TODO Suggestion bugfix with spaces
+  search = search.replace('-', ' ');
+  console.debug("[main] getPictoFromPictohub", search, searchLocale, additionnalLocales)
   let queryParams = [
     `term=${search}`,
     `path[]=keywords.${searchLocale}.keyword`,

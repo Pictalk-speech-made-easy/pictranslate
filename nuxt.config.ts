@@ -165,7 +165,7 @@ export default defineNuxtConfig({
       importScripts: ['stimulus-db.worker.js'],
       runtimeCaching: [
         {
-          urlPattern: new RegExp(`^https://pictohub-api.gandi.asidiras.dev/collection/search*`, 'i'),
+          urlPattern: new RegExp(`^https://pictohub-api.gandi.asidiras.dev/collection/keyword*`, 'i'),
           handler: 'StaleWhileRevalidate',
           options: {
             cacheName: 'pictohub-api-cache',

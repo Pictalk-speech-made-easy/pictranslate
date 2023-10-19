@@ -18,6 +18,7 @@ watch(search, debounce(() => {
 }, 500), { immediate: true })
 
 const injectAdditionnalSearch = (input: string) => {
+    input = input.replace(' ', '-');
     search.value += ' ' + input;
 }
 defineExpose({

@@ -1,5 +1,5 @@
 <template>
-    <div class="flex items-center min-h-[80px] bg-base-100 mx-4 mt-2 shadow-xl rounded-xl bg-dotted-light">
+    <div class="flex items-center min-h-[20vh] bg-base-100 mx-4 mt-2 shadow-xl rounded-xl bg-dotted-light">
                 <div class="flex flex-wrap mx-1 p-1 items-center">
                   <div class="items-center" tabindex="0" v-for="(picto, index) in pictograms" crossorigin="anonymous" :key="picto.external_alt_image.toString()">
                     <img 
