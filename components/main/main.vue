@@ -1,8 +1,8 @@
 <template>
   <div class="mt-20 h-[calc(100vh - 64px)] max-w-lg mx-auto">
-    <InputBox @pictohubSearch="translation = $event" ref="inputBox" />
-    <SuggestionBox @suggestion="suggestionConfirmed($event)" :pictograms="pictogramsSuggestions"/>
-    <PictosViewer :pictograms="pictoResponses" />
+    <InputBox @pictohubSearch="textInput = $event" ref="inputBox" />
+    <SuggestionBox @suggestion="onSuggestionConfirmed($event)" :pictograms="suggestedPictograms"/>
+    <PictosViewer :pictogramsPropositions="pictogramsPropositions" />
 
     <div class="flex justify-end items-center mt-8 mx-4">
       <button class="btn btn-primary rounded-2xl" @click="copyPictogramsToClipboard">{{ $t('copyButton') }}
@@ -17,7 +17,7 @@
       <Speak :animated="speechSynthesisHelper?.speaking!" class="btn rounded-full h-14 w-14 mx-2 p-4 bg-indigo-100 dark:bg-grey-base-50"
         @click="speakSentence"> {{ $t('speakButton') }}></Speak>
     </div>
-    <ClipboardHelper ref="clipboardHelper" :sentence="translation" :pictograms="pictoResponses" />
+    <ClipboardHelper ref="clipboardHelper" :sentence="textInput" :pictograms="pictogramsPropositions" />
     <SpeechSynthesis ref="speechSynthesisHelper" :language="localeIso(locale)" />
   </div>
 </template>
@@ -34,14 +34,13 @@ const stimulusDatabase = useStimulusDatabase();
 const auth = useAuth();
 const { locale } = useI18n()
 const config = useRuntimeConfig()
-let data: any;
 
 const clipboardHelper = ref<InstanceType<typeof ClipboardHelper> | null>(null)
 const speechSynthesisHelper = ref<InstanceType<typeof SpeechSynthesis> | null>(null)
 const inputBox = ref<InstanceType<typeof InputBox> | null>(null)
-const translation: globalThis.Ref<string> = ref('');
-const pictoResponses: globalThis.Ref<Array<any>> = ref([]);
-const pictogramsSuggestions: globalThis.Ref<Array<any>> = ref([]);
+const textInput: globalThis.Ref<string> = ref('');
+const pictogramsPropositions: globalThis.Ref<Array<{'selected': number, 'pictograms': Array<any>}>> = ref([]);
+const suggestedPictograms: globalThis.Ref<Array<{'selected': number, 'pictograms': Array<any>}>> = ref([]);
 const { suggestions } = storeToRefs(stimulusDatabase)
 
 
@@ -52,19 +51,38 @@ onMounted(async () => {
   }
 })
 
-const suggestionConfirmed = (event:any) => {
-  console.debug("[main] suggestionConfirmed", event);
-  pictoResponses.value.push(event);
-  inputBox.value?.injectAdditionnalSearch(event['pictograms'][event['selected']]['keywords'][locale.value][0]['keyword'])
-}
 
+// Suggestions ------------------------------------
+const onSuggestionConfirmed = (event:any) => {
+  console.debug("[main] suggestionConfirmed", event);
+  pictogramsPropositions.value.push(event);
+  inputBox.value?.injectAdditionnalSearch(event['keywords'][locale.value][0]['keyword'])
+}
+watch(suggestions, async (value) => {
+  console.debug("[main] pictohub value", value)
+  if (value.length == 0 || value == undefined) {
+    suggestedPictograms.value = []
+    return;
+  }
+  // Only get the first 5 elements
+  value = value.slice(0, 5);
+  let wordToPictogramPromises = value.map((suggestion: string) => {
+    return getPictoFromPictohub(suggestion.toLocaleLowerCase(), 'en', [locale.value], 3);
+  });
+  console.debug("[main] pictohub wordsPromise", wordToPictogramPromises)
+  let unfilteredPictograms = await Promise.all(wordToPictogramPromises);
+  unfilteredPictograms = unfilteredPictograms.map((picto) => { return {'selected': 0, 'pictograms': picto}})
+  // Remove the empty elements and only keep the first 3 elements
+  suggestedPictograms.value = unfilteredPictograms.filter((picto: any) => (picto.pictograms != undefined && picto.pictograms[0]?.external_alt_image != undefined)).slice(0, 3);;
+}, { immediate: true, deep: true });
+
+// Clipboard ------------------------------------
 const copyPictogramsToClipboard = () => {
   if (clipboardHelper.value == null) {
     return;
   }
   clipboardHelper.value?.copyPictosToClipboard();
 }
-
 const downloadPictograms = () => {
   console.debug(clipboardHelper.value?.getPreGeneratedBlob())
   if (clipboardHelper.value == null || clipboardHelper.value?.getPreGeneratedBlob() == null) {
@@ -98,56 +116,42 @@ const downloadPictograms = () => {
   document.body.removeChild(link);
 } 
 
+// Speech synthesis ------------------------------------
 const speakSentence = () => {
-  if (translation.value == '') return;
+  if (textInput.value == '') return;
   if (speechSynthesisHelper.value && typeof speechSynthesisHelper.value.speak === 'function') {
-    speechSynthesisHelper.value.speak(translation.value);
+    speechSynthesisHelper.value.speak(textInput.value);
   }
 }
 
-watch(suggestions, async (value) => {
-  console.debug("[main] pictohub value", value)
-  if (value.length == 0 || value == undefined) {
-    pictogramsSuggestions.value = []
-    return;
-  }
-  // Only get the first 5 elements
-  value = value.slice(0, 5);
-  let wordsPromise = value.map((suggestion: string) => {
-    return getPictoFromPictohub(suggestion.toLocaleLowerCase(), 'en', [locale.value], 3);
-  });
-  console.debug("[main] pictohub wordsPromise", wordsPromise)
-  wordsPromise = await Promise.all(wordsPromise);
-  wordsPromise = wordsPromise.map((picto) => { return {'selected': 0, 'pictograms': picto}})
-  wordsPromise = wordsPromise.filter((picto: any) => (picto.pictograms != undefined && picto.pictograms[0]?.external_alt_image != undefined)).slice(0, 3);
-  // Remove the empty elements and only keep the first 3 elements
-  pictogramsSuggestions.value = wordsPromise;
-}, { immediate: true, deep: true });
-
-watch(translation, async (newValue, oldValue) => {
-  if (newValue == '') {
-    console.debug("[main] translation empty")
-    pictoResponses.value = [];
+// Text Input to PictogramsPropositions ------------------------------------
+watch(textInput, async (value) => {
+  if (value == '') {
+    console.debug("[main] textInput empty")
+    pictogramsPropositions.value = [];
     return;
   }
 
-  const words = removePrepositions(newValue.toLocaleLowerCase(), locale.value);
-  if (words.length != pictoResponses.value.length) {
-    let wordsPromise = words.map((word: string) => {
+  const wordsArray = removePrepositions(value.toLocaleLowerCase(), locale.value);
+  // Condition is useful to avoid triggering the watcher when a suggestion is selected
+  if (wordsArray.length != pictogramsPropositions.value.length) {
+    const wordToPictogramPromises = wordsArray.map((word: string) => {
       return getPictoFromPictohub(word, locale.value, [locale.value, 'en'], 3);
     });
 
-    let pictos = await Promise.all(wordsPromise);
-    pictos = pictos.map((picto) => { return {'selected': 0, 'pictograms': picto}})
-    pictos = pictos.filter((picto: any) => (picto.pictograms != undefined && picto.pictograms[0]?.external_alt_image != undefined))
-    pictoResponses.value = pictos
+    let unfilteredPictograms = await Promise.all(wordToPictogramPromises);
+    unfilteredPictograms = unfilteredPictograms.map((picto) => { return {'selected': 0, 'pictograms': picto}})
+    unfilteredPictograms = unfilteredPictograms.filter((picto: any) => (picto.pictograms != undefined && picto.pictograms[0]?.external_alt_image != undefined))
+    console.log("[main] unfilteredPictograms", unfilteredPictograms)
+    pictogramsPropositions.value = unfilteredPictograms
   }
 }, { immediate: true});
 
 const getPictoFromPictohub = async (search: string, searchLocale: string, additionnalLocales: string[] = [], limit=1) => {
-  // Query parameters: search, path, index
-  //TODO Suggestion bugfix with spaces
+  // For words that have a dash, replace it with a space
+  // Pictogram suggestions that have more than a word are separated by a dash
   search = search.replace('-', ' ');
+
   console.debug("[main] getPictoFromPictohub", search, searchLocale, additionnalLocales)
   let queryParams = [
     `term=${search}`,
@@ -168,17 +172,23 @@ const getPictoFromPictohub = async (search: string, searchLocale: string, additi
       queryParams += `&lang[]=${additionnalLocale}`
     })
   }
-
-  data = await $fetch(`${config.public.pictohub.PICTOHUB_API_URL}?${queryParams}`, {
-    method: 'GET',
-    headers: {
-      'x-api-key': config.public.pictohub.PICTOHUB_API_KEY
+  // Gracefully handle the case where the pictohub API is not available with a try/catch
+  try {
+    let data: any[] = await $fetch(`${config.public.pictohub.PICTOHUB_API_URL}?${queryParams}`, {
+      method: 'GET',
+      headers: {
+        'x-api-key': config.public.pictohub.PICTOHUB_API_KEY
+      }
+    });
+    if (limit == 1) {
+      return data[0];
     }
-  });
-  if (limit == 1) {
-    return data[0];
+    console.log("[main] getPictoFromPictohub", data)
+    return data;
+  } catch (e) {
+    console.error(e);
+    return;
   }
-  return data;
 }
 
 

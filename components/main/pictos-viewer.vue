@@ -1,8 +1,8 @@
 <template>
     <div class="flex items-center min-h-[20vh] bg-base-100 mx-4 mt-2 shadow-xl rounded-xl bg-dotted-light">
                 <div class="flex flex-wrap mx-1 p-1 items-center">
-                  <div class="items-center" tabindex="0" v-for="(picto, index) in pictograms" crossorigin="anonymous" :key="picto['pictograms'][0].external_alt_image.toString()">
-                    <div v-for="pictogram in picto['pictograms']">
+                  <div class="items-center" tabindex="0" v-for="(pictogramPropositions, index) in pictogramsPropositions" crossorigin="anonymous" :key="pictogramPropositions['pictograms'][0].external_alt_image.toString()">
+                    <div v-for="pictogram in pictogramPropositions['pictograms']">
                     <img 
                         class="!m-0 aspect-square object-contain h-12 rounded-sm zoom-in" :src="pictogram.external_alt_image.toString()"
                         :alt="pictogram['keywords'][locale][0]['keyword']"/>
@@ -18,15 +18,15 @@ const stimulusDatabase = useStimulusDatabase();
 const { suggestion, suggestions } = storeToRefs(stimulusDatabase)
 const { locale } = useI18n()
 const props = defineProps({
-  pictograms: {
+  pictogramsPropositions: {
     type: Array<any>,
     required: true,
   },
 });
 
-const { pictograms } = toRefs(props);
+const { pictogramsPropositions } = toRefs(props);
 
-watch(pictograms, async (value) => {
+watch(pictogramsPropositions, async (value) => {
   console.log("[pictogram-viewer],", value)
   console.log("[pictogram-viewer] watch triggered")
   if (value.length == 0) {
