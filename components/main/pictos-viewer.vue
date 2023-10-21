@@ -14,8 +14,6 @@
             </div>
 </template>
 <script setup lang="ts">
-const stimulusDatabase = useStimulusDatabase();
-const { suggestion, suggestions } = storeToRefs(stimulusDatabase)
 const { locale } = useI18n()
 const props = defineProps({
   pictogramsPropositions: {
@@ -25,26 +23,6 @@ const props = defineProps({
 });
 
 const { pictogramsPropositions } = toRefs(props);
-
-watch(pictogramsPropositions, async (value) => {
-  console.log("[pictogram-viewer],", value)
-  console.log("[pictogram-viewer] watch triggered")
-  if (value.length == 0) {
-    console.log("[pictogram-viewer] empty pictograms")
-    suggestion.value = '';
-    suggestions.value = [];
-    return;
-  }
-  const picto = value[value.length - 1];
-  console.debug("[pictogram-viewer] pictogram",picto)
-  const stimulus = picto['pictograms'][picto['selected']]['keywords']['en'][0]['keyword']
-  const response = await stimulusDatabase.getStimulus(stimulus)
-  console.debug("[pictogram-viewer] response",value)
-  if (response) {
-    suggestion.value = response[0]['word']
-    suggestions.value = response.map((r: any) => r['word'])
-  }
-}, { immediate: true, deep: true });
 
 </script>
 <style scoped>

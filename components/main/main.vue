@@ -30,7 +30,9 @@ import ClipboardHelper from '~/components/clipboard/clipboard.vue';
 import SpeechSynthesis from '../webSpeechApi/speechSynthesis.vue';
 import { localeIso } from '~/utils/i18n';
 import { removePrepositions } from '~/utils/language';
+import { getPictoFromPictohub } from '~/utils/pictohub';
 const stimulusDatabase = useStimulusDatabase();
+const main = useMain();
 const auth = useAuth();
 const { locale } = useI18n()
 const config = useRuntimeConfig()
@@ -38,11 +40,7 @@ const config = useRuntimeConfig()
 const clipboardHelper = ref<InstanceType<typeof ClipboardHelper> | null>(null)
 const speechSynthesisHelper = ref<InstanceType<typeof SpeechSynthesis> | null>(null)
 const inputBox = ref<InstanceType<typeof InputBox> | null>(null)
-const textInput: globalThis.Ref<string> = ref('');
-const pictogramsPropositions: globalThis.Ref<Array<{'selected': number, 'pictograms': Array<any>}>> = ref([]);
-const suggestedPictograms: globalThis.Ref<Array<{'selected': number, 'pictograms': Array<any>}>> = ref([]);
-const { suggestions } = storeToRefs(stimulusDatabase)
-
+const { textInput, pictogramsPropositions, suggestedPictograms } = storeToRefs(main);
 
 onMounted(async () => {
   const authenticated = await auth.getAuthenticated();
@@ -58,23 +56,7 @@ const onSuggestionConfirmed = (event:any) => {
   pictogramsPropositions.value.push(event);
   inputBox.value?.injectAdditionnalSearch(event['keywords'][locale.value][0]['keyword'])
 }
-watch(suggestions, async (value) => {
-  console.debug("[main] pictohub value", value)
-  if (value.length == 0 || value == undefined) {
-    suggestedPictograms.value = []
-    return;
-  }
-  // Only get the first 5 elements
-  value = value.slice(0, 5);
-  let wordToPictogramPromises = value.map((suggestion: string) => {
-    return getPictoFromPictohub(suggestion.toLocaleLowerCase(), 'en', [locale.value], 3);
-  });
-  console.debug("[main] pictohub wordsPromise", wordToPictogramPromises)
-  let unfilteredPictograms = await Promise.all(wordToPictogramPromises);
-  unfilteredPictograms = unfilteredPictograms.map((picto) => { return {'selected': 0, 'pictograms': picto}})
-  // Remove the empty elements and only keep the first 3 elements
-  suggestedPictograms.value = unfilteredPictograms.filter((picto: any) => (picto.pictograms != undefined && picto.pictograms[0]?.external_alt_image != undefined)).slice(0, 3);;
-}, { immediate: true, deep: true });
+
 
 // Clipboard ------------------------------------
 const copyPictogramsToClipboard = () => {
@@ -136,7 +118,7 @@ watch(textInput, async (value) => {
   // Condition is useful to avoid triggering the watcher when a suggestion is selected
   if (wordsArray.length != pictogramsPropositions.value.length) {
     const wordToPictogramPromises = wordsArray.map((word: string) => {
-      return getPictoFromPictohub(word, locale.value, [locale.value, 'en'], 3);
+      return getPictoFromPictohub(config, word, locale.value, [locale.value, 'en'], 3);
     });
 
     let unfilteredPictograms = await Promise.all(wordToPictogramPromises);
@@ -147,49 +129,7 @@ watch(textInput, async (value) => {
   }
 }, { immediate: true});
 
-const getPictoFromPictohub = async (search: string, searchLocale: string, additionnalLocales: string[] = [], limit=1) => {
-  // For words that have a dash, replace it with a space
-  // Pictogram suggestions that have more than a word are separated by a dash
-  search = search.replace('-', ' ');
 
-  console.debug("[main] getPictoFromPictohub", search, searchLocale, additionnalLocales)
-  let queryParams = [
-    `term=${search}`,
-    `path[]=keywords.${searchLocale}.keyword`,
-    `index=keyword`,
-    `path[]=keywords.${searchLocale}.synonymes`,
-    `path[]=keywords.${searchLocale}.lexical_siblings`,
-    `path[]=keywords.${searchLocale}.conjugates.verbe_m`,
-    `path[]=keywords.${searchLocale}.conjugates.verbe_f`,
-    `path[]=keywords.${searchLocale}.plural`,
-    `lang[]=${searchLocale}`,
-    `completeIfEmpty=true`,
-    `limit=${limit}`,
-  ].join('&');
-
-  if (additionnalLocales.length > 0) {
-    additionnalLocales.forEach((additionnalLocale) => {
-      queryParams += `&lang[]=${additionnalLocale}`
-    })
-  }
-  // Gracefully handle the case where the pictohub API is not available with a try/catch
-  try {
-    let data: any[] = await $fetch(`${config.public.pictohub.PICTOHUB_API_URL}?${queryParams}`, {
-      method: 'GET',
-      headers: {
-        'x-api-key': config.public.pictohub.PICTOHUB_API_KEY
-      }
-    });
-    if (limit == 1) {
-      return data[0];
-    }
-    console.log("[main] getPictoFromPictohub", data)
-    return data;
-  } catch (e) {
-    console.error(e);
-    return;
-  }
-}
 
 
 </script>
