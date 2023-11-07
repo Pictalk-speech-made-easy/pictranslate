@@ -33,9 +33,6 @@ export const getPictoFromPictohub = async (config: RuntimeConfig,search: string,
           'x-api-key': config.public.pictohub.PICTOHUB_API_KEY
         }
       });
-      if (limit == 1) {
-        return data[0];
-      }
       console.log("[main] getPictoFromPictohub", data)
       return data;
     } catch (e) {

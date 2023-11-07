@@ -54,7 +54,7 @@ onMounted(async () => {
 const onSuggestionConfirmed = (event:any) => {
   console.debug("[main] suggestionConfirmed", event);
   pictogramsPropositions.value.push(event);
-  inputBox.value?.injectAdditionnalSearch(event['keywords'][locale.value][0]['keyword'])
+  inputBox.value?.injectAdditionnalSearch(event['pictograms'][0]['keywords'][locale.value][0]['keyword'])
 }
 
 
@@ -118,11 +118,12 @@ watch(textInput, async (value) => {
   // Condition is useful to avoid triggering the watcher when a suggestion is selected
   if (wordsArray.length != pictogramsPropositions.value.length) {
     const wordToPictogramPromises = wordsArray.map((word: string) => {
-      return getPictoFromPictohub(config, word, locale.value, [locale.value, 'en'], 3);
+      return getPictoFromPictohub(config, word, locale.value, [locale.value, 'en'], 1); // Change the limit to 3 for example to have 3 pictograms per word
     });
 
     let unfilteredPictograms = await Promise.all(wordToPictogramPromises);
     unfilteredPictograms = unfilteredPictograms.map((picto) => { return {'selected': 0, 'pictograms': picto}})
+    console.log("[main] unfilteredPictograms", unfilteredPictograms)
     unfilteredPictograms = unfilteredPictograms.filter((picto: any) => (picto.pictograms != undefined && picto.pictograms[0]?.external_alt_image != undefined))
     console.log("[main] unfilteredPictograms", unfilteredPictograms)
     pictogramsPropositions.value = unfilteredPictograms

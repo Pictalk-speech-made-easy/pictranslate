@@ -3,7 +3,7 @@
         <div v-for="pictogram in pictograms" class="!m-0 object-contain h-12">
             <button @click="emit('suggestion', pictogram)" class="btn btn-primary">
               <span>{{ pictogram['pictograms'][pictogram['selected']]['keywords'][locale][0]['keyword'] }}</span>
-              <img class="!m-0 aspect-square object-contain h-8 rounded-sm zoom-in" :src="pictogram['pictograms'][pictogram['selected']].external_alt_image.toString()"
+              <img crossorigin="anonymous" class="!m-0 aspect-square object-contain h-8 rounded-sm zoom-in" :src="pictogram['pictograms'][pictogram['selected']].external_alt_image.toString()"
                         :alt="pictogram['pictograms'][pictogram['selected']]['keywords'][locale][0]['keyword']"/>
             </button>
         </div>
@@ -35,13 +35,13 @@ watch(suggestions, async (value) => {
   // Only get the first 5 elements
   value = value.slice(0, 5);
   let wordToPictogramPromises = value.map((suggestion: string) => {
-    return getPictoFromPictohub(config, suggestion.toLocaleLowerCase(), 'en', [locale.value], 3);
+    return getPictoFromPictohub(config, suggestion.toLocaleLowerCase(), 'en', [locale.value], 1); // Change the limit to 3 for example to have 3 pictograms per word
   });
   console.debug("[main] pictohub wordsPromise", wordToPictogramPromises)
   let unfilteredPictograms = await Promise.all(wordToPictogramPromises);
   unfilteredPictograms = unfilteredPictograms.map((picto) => { return {'selected': 0, 'pictograms': picto}})
   // Remove the empty elements and only keep the first 3 elements
-  suggestedPictograms.value = unfilteredPictograms.filter((picto: any) => (picto.pictograms != undefined && picto.pictograms[0]?.external_alt_image != undefined)).slice(0, 3);;
+  suggestedPictograms.value = unfilteredPictograms.filter((picto: any) => (picto.pictograms != undefined && picto.pictograms[0]?.external_alt_image != undefined)).slice(0, 3); // Change the slice number to 3 for example to have 3 suggestions per word
 }, { immediate: true, deep: true });
 
 watch(pictogramsPropositions, async (value) => {

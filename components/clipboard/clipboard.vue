@@ -26,6 +26,7 @@ watch(pictograms, async (value) => {
   if (value.length > 0) {
     console.debug("[Clipboard] Pictograms changed, generating new blob")
     const paths = value.map((picto) => picto['pictograms'][picto['selected']].external_alt_image);
+    console.log("[Clipboard] paths", paths)
     try {
       const b64 = await mergeImages(paths, {
         crossOrigin: "Anonymous",
