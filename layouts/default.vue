@@ -1,15 +1,6 @@
 <template>
     <html lang="fr"
-      class="bg-fixed bg-gradient-to-b from-indigo-500 from-0% via-[#8397fe50] via-10% to-transparent to-45% min-h-screen">
-  
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width" />
-      <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-      <meta name="generator" content="Nuxt3" />
-      <title>Pictime</title>
-    </head>
-  
+      class="bg-fixed bg-gradient-to-b from-blue-500 from-0% via-[#8397fe50] via-10% to-transparent to-45% min-h-screen">
     <body>
       <slot />
     </body>

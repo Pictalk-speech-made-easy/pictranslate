@@ -165,7 +165,7 @@ export default defineNuxtConfig({
       importScripts: ['stimulus-db.worker.js'],
       runtimeCaching: [
         {
-          urlPattern: new RegExp(`^https://pictohub-api.gandi.asidiras.dev/collection/search*`, 'i'),
+          urlPattern: new RegExp(`^https://pictohub-api.gandi.asidiras.dev/collection/keyword*`, 'i'),
           handler: 'StaleWhileRevalidate',
           options: {
             cacheName: 'pictohub-api-cache',
@@ -193,7 +193,7 @@ export default defineNuxtConfig({
           },
         },
       ],
-      navigateFallback: '/',
+      navigateFallback: null,
       globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
     },
     client: {
@@ -203,7 +203,7 @@ export default defineNuxtConfig({
       periodicSyncForUpdates: 3600,
     },
     devOptions: {
-      enabled: false,
+      enabled: true,
       suppressWarnings: true,
       navigateFallbackAllowlist: [/^\/$/],
       type: 'module',

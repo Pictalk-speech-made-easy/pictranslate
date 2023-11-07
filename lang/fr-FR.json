@@ -1,5 +1,6 @@
 {
     "inputPlaceholder": "Ecrits les mots à traduire",
     "copyButton": "Copier",
-    "speakButton": "Parler"
+    "speakButton": "Parler",
+    "downloadButton": "Télécharger"
 }

@@ -1,38 +1,28 @@
 <template>
-    <div class="flex items-center min-h-[80px] bg-base-100 mx-4 mt-2 shadow-xl rounded-xl bg-dotted-light">
+    <div class="flex items-center min-h-[20vh] bg-base-100 mx-4 mt-2 shadow-xl rounded-xl bg-dotted-light">
                 <div class="flex flex-wrap mx-1 p-1 items-center">
-                    <img tabindex="0" v-for="(picto, index) in pictograms" :key="picto.external_alt_image.toString()"
-                        class="!m-0 aspect-square object-contain h-12 rounded-sm zoom-in" :src="picto.external_alt_image.toString()"
-                        :alt="picto.keywords[locale]">
+                  <div class="items-center" tabindex="0" v-for="(pictogramPropositions, index) in pictogramsPropositions" :key="pictogramPropositions['pictograms'][0].external_alt_image.toString()">
+                    <div v-for="pictogram in pictogramPropositions['pictograms']">
+                    <img crossorigin="anonymous"
+                        class="!m-0 aspect-square object-contain h-12 rounded-sm zoom-in" :src="pictogram.external_alt_image.toString()"
+                        :alt="pictogram['keywords'][locale][0]['keyword']"/>
+                        <div class="mx-4 mt-2 shadow-xl rounded-xl">{{ pictogram['keywords'][locale][0]['keyword'] }}</div>
+                      </div>
+                    </div>
                 </div>
                 
             </div>
 </template>
 <script setup lang="ts">
-const stimulusDatabase = useStimulusDatabase();
 const { locale } = useI18n()
 const props = defineProps({
-  pictograms: {
-    type: Object,
+  pictogramsPropositions: {
+    type: Array<any>,
     required: true,
   },
 });
 
-const { pictograms } = toRefs(props);
-
-watch(pictograms, async (value) => {
-  if (value.length == 0) {
-    return;
-  }
-  const picto = value[value.length - 1];
-  console.log("[pictogram-viewer] pictogram",picto)
-  const stimulus = picto['keywords']['en'][0]['keyword']
-  const response = await stimulusDatabase.getStimulus(stimulus)
-  console.log("[pictogram-viewer] response",value)
-  if (response) {
-    stimulusDatabase.suggestion = response[0]['word']
-  }
-});
+const { pictogramsPropositions } = toRefs(props);
 
 </script>
 <style scoped>

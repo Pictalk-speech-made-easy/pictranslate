@@ -10,7 +10,7 @@ onMounted(async () => {
 
 const props = defineProps({
     pictograms: {
-        type: Array<Object>,
+        type: Array<any>,
         required: true,
     },
     sentence: {
@@ -19,20 +19,28 @@ const props = defineProps({
     },
 });
 
-const { pictograms } = toRefs(props)
-const { sentence } = toRefs(props)
+const { pictograms, sentence } = toRefs(props)
 
 watch(pictograms, async (value) => {
+  console.log("[Clipboard] watch triggered")
   if (value.length > 0) {
-    const paths = value.map((picto) => picto.external_alt_image);
+    console.debug("[Clipboard] Pictograms changed, generating new blob")
+    const paths = value.map((picto) => picto['pictograms'][picto['selected']].external_alt_image);
+    console.log("[Clipboard] paths", paths)
+    try {
       const b64 = await mergeImages(paths, {
         crossOrigin: "Anonymous",
         text: sentence.value,
         color: "white",
       });
       preGeneratedBlob = b64toBlob(b64);
+    } catch (e) {
+      console.error(e);
+    }  
+  } else {
+    preGeneratedBlob = null;
   }
-});
+}, { immediate: true, deep: true });
 
 const b64toBlob = (dataURI) => {
       const byteString = atob(dataURI.split(",")[1]);
@@ -47,7 +55,7 @@ const b64toBlob = (dataURI) => {
 
 const copyPictosToClipboard = () => {
     if (!navigatorPermission && detectBrowser(navigator.userAgent) != "Safari") {
-        console.log("No permission to write to clipboard");
+        console.debug("No permission to write to clipboard");
         return false;
     }
     try {
@@ -58,7 +66,7 @@ const copyPictosToClipboard = () => {
           navigator.clipboard.write(data);
           return true;
       } catch (e) {
-        console.log(e);
+        console.debug(e);
         return false;
       }
 }
@@ -76,8 +84,13 @@ const navigatorAskWritePermission = async () => {
         return false;
       }
 }
+
+const getPreGeneratedBlob = () => {
+    return preGeneratedBlob;
+}
 defineExpose({
-    copyPictosToClipboard
+    copyPictosToClipboard,
+    getPreGeneratedBlob
   });
 </script>
 <template>

@@ -5,6 +5,7 @@ export const useStimulusDatabase = defineStore('stimulus', {
         worker: undefined as Worker | undefined,
         db_filled: false as boolean,
         suggestion: '' as string,
+        suggestions: [] as string[],
     }),
     persist: {
         storage: persistedState.localStorage,
@@ -39,7 +40,7 @@ export const useStimulusDatabase = defineStore('stimulus', {
                 await db.open();
                 this.db = db;
             } catch (error) {
-                console.log(error);
+                console.debug(error);
                 this.db = undefined;
             }
         },
@@ -49,7 +50,11 @@ export const useStimulusDatabase = defineStore('stimulus', {
             }
             //@ts-ignore
             const data = await this.db.stimulus_response.get(stimulusInput.toUpperCase());
-            return data?.responses;
+            if (data?.responses.length > 0) {
+                return data?.responses;
+            }
+            return undefined;
+            
           }
     },
 });

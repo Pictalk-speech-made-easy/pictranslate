@@ -46,6 +46,16 @@ const options = useOptions();
 watch(toggle, () => {
     switchColorTheme();
 });
+
+onMounted(() => {
+    if (options.theme === 'dark') {
+        toggle.value = true;
+    }
+    if (options.locale) {
+        locale.value = options.locale;
+    }
+});
+
 function switchColorTheme() {
     const HTML = document.querySelector("html.bg-fixed");  // else it grabs the 'devtools' html element from Nuxt3
     if (HTML) {
