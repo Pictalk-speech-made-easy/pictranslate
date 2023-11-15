@@ -13,7 +13,7 @@
                 src="/images/logo-full.png"
                 class="h-14 rounded"
             /> -->
-            <img src="/images/logo-full.png" class="h-14 rounded" />
+            <img src="/images/logo-full.png" class="h-16 rounded" />
         </div>
         <div class="navbar-end">
             

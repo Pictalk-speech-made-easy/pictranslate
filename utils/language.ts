@@ -1,5 +1,5 @@
 // Variable that contains the prepositions of various languages
-export const prepositions: Object = {
+export const prepositions = {
   en: ["a", "an", "the", "of", "in", "for", "on", "with", "to", "by", "about"],
   es: [
     "el",
@@ -102,41 +102,43 @@ export const prepositions: Object = {
   ],
 };
 
-const personal_pronouns = {
-  fr: { je: "moi", tu: "toi", il: "il", elle: "she", nous: "nous", vous: "vous", ils: "ils", elles: "elles" },
+const personal_pronouns: { [key: string]: { [key: string]: string } } = {
+  fr: { je: "moi", tu: "toi", il: "il", elle: "elle", nous: "nous", vous: "vous", ils: "ils", elles: "elles" },
   en: { i: "me", you: "you", he: "him", she: "her", we: "us", they: "them" },
+  es: {},
+  pt: {},
 }
-
-// Fonction qui prend en entrée une phrase et qui retourne un tableau de mots sans les prépositions
-// Exemple : "le chat est sur la table" => ["chat", "est", "table"]
-export function removePrepositions(sentence: string, lang: string) {
+/**
+ * @param sentence The sentence to remove prepositions from
+ * @param lang The language of the sentence
+ * @returns The sentence without prepositions
+ * @example removePrepositions("le chat est sur la table", "fr") // ["chat", "est", "table"]
+ */
+export function removePrepositions(sentence: string, lang: 'en' | 'fr' | 'es' | 'pt') {
+  sentence = cleanSentence(sentence);
+  const words = sentence.split(" ");
+  if (prepositions[lang] === undefined) {
+    return words;
+  }
   // If the language is french, we remove the l'
   if (lang === "fr") {
     sentence = sentence.replace("l'", "");
     sentence = sentence.replace("d'", "");
     sentence = sentence.replace("j'", "je ");
   }
-  sentence = cleanSentence(sentence);
-  const words = sentence.split(" ");
-  if (!prepositions[lang]) {
-    return words;
-  }
   const preps = prepositions[lang];
   // We need to filter empty strings
   let filteredWords = words.filter((word) => !preps.includes(word) && word !== "");
-  filteredWords = filteredWords.map((word) => {
-    if (Object.keys(personal_pronouns[lang]).includes(word)) {
-      return personal_pronouns[lang][word];
-    }
-    return word;
-  }
-  )
-
-  return filteredWords;
+  return filteredWords.map((word) => {
+    const pronoun = personal_pronouns[lang][word]
+    return pronoun ? pronoun : word;
+  });
 }
-
-// Fonction qui nettoie une phrase de caractères spéciaux
-// Exemple : "le chat est, sur la table !?" => "le chat est sur la table"
+/**
+ * @param sentence The sentence to clean
+ * @returns The cleaned sentence
+ * @example cleanSentence("le chat est, sur la table !?") // "le chat est sur la table"
+ */
 export function cleanSentence(sentence: string) {
   const clean = sentence.replace(/[^A-zÀ-ÿ\s]|_/g, "").replace(/\s+/g, " ");
   return clean;

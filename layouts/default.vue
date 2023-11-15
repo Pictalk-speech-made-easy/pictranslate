@@ -1,6 +1,6 @@
 <template>
     <html lang="fr"
-      class="bg-fixed bg-gradient-to-b from-blue-500 from-0% via-[#8397fe50] via-10% to-transparent to-45% min-h-screen">
+      class="bg-fixed min-h-screen">
     <body>
       <slot />
     </body>
