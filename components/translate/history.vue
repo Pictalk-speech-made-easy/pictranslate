@@ -22,6 +22,7 @@
 <script setup lang="ts">
 import { useOptions } from '~/store/option';
 import { useHistoryDatabase } from '~/store/history';
+import { History } from '~/store/store-types';
 const options = useOptions();
 const history = useHistoryDatabase();
 const main = useMain();
@@ -30,15 +31,9 @@ onMounted(() => {
     history.getHistory();
 })
 
-const onHistoryClick = function(value: {
-            text_input: string,
-            pictogramsPropositions: Array<{'selected': number, 'pictograms': Array<any>}>,
-            created: Date,
-            last_used: Date,
-        }) {
+const onHistoryClick = function(value: History) {
             main.pictogramsPropositions = value.pictogramsPropositions;
             main.textInput = value.text_input;
-
 }
 
 </script>

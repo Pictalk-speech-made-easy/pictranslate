@@ -1,6 +1,6 @@
 import Dexie from 'dexie';
 import Fuse from 'fuse.js';
-import { History } from './store-types';
+import { History, PictogramPropositions } from './store-types';
 export const useHistoryDatabase = defineStore('history', {
     state: () => ({
         db: undefined as Dexie | undefined,
@@ -89,7 +89,7 @@ export const useHistoryDatabase = defineStore('history', {
             }
             return undefined;
         },
-        async addHistory(textInput: string, pictogramsPropositions: Array<{'selected': number, 'pictograms': Array<any>}>): Promise<any[] | undefined> {
+        async addHistory(textInput: string, pictogramsPropositions: Array<PictogramPropositions>): Promise<any[] | undefined> {
             if (this.db === undefined) {
                 return undefined;
             }
