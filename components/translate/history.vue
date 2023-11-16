@@ -25,6 +25,11 @@ import { useHistoryDatabase } from '~/store/history';
 const options = useOptions();
 const history = useHistoryDatabase();
 const main = useMain();
+
+onMounted(() => {
+    history.getHistory();
+})
+
 const onHistoryClick = function(value: {
             text_input: string,
             pictogramsPropositions: Array<{'selected': number, 'pictograms': Array<any>}>,
