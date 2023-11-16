@@ -13,7 +13,13 @@
 </template>
 <script setup lang="ts">
 import { useStimulusDatabase } from './store/stiumulus-db';
+import { useHistoryDatabase } from './store/history';
 
+// Initialize stimulus database
 const stimulusDatabase = useStimulusDatabase();
 await stimulusDatabase.initialize_database()
+
+// Initialize history database
+const historyDatabase = useHistoryDatabase();
+await historyDatabase.initialize_database()
 </script>

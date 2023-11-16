@@ -22,18 +22,21 @@
 import debounce from 'lodash.debounce';
 import { useMain } from '#imports';
 import { useSpeech } from '~/composables/speech';
+import { useHistoryDatabase } from '~/store/history';
 import Speak from '~/components/translate/speak.vue';
 const main = useMain();
 const options = useOptions();
 const config = useRuntimeConfig();
 const { speak, speaking } = useSpeech();
-
+const { addHistory, getHistory, searchHistory } = useHistoryDatabase();
 watch(() => main.textInput, debounce(async (newText: string) => {
     if (newText == '') {
         console.debug("[main] textInput empty")
         main.pictogramsPropositions = [];
+        getHistory();
         return;
     }
+    searchHistory(newText);
     const wordsArray = removePrepositions(newText.toLocaleLowerCase(), options.locale);
     // Condition is useful to avoid triggering the watcher when a suggestion is selected
     if (wordsArray.length != main.pictogramsPropositions.length) {
@@ -52,5 +55,6 @@ watch(() => main.textInput, debounce(async (newText: string) => {
 function readSentence() {
     if (main.textInput == '') return;
     speak(main.textInput);
+    addHistory(main.textInput, toRaw(main.pictogramsPropositions));
 }
 </script>
