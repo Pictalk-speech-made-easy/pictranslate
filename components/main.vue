@@ -44,12 +44,12 @@ const clipboard = useClipboard();
 
 const onClickCopy = () => {
   clipboard.copyPictosToClipboard();
-  addHistory(main.textInput, main.pictogramsPropositions);
+  addHistory(main.textInput, toRaw(main.pictogramsPropositions));
 }
 
 const onClickDownload = () => {
   clipboard.downloadPictograms();
-  addHistory(main.textInput, main.pictogramsPropositions);
+  addHistory(main.textInput, toRaw(main.pictogramsPropositions));
 }
 
 onMounted(async () => {
