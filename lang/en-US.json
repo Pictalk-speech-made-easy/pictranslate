@@ -1,6 +1,14 @@
 {
-    "inputPlaceholder": "Type some words to traduce",
-    "copyButton": "Copy",
-    "speakButton": "Speak",
-    "downloadButton": "Download"
+    "main": {
+        "input": "Type some words to translate",
+        "copy": "Copy",
+        "speak": "Speak",
+        "download": "Download",
+        "tap_picto": "Tap on any pictogram to change its image",
+        "history": "History"
+    },
+    "menu": {
+        "logout": "Logout",
+        "change_theme": "Change theme"
+    }
 }

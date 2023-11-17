@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
+    "@types/lodash.debounce": "^4.0.9",
     "nuxt": "^3.7.3"
   },
   "dependencies": {
@@ -23,8 +24,11 @@
     "@sentry/vue": "^7.73.0",
     "@tailwindcss/typography": "^0.5.10",
     "@vite-pwa/nuxt": "^0.1.1",
-    "daisyui": "^3.7.5",
+    "bowser": "^2.11.0",
+    "daisyui": "^3.9.2",
     "dexie": "^3.2.4",
+    "fr-compromise": "^0.2.8",
+    "fuse.js": "^7.0.0",
     "keycloak-js": "^22.0.3",
     "lodash.debounce": "^4.0.8",
     "merge-images-horizontally-with-text": "^1.0.2",

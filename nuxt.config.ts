@@ -211,7 +211,7 @@ export default defineNuxtConfig({
   },
   i18n: {
     strategy: 'no_prefix',
-    lazy: true,
+    lazy: false,
     baseUrl: 'https://www.pictranslate.org',
     locales: [
       {

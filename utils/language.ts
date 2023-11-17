@@ -1,5 +1,5 @@
 // Variable that contains the prepositions of various languages
-export const prepositions: Object = {
+export const prepositions = {
   en: ["a", "an", "the", "of", "in", "for", "on", "with", "to", "by", "about"],
   es: [
     "el",
@@ -71,6 +71,7 @@ export const prepositions: Object = {
   ],
   fr: [
     "un",
+    "ce",
     "une",
     "le",
     "la",
@@ -84,7 +85,6 @@ export const prepositions: Object = {
     "en",
     "pour",
     "sur",
-    "avec",
     "par",
     "dans",
     "sous",
@@ -102,42 +102,56 @@ export const prepositions: Object = {
   ],
 };
 
-const personal_pronouns = {
-  fr: { je: "moi", tu: "toi", il: "il", elle: "she", nous: "nous", vous: "vous", ils: "ils", elles: "elles" },
+const personal_pronouns: { [key: string]: { [key: string]: string } } = {
+  fr: { je: "moi", tu: "toi", il: "il", elle: "elle", nous: "nous", vous: "vous", ils: "ils", elles: "elles" },
   en: { i: "me", you: "you", he: "him", she: "her", we: "us", they: "them" },
+  es: {},
+  pt: {},
 }
-
-// Fonction qui prend en entrée une phrase et qui retourne un tableau de mots sans les prépositions
-// Exemple : "le chat est sur la table" => ["chat", "est", "table"]
-export function removePrepositions(sentence: string, lang: string) {
-  // If the language is french, we remove the l'
+/**
+ * @param sentence The sentence to remove prepositions from
+ * @param lang The language of the sentence
+ * @returns The sentence without prepositions
+ * @example removePrepositions("le chat est sur la table", "fr") // ["chat", "est", "table"]
+ */
+export function removePrepositions(sentence: string, lang: 'en' | 'fr' | 'es' | 'pt'): string[] {
+  console.log(sentence);
   if (lang === "fr") {
     sentence = sentence.replace("l'", "");
     sentence = sentence.replace("d'", "");
+    sentence = sentence.replace("'ai ", "'avoir ");
     sentence = sentence.replace("j'", "je ");
   }
-  sentence = cleanSentence(sentence);
+  sentence = sentence.replace(/[^A-zÀ-ÿ\s]|_/g, "").replace(/\s+/g, " ");
   const words = sentence.split(" ");
-  if (!prepositions[lang]) {
+  if (prepositions[lang] === undefined) {
     return words;
   }
   const preps = prepositions[lang];
   // We need to filter empty strings
   let filteredWords = words.filter((word) => !preps.includes(word) && word !== "");
   filteredWords = filteredWords.map((word) => {
-    if (Object.keys(personal_pronouns[lang]).includes(word)) {
-      return personal_pronouns[lang][word];
-    }
-    return word;
-  }
-  )
-
+    const pronoun = personal_pronouns[lang][word]
+    return pronoun ? pronoun : word;
+  });
+  console.log(filteredWords);
   return filteredWords;
 }
 
-// Fonction qui nettoie une phrase de caractères spéciaux
-// Exemple : "le chat est, sur la table !?" => "le chat est sur la table"
-export function cleanSentence(sentence: string) {
-  const clean = sentence.replace(/[^A-zÀ-ÿ\s]|_/g, "").replace(/\s+/g, " ");
-  return clean;
+import nlp from 'fr-compromise'
+/**
+ * 
+ * @param sentence The sentence to lemmatize
+ * @returns The lemmatized sentence words
+ * @example lemmatize("le chat est sur la table") // ["chat", "être", "sur", "table"]
+ */
+export function lemmatize(sentence: string): string[] {
+  const doc = nlp(sentence);
+  doc.compute('root');
+  console.log(doc.json());
+  const words = doc.json()[0].terms.map((term: any) => {
+    if(term.chunk !== 'Verb') return term.text;
+    return term.root ? term.root : term.text
+  });
+  return words.filter((word: string) => word !== '');
 }

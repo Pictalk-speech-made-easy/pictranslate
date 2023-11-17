@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import AppNavbar from "~/components/navigation/appNavbar.vue";
 import Menu from "~/components/navigation/menu.vue";
-import Main from "~/components/main/main.vue";
+import Main from "~/components/main.vue";
 import { useOptions } from "~/store/option";
 const options = useOptions();
 

@@ -1,6 +1,14 @@
 {
-    "inputPlaceholder": "Ecrits les mots à traduire",
-    "copyButton": "Copier",
-    "speakButton": "Parler",
-    "downloadButton": "Télécharger"
+    "main": {
+        "input": "Écrivez les mots à traduire ici",
+        "copy": "Copier",
+        "speak": "Parler",
+        "download": "Télécharger",
+        "tap_picto": "Cliquez sur un pictogramme pour changer son image",
+        "history": "Historique"
+    },
+    "menu": {
+        "logout": "Déconnexion",
+        "change_theme": "Changer de thème"
+    }
 }

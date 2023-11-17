@@ -1,5 +1,5 @@
 <template>
-    <button type="button">
+    <button type="button" class="dark:bg-slate-800">
         <svg v-if="props.animated" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="0" class="fill-primary">
                 <animate id="svgSpinnersPulse30" fill="freeze" attributeName="r" begin="0;svgSpinnersPulse32.begin+0.4s"
@@ -7,13 +7,13 @@
                 <animate fill="freeze" attributeName="opacity" begin="0;svgSpinnersPulse32.begin+0.4s" calcMode="spline"
                     dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0" />
             </circle>
-            <circle cx="12" cy="12" r="0" class="fill-primary">
+            <circle cx="12" cy="12" r="0" class="fill-primary dark:fill-blue-900">
                 <animate id="svgSpinnersPulse31" fill="freeze" attributeName="r" begin="svgSpinnersPulse30.begin+0.4s"
                     calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="0;11" />
                 <animate fill="freeze" attributeName="opacity" begin="svgSpinnersPulse30.begin+0.4s" calcMode="spline"
                     dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0" />
             </circle>
-            <circle cx="12" cy="12" r="0" class="fill-primary">
+            <circle cx="12" cy="12" r="0" class="fill-primary dark:fill-blue-900">
                 <animate id="svgSpinnersPulse32" fill="freeze" attributeName="r" begin="svgSpinnersPulse30.begin+0.8s"
                     calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="0;11" />
                 <animate fill="freeze" attributeName="opacity" begin="svgSpinnersPulse30.begin+0.8s" calcMode="spline"
