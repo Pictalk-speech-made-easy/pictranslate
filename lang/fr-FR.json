@@ -3,7 +3,8 @@
         "input": "Écrivez les mots à traduire ici",
         "copy": "Copier",
         "speak": "Parler",
-        "download": "Télécharger"
+        "download": "Télécharger",
+        "tap_picto": "Cliquez sur un pictogramme pour changer son image"
     },
     "menu": {
         "logout": "Déconnexion",

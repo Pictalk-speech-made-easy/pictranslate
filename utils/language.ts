@@ -71,6 +71,7 @@ export const prepositions = {
   ],
   fr: [
     "un",
+    "ce",
     "une",
     "le",
     "la",
@@ -84,7 +85,6 @@ export const prepositions = {
     "en",
     "pour",
     "sur",
-    "avec",
     "par",
     "dans",
     "sous",
@@ -114,32 +114,44 @@ const personal_pronouns: { [key: string]: { [key: string]: string } } = {
  * @returns The sentence without prepositions
  * @example removePrepositions("le chat est sur la table", "fr") // ["chat", "est", "table"]
  */
-export function removePrepositions(sentence: string, lang: 'en' | 'fr' | 'es' | 'pt') {
-  sentence = cleanSentence(sentence);
+export function removePrepositions(sentence: string, lang: 'en' | 'fr' | 'es' | 'pt'): string[] {
+  console.log(sentence);
+  if (lang === "fr") {
+    sentence = sentence.replace("l'", "");
+    sentence = sentence.replace("d'", "");
+    sentence = sentence.replace("'ai ", "'avoir ");
+    sentence = sentence.replace("j'", "je ");
+  }
+  sentence = sentence.replace(/[^A-zÀ-ÿ\s]|_/g, "").replace(/\s+/g, " ");
   const words = sentence.split(" ");
   if (prepositions[lang] === undefined) {
     return words;
   }
-  // If the language is french, we remove the l'
-  if (lang === "fr") {
-    sentence = sentence.replace("l'", "");
-    sentence = sentence.replace("d'", "");
-    sentence = sentence.replace("j'", "je ");
-  }
   const preps = prepositions[lang];
   // We need to filter empty strings
   let filteredWords = words.filter((word) => !preps.includes(word) && word !== "");
-  return filteredWords.map((word) => {
+  filteredWords = filteredWords.map((word) => {
     const pronoun = personal_pronouns[lang][word]
     return pronoun ? pronoun : word;
   });
+  console.log(filteredWords);
+  return filteredWords;
 }
+
+import nlp from 'fr-compromise'
 /**
- * @param sentence The sentence to clean
- * @returns The cleaned sentence
- * @example cleanSentence("le chat est, sur la table !?") // "le chat est sur la table"
+ * 
+ * @param sentence The sentence to lemmatize
+ * @returns The lemmatized sentence words
+ * @example lemmatize("le chat est sur la table") // ["chat", "être", "sur", "table"]
  */
-export function cleanSentence(sentence: string) {
-  const clean = sentence.replace(/[^A-zÀ-ÿ\s]|_/g, "").replace(/\s+/g, " ");
-  return clean;
+export function lemmatize(sentence: string): string[] {
+  const doc = nlp(sentence);
+  doc.compute('root');
+  console.log(doc.json());
+  const words = doc.json()[0].terms.map((term: any) => {
+    if(term.chunk !== 'Verb') return term.text;
+    return term.root ? term.root : term.text
+  });
+  return words.filter((word: string) => word !== '');
 }

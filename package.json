@@ -27,6 +27,7 @@
     "bowser": "^2.11.0",
     "daisyui": "^3.9.2",
     "dexie": "^3.2.4",
+    "fr-compromise": "^0.2.8",
     "keycloak-js": "^22.0.3",
     "lodash.debounce": "^4.0.8",
     "merge-images-horizontally-with-text": "^1.0.2",

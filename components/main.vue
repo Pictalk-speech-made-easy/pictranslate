@@ -4,7 +4,7 @@
     <SuggestionBox/>
     <PictosViewer/>
 
-    <div class="flex justify-end items-center mt-4 mx-4 gap-2">
+    <div class="flex justify-end items-center my-4 mx-4 gap-2">
       <button class="btn btn-sm btn-primary rounded-2xl" @click="clipboard.copyPictosToClipboard">{{ $t('main.copy') }}
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
           <path class="fill-gray-100"
@@ -22,7 +22,6 @@
           </g>
         </svg>
       </button>
-      
     </div>
   </div>
 </template>
