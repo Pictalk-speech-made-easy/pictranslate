@@ -1,17 +1,22 @@
 <template>
-  <div class="flex mx-auto p-1 items-center justify-center max-w-lg h-28">
-    <TransitionGroup name="list">
-      <div v-for="pictogram in main.suggestedPictograms"
-        :key="pictogram['pictograms'][pictogram['selected']]['keywords'][options.locale][0]['keyword']">
-        <button @click="onSuggestionConfirmed(pictogram)" class="aspect-square p-1 bg-blue-100 rounded-lg mx-1 max-h-24">
-          <img height="80px" crossorigin="anonymous" class="w-full rounded-sm zoom-in"
-            :src="pictogram['pictograms'][pictogram['selected']].external_alt_image.toString()"
-            :alt="pictogram['pictograms'][pictogram['selected']]['keywords'][options.locale][0]['keyword']" />
-          <span>{{ pictogram['pictograms'][pictogram['selected']]['keywords'][options.locale][0]['keyword'] }}</span>
-        </button>
-      </div>
-    </TransitionGroup>
-  </div>
+  <Transition name="fade">
+    <div class="flex mx-auto p-1 items-center justify-center max-w-lg h-28 max-h-28" v-if="main.suggestedPictograms.length > 0">
+      <TransitionGroup name="list">
+        <div v-for="pictogram in main.suggestedPictograms"
+          :key="pictogram['pictograms'][pictogram['selected']]['keywords'][options.locale][0]['keyword']">
+          <button @click="onSuggestionConfirmed(pictogram)"
+            class="aspect-square p-1 bg-blue-100 dark:bg-blue-900 rounded-lg mx-1 max-h-24">
+            <img height="80px" crossorigin="anonymous" class="w-full rounded-sm zoom-in"
+              :src="pictogram['pictograms'][pictogram['selected']].external_alt_image.toString()"
+              :alt="pictogram['pictograms'][pictogram['selected']]['keywords'][options.locale][0]['keyword']" />
+            <span class="text-sm tracking-wide font-normal dark:text-gray-200">{{
+              pictogram['pictograms'][pictogram['selected']]['keywords'][options.locale][0]['keyword'].toUpperCase()
+            }}</span>
+          </button>
+        </div>
+      </TransitionGroup>
+    </div>
+  </Transition>
 </template>
 <script setup lang="ts">
 import { useMain } from '~/store/main';
@@ -82,5 +87,16 @@ function onSuggestionConfirmed(pictogram: any) {
 .list-enter-from {
   opacity: 0;
   transform: translateX(100px);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.2s linear;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  max-height: 0;
 }
 </style>

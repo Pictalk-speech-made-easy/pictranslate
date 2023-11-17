@@ -5,13 +5,13 @@
                 <span class="label-text"></span>
                 <span class="label-text-alt relative top-6 mr-3"><button
                         class="btn btn-sm min-h-0 h-6 w-6 btn-circle bg-red-400 ml-2" @click="main.textInput = ''"><svg
-                            xmlns="http://www.w3.org/2000/svg" class="mx-auto h-4 w-4" fill="none" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg" class="mx-auto h-4 w-4" viewBox="0 0 24 24"
                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            <path class=" stroke-white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M6 18L18 6M6 6l12 12" />
                         </svg></button></span>
             </label>
-            <input :placeholder="$t('main.input')" class="input input-bordered w-full rounded-full" type="text" id="search"
+            <input :placeholder="$t('main.input')" class="input input-bordered w-full rounded-full pr-10" type="text" id="search"
                 v-model="main.textInput" />
         </div>
         <Speak :animated="speaking!" class="btn rounded-full h-16 w-16 ml-4 p-4 bg-blue-100 dark:bg-grey-base-50"

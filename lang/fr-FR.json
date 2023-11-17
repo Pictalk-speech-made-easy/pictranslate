@@ -4,7 +4,8 @@
         "copy": "Copier",
         "speak": "Parler",
         "download": "Télécharger",
-        "tap_picto": "Cliquez sur un pictogramme pour changer son image"
+        "tap_picto": "Cliquez sur un pictogramme pour changer son image",
+        "history": "Historique"
     },
     "menu": {
         "logout": "Déconnexion",

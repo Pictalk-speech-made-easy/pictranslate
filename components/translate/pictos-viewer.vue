@@ -1,7 +1,7 @@
 <template>
   <p class="text-center mt-6 text-sm">{{ $t('main.tap_picto') }}</p>
   <div id="picto-viewer"
-    class="flex flex-wrap overflow-y-auto items-start min-h-[120px] max-h-[720px] bg-base-100 mx-2 p-2 shadow-xl rounded-xl bg-dotted-light">
+    class="flex flex-wrap overflow-y-auto items-start min-h-[120px] max-h-[720px] bg-base-100 mx-2 p-2 shadow-xl dark:shadow-none dark:border dark:border-gray-600 rounded-xl bg-dotted-light">
     <div class="indicator w-1/3" v-for="(pictogramPropositions, index) in main.pictogramsPropositions">
       <span v-if="pictogramPropositions.pictograms.length > 1"
         class="z-0 indicator-item indicator-top indicator-start badge badge-sm bg-slate-500 text-white px-1 top-1 left-2">+{{
@@ -17,7 +17,7 @@
     </div>
 
     <dialog id="picto_selector" class="modal">
-      <div class="modal-box bg-gray-200 flex flex-wrap">
+      <div class="modal-box bg-gray-200 dark:bg-slate-800 flex flex-wrap">
         <btn class="w-1/3 p-1" tabindex="0"
           v-for="(pictogram, index) in main.pictogramsPropositions[modalIndex]?.['pictograms']"
           @click="selectedPictogram(index)">

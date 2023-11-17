@@ -1,11 +1,10 @@
 <template>
-  <div class="mt-20 h-[calc(100vh - 64px)] max-w-2xl mx-auto">
+  <div class="my-20 h-[calc(100vh - 64px)] max-w-2xl mx-auto">
     <InputBox/>
     <SuggestionBox/>
     <PictosViewer/>
-
     <div class="flex justify-end items-center my-4 mx-4 gap-2">
-      <button class="btn btn-sm btn-primary rounded-2xl" @click="clipboard.copyPictosToClipboard">{{ $t('main.copy') }}
+      <button class="btn btn-sm btn-primary rounded-2xl" @click="onClickCopy">{{ $t('main.copy') }}
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
           <path class="fill-gray-100"
             d="M9 18q-.825 0-1.413-.588T7 16V4q0-.825.588-1.413T9 2h9q.825 0 1.413.588T20 4v12q0 .825-.588 1.413T18 18H9Zm-4 4q-.825 0-1.413-.588T3 20V6h2v14h11v2H5Z" />
@@ -23,6 +22,7 @@
         </svg>
       </button>
     </div>
+    <History/>
   </div>
 </template>
 <script setup lang="ts">

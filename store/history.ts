@@ -28,18 +28,15 @@ export const useHistoryDatabase = defineStore('history', {
                 return undefined;
             }
             let data: Array<History> = [];
-            //@ts-ignore
-            
             // First step: search for exact match
-            data = await this.db.history.where('text_input').startsWithIgnoreCase(keyword).toArray();
+            data = await this.db.table('history').where('text_input').startsWithIgnoreCase(keyword).toArray();
             if (data?.length > 0) {
                 console.log("Exact search result: ", data)
                 this.history = data;
                 return data;
             }
-
             // Second step: search for fuzzy match
-            data = await this.db.history.toArray();
+            data = await this.db.table('history').toArray();
             const options = {
                 keys: ['text_input'],
                 includeScore: true,
@@ -47,28 +44,24 @@ export const useHistoryDatabase = defineStore('history', {
             };
             const fuse = new Fuse(data, options);
             const result = fuse.search(keyword);
-
             if (result.length > 0) {
                 console.log("Fuzzy search result: ", result);
                 this.history = result.map(item => item.item);
                 return this.history;
             }
-            
             return undefined;
         },
         async getHistory() {
             if (this.db === undefined) {
                 return undefined;
             }
-            //@ts-ignore
-            let data = await this.db.history.toArray();
+            let data = await this.db.table('history').toArray();
             const mostRecent = data.sort((a: History, b: History) => {
                 return new Date(b.last_used).getTime() - new Date(a.last_used).getTime();
             }).slice(0, 5);
             const mostUsed = data.sort((a: History, b: History) => {
                 return b.times_used - a.times_used;
             }).slice(0, 5);
-            
             // Take the 5 most recent and 5 most used
             // be careful to not take the same item twice
             let merged: History[] = [...mostRecent];
@@ -94,7 +87,7 @@ export const useHistoryDatabase = defineStore('history', {
                 return undefined;
             }
             let data: History | undefined;
-            let res: History | undefined = await this.db.history.get({text_input: textInput});
+            let res: History | undefined = await this.db.table('history').get({ text_input: textInput });
             if (res !== undefined) {
                 data = {
                     text_input: textInput,
@@ -112,8 +105,7 @@ export const useHistoryDatabase = defineStore('history', {
                     times_used: 1,
                 };
             }
-            //@ts-ignore
-            await this.db.history.put(data);
+            await this.db.table('history').put(data);
             this.getHistory();
         }
     }

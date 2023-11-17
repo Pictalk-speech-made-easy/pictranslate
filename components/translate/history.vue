@@ -1,23 +1,19 @@
 <template>
-    <div>
-    <div @click="onHistoryClick(value)" class="flex flex-wrap items-center max-h-[50vh] min-h-[120px] overflow-y-auto bg-base-100 mx-4 mt-4 p-2 shadow-xl rounded-xl bg-dotted-light"
-    v-for="(value, index) in history.history"
-        :key="value.text_input"
-    >
-    {{ value.text_input  }}
-    <div class="flex flex-wrap items-center max-h-[50vh] min-h-[120px] overflow-y-auto bg-base-100 mx-4 mt-4 p-2 shadow-xl rounded-xl bg-dotted-light">
-      <div class="items-center w-1/3 sm:w-1/4" tabindex="0" v-for="(pictogramPropositions, index) in value.pictogramsPropositions"
-        :key="pictogramPropositions['pictograms'][0].external_alt_image.toString()">
-        <div v-for="pictogram in pictogramPropositions['pictograms']" class="p-1 flex flex-col items-center">
+  <div class="mt-12" v-if="history.history.length > 0">
+    <p class="ml-4 mb-2 text-2xl font-serif">{{ $t('main.history') }}</p>
+    <btn @click="onHistoryClick(record)"
+      class="btn h-auto mx-4 my-2 px-2 py-1 justify-start rounded-lg shadow-md bg-blue-100 dark:bg-blue-900"
+      v-for="(record, index) in history.history">
+      <div class="flex justify-start p-1 pb-0 overflow-x-auto">
+        <btn class="max-w-[15%]" tabindex="0" v-for="(pictogramPropositions, index) in record.pictogramsPropositions">
           <img crossorigin="anonymous" class="!m-0 aspect-square object-contain rounded-sm zoom-in"
-            :src="pictogram.external_alt_image.toString()" :alt="pictogram['keywords'][options.locale][0]['keyword']" />
-          <p class="mt-2 font-semibold text-lg">{{ pictogram['keywords'][options.locale][0]['keyword'] }}</p>
-        </div>
+            :src="pictogramPropositions['pictograms'][pictogramPropositions.selected].external_alt_image.toString()"
+            :alt="pictogramPropositions['pictograms'][pictogramPropositions.selected]['keywords'][options.locale][0]['keyword']" />
+        </btn>
       </div>
-      
-    </div>
+      <p class="lowercase font-normal text-base ml-4 text-left dark:text-gray-300">{{ record.text_input }}</p>
+    </btn>
   </div>
-</div>
 </template>
 <script setup lang="ts">
 import { useOptions } from '~/store/option';
@@ -28,12 +24,12 @@ const history = useHistoryDatabase();
 const main = useMain();
 
 onMounted(() => {
-    history.getHistory();
+  history.getHistory();
 })
 
-const onHistoryClick = function(value: History) {
-            main.pictogramsPropositions = value.pictogramsPropositions;
-            main.textInput = value.text_input;
+const onHistoryClick = function (record: History) {
+  main.pictogramsPropositions = record.pictogramsPropositions;
+  main.textInput = record.text_input;
 }
 
 </script>
