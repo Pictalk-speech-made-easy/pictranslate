@@ -1,10 +1,10 @@
 import Dexie from 'dexie';
 import Fuse from 'fuse.js';
-import { History, PictogramPropositions } from './store-types';
+import { HistoryItem, PictogramPropositions } from './store-types';
 export const useHistoryDatabase = defineStore('history', {
     state: () => ({
         db: undefined as Dexie | undefined,
-        history: [] as Array<History>,
+        history: [] as Array<HistoryItem>,
     }),
     persist: {
         storage: persistedState.localStorage,
@@ -56,20 +56,20 @@ export const useHistoryDatabase = defineStore('history', {
                 return undefined;
             }
             let data = await this.db.table('history').toArray();
-            const mostRecent = data.sort((a: History, b: History) => {
+            const mostRecent = data.sort((a: HistoryItem, b: HistoryItem) => {
                 return new Date(b.last_used).getTime() - new Date(a.last_used).getTime();
             }).slice(0, 5);
-            const mostUsed = data.sort((a: History, b: History) => {
+            const mostUsed = data.sort((a: HistoryItem, b: HistoryItem) => {
                 return b.times_used - a.times_used;
             }).slice(0, 5);
             // Take the 5 most recent and 5 most used
             // be careful to not take the same item twice
-            let merged: History[] = [...mostRecent];
-            mostUsed.forEach((item: History) => {
-                if (!merged.some((mergedItem: History) => mergedItem.text_input === item.text_input)) {
+            let merged: HistoryItem[] = [...mostRecent];
+            mostUsed.forEach((item: HistoryItem) => {
+                if (!merged.some((mergedItem: HistoryItem) => mergedItem.text_input === item.text_input)) {
                     merged.push(item);
                 } else {
-                    const index = merged.findIndex((mergedItem: History) => mergedItem.text_input === item.text_input);
+                    const index = merged.findIndex((mergedItem: HistoryItem) => mergedItem.text_input === item.text_input);
                     // Put the most used item at the top of the list
                     merged.splice(index, 1);
                     merged.unshift(item);
@@ -86,8 +86,8 @@ export const useHistoryDatabase = defineStore('history', {
             if (this.db === undefined) {
                 return undefined;
             }
-            let data: History | undefined;
-            let res: History | undefined = await this.db.table('history').get({ text_input: textInput });
+            let data: HistoryItem | undefined;
+            let res: HistoryItem | undefined = await this.db.table('history').get({ text_input: textInput });
             if (res !== undefined) {
                 data = {
                     text_input: textInput,
