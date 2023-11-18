@@ -4,6 +4,11 @@ export default defineNuxtConfig({
   alias: {
     assets: "/<rootDir>/assets",
   },
+  nitro: {
+    prerender: {
+      routes: ['/'],
+    },
+  },
   runtimeConfig: {
     public: {
       pictohub: {
@@ -193,20 +198,14 @@ export default defineNuxtConfig({
           },
         },
       ],
-      navigateFallback: null,
+      navigateFallback: '/',
       globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
-    },
+    }, 
     client: {
       installPrompt: true,
       // you don't need to include this: only for testing purposes
       // if enabling periodic sync for update use 1 hour or so (periodicSyncForUpdates: 3600)
       periodicSyncForUpdates: 3600,
-    },
-    devOptions: {
-      enabled: true,
-      suppressWarnings: true,
-      navigateFallbackAllowlist: [/^\/$/],
-      type: 'module',
     },
   },
   i18n: {
