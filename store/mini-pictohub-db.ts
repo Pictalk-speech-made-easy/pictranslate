@@ -13,7 +13,7 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
     actions: {
         startWorker() {
             const optionsStore = useOptions();
-            if (this.worker === undefined) {
+            if (this.worker === undefined && optionsStore.miniDatabaseInformations === undefined) {
                 this.worker = new Worker('/minified-pictohub.worker.js');
                 this.worker.postMessage({
                     action: 'ingestMiniPictohub',
@@ -22,6 +22,18 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
                         db_name: `mini-pictohub-${optionsStore.locale}`,
                     },
                 });
+                this.worker.onmessage = (event) => {
+                    // self.postMessage({ status: 'success', message: 'Data fetched and stored in IndexedDB' });
+                    if (event.data.status === 'success') {
+                        optionsStore.miniDatabaseInformations = {
+                            url: '/minifiedData.v1.json',
+                            db_name: `mini-pictohub-${optionsStore.locale}`,
+                            date_created: new Date(),
+                        };
+                        }
+                    }
+            } else {
+                console.debug('MiniDatabase has already been fully ingested');
             }
         },
         stopWorker() {
@@ -35,7 +47,7 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
             try {
                 const db = new Dexie(`mini-pictohub-${optionsStore.locale}`);
                 db.version(1).stores({
-                    pictograms: 'keyword' // Define your schema
+                    pictograms: '++id, keyword, plural' // Define your schema
                 });
                 await db.open();
                 this.db = db;
@@ -44,7 +56,7 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
                 this.db = undefined;
             }
         },
-        async getMiniPictogram(search: string) {
+        async getMiniPictogram(search: string, limit: number = 10) {
             const optionsStore = useOptions();
             if (this.db === undefined) {
                 return undefined;
@@ -58,9 +70,24 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
                 if (optionsStore.violenceFilter) {
                     data = data.filter((picto) => picto.violence === false)
                 }
+                // Be carefull to not return objects with the same external_alt_image
+                data = this.removeDuplicates(data);
+                // Order the result by exact match first
+                console.log("getMiniPictogram")
+                console.log(data);
+                data.sort((a, b) => (a.keyword === search ? -1 : b.keyword === search ? 1 : 0));
+                console.log(data);
+                data = data.slice(0, limit);
                 return data;
             }
             return undefined;
+          },
+          removeDuplicates(data: Array<MiniPictogram>): Array<MiniPictogram> {
+            return data.filter((picto, index, self) =>
+              index === self.findIndex((t) => (
+                t.external_alt_image === picto.external_alt_image
+              ))
+            )
           }
     },
 });

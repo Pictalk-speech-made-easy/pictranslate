@@ -37,7 +37,13 @@ watch(() => main.textInput, debounce(async (newText: string) => {
         return;
     }
     searchHistory(newText);
-    const wordsArray = removePrepositions(newText.toLocaleLowerCase(), options.locale);
+    newText = newText.toLocaleLowerCase();
+    newText = lemmatize(newText).join(' ');
+    if (options.simplifyTranslation) {
+        newText = removePrepositions(newText, options.locale).join(' ');
+    }
+    main.traduction(newText);
+/*     const wordsArray = removePrepositions(newText.toLocaleLowerCase(), options.locale);
     const lemmatized = lemmatize(wordsArray.join(' '));
     // Condition is useful to avoid triggering the watcher when a suggestion is selected
     if (lemmatized.length != main.pictogramsPropositions.length) {
@@ -48,7 +54,7 @@ watch(() => main.textInput, debounce(async (newText: string) => {
         unfilteredPictograms = unfilteredPictograms.map((picto) => { return { 'selected': 0, 'pictograms': picto } })
         unfilteredPictograms = unfilteredPictograms.filter((picto: any) => (picto.pictograms != undefined && picto.pictograms[0]?.external_alt_image != undefined))
         main.pictogramsPropositions = unfilteredPictograms;
-    }
+    } */
 }, 500));
 
 function readSentence() {

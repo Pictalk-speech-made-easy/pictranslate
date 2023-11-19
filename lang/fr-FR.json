@@ -11,6 +11,7 @@
         "logout": "Déconnexion",
         "change_theme": "Changer de thème",
         "violence_filter": "Filtre de violence",
-        "sex_filter": "Filtre de sexe"
+        "sex_filter": "Filtre de sexe",
+        "simple_translation": "Traduction simple"
     }
 }
