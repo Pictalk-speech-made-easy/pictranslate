@@ -6,6 +6,7 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
     state: () => ({
         db: undefined as Dexie | undefined,
         worker: undefined as Worker | undefined,
+        miniDatabaseInformations: {} as { [key: string]: MiniDatabaseInformations },
     }),
     persist: {
         storage: persistedState.localStorage,
@@ -13,19 +14,21 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
     actions: {
         startWorker() {
             const optionsStore = useOptions();
-            if (this.worker === undefined && optionsStore.miniDatabaseInformations === undefined) {
+            if (this.worker === undefined) {
                 this.worker = new Worker('/minified-pictohub.worker.js');
+            }
+            if (this.miniDatabaseInformations[optionsStore.locale] === undefined) {
                 this.worker.postMessage({
                     action: 'ingestMiniPictohub',
                     payload: {
-                        url: '/minifiedData.v1.json',
+                        url: `/minifiedData.${optionsStore.locale}.v1.json`,
                         db_name: `mini-pictohub-${optionsStore.locale}`,
                     },
                 });
                 this.worker.onmessage = (event) => {
                     // self.postMessage({ status: 'success', message: 'Data fetched and stored in IndexedDB' });
                     if (event.data.status === 'success') {
-                        optionsStore.miniDatabaseInformations = {
+                        this.miniDatabaseInformations[optionsStore.locale] = {
                             url: '/minifiedData.v1.json',
                             db_name: `mini-pictohub-${optionsStore.locale}`,
                             date_created: new Date(),

@@ -12,7 +12,7 @@ export const useStimulusDatabase = defineStore('stimulus', {
     },
     actions: {
         startWorker() {
-            if (this.worker === undefined) {
+            if (this.worker === undefined && this.db_filled === false) {
                 this.worker = new Worker('/stimulus-db.worker.js');
                 this.worker.postMessage({
                     action: 'populateStimulusDatabase',

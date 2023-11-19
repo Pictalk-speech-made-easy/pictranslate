@@ -42,6 +42,7 @@ const stimulusDatabase = useStimulusDatabase();
 const { addHistory } = useHistoryDatabase();
 const main = useMain();
 const auth = useAuth();
+const options = useOptions();
 const clipboard = useClipboard();
 
 const onClickCopy = () => {
@@ -58,6 +59,11 @@ onMounted(async () => {
   // We will implement custom user pictograms later
   // const authenticated = await auth.getAuthenticated();
   stimulusDatabase.startWorker();
+  miniPictohubDatabase.startWorker();
+})
+
+watch(() => options.locale, () => {
+  miniPictohubDatabase.initialize_database();
   miniPictohubDatabase.startWorker();
 })
 

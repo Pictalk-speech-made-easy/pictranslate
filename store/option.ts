@@ -11,7 +11,6 @@ export const useOptions = defineStore('options', {
         sexFilter: false,
         violenceFilter: false,
         simplifyTranslation: false,
-        miniDatabaseInformations: undefined as MiniDatabaseInformations | undefined,
     }),
     persist: {
         storage: persistedState.localStorage,
