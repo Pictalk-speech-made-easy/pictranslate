@@ -9,6 +9,8 @@
     },
     "menu": {
         "logout": "Logout",
-        "change_theme": "Change theme"
+        "change_theme": "Change theme",
+        "violence_filter": "Violence filter",
+        "sex_filter": "Sex filter"
     }
 }

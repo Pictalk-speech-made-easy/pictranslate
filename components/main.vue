@@ -33,9 +33,11 @@ import History from '~/components/translate/history.vue';
 import { useClipboard } from '~/composables/clipboard';
 import { useAuth } from '~/store/auth';
 import { useStimulusDatabase } from '~/store/stiumulus-db';
+import { useMiniPictohubDatabase } from '~/store/mini-pictohub-db';
 import { useHistoryDatabase } from '~/store/history';
 import { useMain } from '~/store/main';
 
+const miniPictohubDatabase = useMiniPictohubDatabase();
 const stimulusDatabase = useStimulusDatabase();
 const { addHistory } = useHistoryDatabase();
 const main = useMain();
@@ -53,8 +55,10 @@ const onClickDownload = () => {
 }
 
 onMounted(async () => {
-  const authenticated = await auth.getAuthenticated();
+  // We will implement custom user pictograms later
+  // const authenticated = await auth.getAuthenticated();
   stimulusDatabase.startWorker();
+  miniPictohubDatabase.startWorker();
 })
 
 </script>

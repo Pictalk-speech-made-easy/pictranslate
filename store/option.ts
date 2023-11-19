@@ -6,6 +6,8 @@ export const useOptions = defineStore('options', {
         TTSVoice: undefined as SpeechSynthesisVoice | undefined,
         TTSRate: 1,
         TTSPitch: 1,
+        sexFilter: false,
+        violenceFilter: false,
     }),
     persist: {
         storage: persistedState.localStorage,

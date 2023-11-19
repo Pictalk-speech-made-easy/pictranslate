@@ -14,12 +14,15 @@
 <script setup lang="ts">
 import { useStimulusDatabase } from './store/stiumulus-db';
 import { useHistoryDatabase } from './store/history';
-
+import { useMiniPictohubDatabase } from './store/mini-pictohub-db';
 // Initialize stimulus database
 const stimulusDatabase = useStimulusDatabase();
-await stimulusDatabase.initialize_database()
+await stimulusDatabase.initialize_database();
 
 // Initialize history database
 const historyDatabase = useHistoryDatabase();
-await historyDatabase.initialize_database()
+await historyDatabase.initialize_database();
+
+const miniPictohubDatabase = useMiniPictohubDatabase();
+await miniPictohubDatabase.initialize_database();
 </script>
