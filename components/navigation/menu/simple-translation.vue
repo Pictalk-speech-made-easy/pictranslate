@@ -1,12 +1,10 @@
 <template>
-    <div>
-        <label class="swap">
-            <span>{{ $t('menu.simple_translation') }}</span>
-            <input type="checkbox" v-model="options.simplifyTranslation" />
-            <div class="swap-on">ON</div>
-            <div class="swap-off">OFF</div>
-        </label>
-    </div>
+    <div class="form-control">
+            <label class="label cursor-pointer">
+                <span class="label-text">{{ $t('menu.simple_translation') }}</span> 
+                <input type="checkbox" class="toggle" checked v-model="options.simplifyTranslation" />
+            </label>
+        </div>
 </template>
 <script setup lang="ts">
 import { useOptions } from '~/store/option';

@@ -34,7 +34,7 @@ function openDB(db_name) {
     const db = new Dexie(db_name);
 
     db.version(1).stores({
-        pictograms: '++id, keyword, plural' // Define your schema
+        pictograms: '++id, keyword, keyword_en' // Define your schema
     });
 
     return db;

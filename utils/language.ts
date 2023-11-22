@@ -134,7 +134,6 @@ export function removePrepositions(sentence: string, lang: 'en' | 'fr' | 'es' | 
     const pronoun = personal_pronouns[lang][word]
     return pronoun ? pronoun : word;
   });
-  console.log(filteredWords);
   return filteredWords;
 }
 
@@ -148,10 +147,26 @@ import nlp from 'fr-compromise'
 export function lemmatize(sentence: string): string[] {
   const doc = nlp(sentence);
   doc.compute('root');
-  console.log(doc.json());
   const words = doc.json()[0].terms.map((term: any) => {
-    if(term.chunk !== 'Verb') return term.text;
-    return term.root ? term.root : term.text
+    if(term.chunk == 'Verb') return term.root;
+    if (term.chunk == 'Noun') {
+      if (term.implicit) return term.implicit;
+      //if (term.root) return term.root;
+      return term.text;
+    }
+    return term.text;
   });
   return words.filter((word: string) => word !== '');
+}
+
+/**
+ * @param sentence The sentence to manually remove prepositions from
+ * @returns The sentence without prepositions
+ * @example removePrepositions("Je vais a la montagne") // ["je", "aller", "la", "montagne"]
+ */
+export function removePrepositionsManually(sentence: string): string {
+  if (sentence.includes("aller a")) {
+    sentence = sentence.replace("aller a", "aller");
+  }
+  return sentence;
 }

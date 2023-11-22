@@ -1,17 +1,17 @@
 <template>
     <div>
-        <label class="swap">
-            <span>{{ $t('menu.sex_filter') }}</span>
-            <input type="checkbox" v-model="options.sexFilter" />
-            <div class="swap-on">ON</div>
-            <div class="swap-off">OFF</div>
-        </label>
-        <label class="swap">
-            <span>{{ $t('menu.violence_filter') }}</span>
-            <input type="checkbox" v-model="options.violenceFilter" />
-            <div class="swap-on">ON</div>
-            <div class="swap-off">OFF</div>
-        </label>
+        <div class="form-control">
+            <label class="label cursor-pointer">
+                <span class="label-text">{{ $t('menu.sex_filter') }}</span> 
+                <input type="checkbox" class="toggle" checked v-model="options.sexFilter" />
+            </label>
+        </div>
+        <div class="form-control">
+            <label class="label cursor-pointer">
+                <span class="label-text">{{ $t('menu.violence_filter') }}</span> 
+                <input type="checkbox" class="toggle" checked v-model="options.violenceFilter" />
+            </label>
+        </div>
     </div>
 </template>
 <script setup lang="ts">

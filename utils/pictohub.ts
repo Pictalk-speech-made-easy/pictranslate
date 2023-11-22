@@ -1,6 +1,6 @@
 import { RuntimeConfig } from "nuxt/schema";
 
-export const getPictoFromPictohub = async (config: RuntimeConfig,search: string, searchLocale: string, additionnalLocales: string[] = [], limit=1) => {
+export const getPictoFromPictohub = async (config: RuntimeConfig,search: string, searchLocale: string, additionnalLocales: string[] = [], limit=1): BasePictogram => {
     // For words that have a dash, replace it with a space
     // Pictogram suggestions that have more than a word are separated by a dash
     search = search.replace('-', ' ');

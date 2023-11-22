@@ -44,7 +44,7 @@ const main = useMain();
 const auth = useAuth();
 const options = useOptions();
 const clipboard = useClipboard();
-
+const { $pwa } = useNuxtApp()
 const onClickCopy = () => {
   clipboard.copyPictosToClipboard();
   addHistory(main.textInput, toRaw(main.pictogramsPropositions));
@@ -56,15 +56,21 @@ const onClickDownload = () => {
 }
 
 onMounted(async () => {
-  // We will implement custom user pictograms later
-  // const authenticated = await auth.getAuthenticated();
-  stimulusDatabase.startWorker();
-  miniPictohubDatabase.startWorker();
+  miniPictohubDatabase.initialize_database();
+  stimulusDatabase.initialize_database();
+  if ($pwa?.offlineReady || process.env.NODE_ENV === 'development') {
+    // We will implement custom user pictograms later
+    // const authenticated = await auth.getAuthenticated();
+    stimulusDatabase.startWorker();
+    miniPictohubDatabase.startWorker();
+  }
 })
 
 watch(() => options.locale, () => {
-  miniPictohubDatabase.initialize_database();
-  miniPictohubDatabase.startWorker();
+  if ($pwa?.offlineReady || process.env.NODE_ENV === 'development') {
+    miniPictohubDatabase.initialize_database();
+    miniPictohubDatabase.startWorker();
+  } 
 })
 
 </script>

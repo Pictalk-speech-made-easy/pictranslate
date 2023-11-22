@@ -50,7 +50,7 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
             try {
                 const db = new Dexie(`mini-pictohub-${optionsStore.locale}`);
                 db.version(1).stores({
-                    pictograms: '++id, keyword, plural' // Define your schema
+                    pictograms: '++id, keyword, keyword_en' // Define your schema
                 });
                 await db.open();
                 this.db = db;
@@ -59,13 +59,22 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
                 this.db = undefined;
             }
         },
-        async getMiniPictogram(search: string, limit: number = 10) {
+        async getMiniPictogram(search: string, locale: string = 'fr', limit: number = 10) {
             const optionsStore = useOptions();
             if (this.db === undefined) {
                 return undefined;
             }
             let data: Array<MiniPictogram> = [];
-            data = await this.db.table('pictograms').where('keyword').startsWithIgnoreCase(search).toArray();
+            if (locale == "fr") {
+                //TODO Distinguer verbe nom et adjectif
+                data = await this.db.table('pictograms').where('keyword').startsWithIgnoreCase(search).toArray();
+                if(data.length == 0 || this.checkIfExactMatch(data, search).length == 0) {
+                    data = await this.db.table('pictograms').where('keyword').startsWithIgnoreCase(lemmatize(search).join(" ")).toArray();
+                    console.debug("[MiniPictohub] No match found, trying lemmatization: ", data, lemmatize(search).join(" "));
+                }
+            } else if (locale == "en") {
+                data = await this.db.table('pictograms').where('keyword_en').startsWithIgnoreCase(search).toArray();
+            }
             if (data?.length > 0) {
                 if (optionsStore.sexFilter) {
                     data = data.filter((picto) => picto.sex === false)
@@ -76,10 +85,7 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
                 // Be carefull to not return objects with the same external_alt_image
                 data = this.removeDuplicates(data);
                 // Order the result by exact match first
-                console.log("getMiniPictogram")
-                console.log(data);
                 data.sort((a, b) => (a.keyword === search ? -1 : b.keyword === search ? 1 : 0));
-                console.log(data);
                 data = data.slice(0, limit);
                 return data;
             }
@@ -91,6 +97,9 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
                 t.external_alt_image === picto.external_alt_image
               ))
             )
-          }
+          },
+          checkIfExactMatch(data: Array<MiniPictogram>, search: string): Array<MiniPictogram> {
+            return data.filter((picto) => picto.keyword === search);
+          },
     },
 });

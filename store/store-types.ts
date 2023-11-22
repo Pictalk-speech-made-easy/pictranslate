@@ -11,13 +11,25 @@ export interface PictogramPropositions {
     pictograms: Array<Pictogram | MiniPictogram>,
 }
 
-type Pictogram = {
+export type BasePictogram = {
+    sex: boolean;
+    violence: boolean;
+    categories: string[];
+    synsets: string[];
+    tags: string[];
+    external_alt_image: string;
+    keywords: {
+        fr: Keyword[];
+        en: Keyword[];
+        [key: string]: Keyword[]; // For other languages
+    },
+}
+
+export type Pictogram = BasePictogram & {
     _id: {
         $numberInt: string;
     };
     schematic?: boolean;
-    sex: boolean;
-    violence: boolean;
     aac?: boolean;
     aacColor?: boolean;
     skin?: boolean;
@@ -25,17 +37,8 @@ type Pictogram = {
     downloads: {
         $numberInt: string;
     };
-    categories: string[];
-    synsets: string[];
-    tags: string[];
     created: string;
     lastUpdated: string;
-    keywords: {
-        fr: Keyword[];
-        en: Keyword[];
-        [key: string]: Keyword[]; // For other languages
-    };
-    external_alt_image: string;
     image: string[];
 };
 
@@ -53,7 +56,7 @@ type Keyword = {
     conjugates?: any[];
 };
 
-export interface MiniPictogram {
+export type MiniPictogram = BasePictogram & {
     type: {
         $numberInt: string,
     };
@@ -61,16 +64,6 @@ export interface MiniPictogram {
     hasLocution: boolean,
     plural?: string,
     linguistic_category?: string,
-    categories: string[],
-    tags: string[],
-    violence: boolean,
-    sex: boolean,
-    external_alt_image: string,
-    keywords: {
-        fr: Keyword[];
-        en: Keyword[];
-        [key: string]: Keyword[]; // For other languages
-    },
 }
 
 export interface Sentence {
@@ -95,4 +88,10 @@ export interface MiniDatabaseInformations {
     url: string,
     db_name: string,
     date_created: Date,
+}
+
+export type StimulusResponse = {
+    stimulus: string,
+    probability: number,
+    responses: BasePictogram[],
 }

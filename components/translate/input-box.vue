@@ -39,7 +39,7 @@ watch(() => main.textInput, debounce(async (newText: string) => {
     searchHistory(newText);
     newText = newText.toLocaleLowerCase();
     if (options.locale == "fr") {
-        newText = lemmatize(newText).join(' ');
+        newText = removePrepositionsManually(newText);
     }
     if (options.simplifyTranslation) {
         newText = removePrepositions(newText, options.locale).join(' ');
