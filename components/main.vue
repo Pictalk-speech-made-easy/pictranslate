@@ -53,7 +53,7 @@ const onClickDownload = () => {
 }
 
 onMounted(async () => {
-  const authenticated = await auth.getAuthenticated();
+  const authenticated = auth.getAuthenticated();
   stimulusDatabase.startWorker();
 })
 
