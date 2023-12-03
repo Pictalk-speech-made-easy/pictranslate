@@ -74,6 +74,13 @@ export default defineNuxtConfig({
       'storeToRefs'
     ],
   },
+  piniaPersistedstate: {
+    cookieOptions: {
+      sameSite: 'strict',
+    },
+    debug: true,
+    storage: 'localStorage'
+  },
   imports: {
     dirs: ['./store'],
   },
@@ -167,7 +174,7 @@ export default defineNuxtConfig({
     },
     workbox: {
       // Register the stimulus-db.worker.js file in the service worker
-      importScripts: ['stimulus-db.worker.js'],
+      importScripts: ['stimulus-db.worker.js', 'minified-pictohub.worker.js', 'images-pictohub.worker.js'],
       runtimeCaching: [
         {
           urlPattern: new RegExp(`^https://pictohub-api.gandi.asidiras.dev/collection/keyword*`, 'i'),
@@ -184,22 +191,23 @@ export default defineNuxtConfig({
           },
         },
         {
-          urlPattern: new RegExp(`^https://api.arasaac.org/api/pictograms/*`, 'i'),
+          urlPattern: new RegExp(`^https://images.pictohub.org/*`, 'i'),
           handler: 'CacheFirst',
           options: {
-            cacheName: 'arasaac-pictos-cache',
-            expiration: {
-              maxEntries: 5000,
-              maxAgeSeconds: 10 * 24 * 60 * 60
-            },
+            cacheName: 'images-pictohub',
             cacheableResponse: {
               statuses: [0, 200],
+            },
+            matchOptions: {
+              ignoreVary: true,
+              ignoreSearch: true
             },
           },
         },
       ],
       navigateFallback: '/',
       globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
+      
     }, 
     client: {
       installPrompt: true,

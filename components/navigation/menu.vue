@@ -5,6 +5,7 @@
             <ThemeSwitch class="my-4" />
             <SearchFiltersSelectors class="my-4" />
             <SimpleTranslation class="my-4" />
+            <UpdatePwa class="my-4" />
             <div class="divider mb-0 mt-auto"></div>
             <button @click="logout()" class="btn btn-ghost justify-start">
                 <svg class="h-6 fill-secondary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -21,6 +22,7 @@ import LanguageSelector from './menu/language-selector.vue';
 import ThemeSwitch from './menu/theme-switch.vue';
 import SearchFiltersSelectors from './menu/search-filters-selectors.vue';
 import SimpleTranslation from './menu/simple-translation.vue';
+import UpdatePwa from './menu/update-pwa.vue';
 import { useOptions } from '~/store/option';
 import { useAuth } from "~/store/auth";
 const { logout } = useAuth();

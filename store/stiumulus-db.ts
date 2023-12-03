@@ -10,6 +10,14 @@ export const useStimulusDatabase = defineStore('stimulus', {
     }),
     persist: {
         storage: persistedState.localStorage,
+        serializer: {
+            serialize: (state) => {
+                // Create a copy of the state excluding the 'db' property
+                const { db, ...stateWithoutDb } = state;
+                return JSON.stringify(stateWithoutDb);
+            },
+            deserialize: JSON.parse
+        }
     },
     actions: {
         startWorker() {

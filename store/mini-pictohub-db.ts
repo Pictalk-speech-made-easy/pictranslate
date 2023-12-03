@@ -1,40 +1,83 @@
 import Dexie from 'dexie';
 import { MiniPictogram } from './store-types';
 import { useOptions } from './option';
-
+import { checkAvifSupport } from '../utils/browser-support';
 export const useMiniPictohubDatabase = defineStore('minipictohub', {
     state: () => ({
         db: undefined as Dexie | undefined,
         worker: undefined as Worker | undefined,
+        imagesWorker: undefined as Worker | undefined,
         miniDatabaseInformations: {} as { [key: string]: MiniDatabaseInformations },
     }),
     persist: {
         storage: persistedState.localStorage,
+        serializer: {
+            serialize: (state) => {
+                // Create a copy of the state excluding the 'db' property
+                const { db, ...stateWithoutDb } = state;
+                return JSON.stringify(stateWithoutDb);
+            },
+            deserialize: JSON.parse
+        }
     },
     actions: {
-        startWorker() {
+        async startWorker() {
             const optionsStore = useOptions();
             if (this.worker === undefined) {
                 this.worker = new Worker('/minified-pictohub.worker.js');
+                //this.imagesWorker = new Worker('/images-pictohub.worker.js');
+                this.imagesWorker = new Worker('/inflate-pictohub.worker.js');
             }
             if (this.miniDatabaseInformations[optionsStore.locale] === undefined) {
+                const format = await checkAvifSupport() ? 'avif' : 'png';
                 this.worker.postMessage({
                     action: 'ingestMiniPictohub',
                     payload: {
                         url: `/minifiedData.${optionsStore.locale}.v1.json`,
                         db_name: `mini-pictohub-${optionsStore.locale}`,
+                        format: format
                     },
                 });
-                this.worker.onmessage = (event) => {
+                this.worker.onmessage = async (event) => {
+                    // Check how many storage space is left
+                    const quota = await navigator.storage.estimate();
+                    console.debug(`Storage quota: ${quota.usage} / ${quota.quota}`);
+                    
+                    // If there is more than 150MB left, we can store the data
+                    if (quota.quota === undefined || quota.usage === undefined) {
+                        return;
+                    }
+                    if (quota.quota - quota.usage < 120000000) {
+                        console.debug("Not enough space left on device to store the mini database");
+                        return;
+                    }
+
                     // self.postMessage({ status: 'success', message: 'Data fetched and stored in IndexedDB' });
                     if (event.data.status === 'success') {
+                        if (Object.keys(this.miniDatabaseInformations).length === 0) {
+                            // Check browser support for avif 
+                            /* this.imagesWorker?.postMessage({
+                                action: 'ingestMiniPictohubImages',
+                                payload: {
+                                    format: format,
+                                    db_name: `mini-pictohub-${optionsStore.locale}`,
+                                },
+                            }); */
+                            this.imagesWorker?.postMessage({
+                                action: 'ingestMiniPictohubImages',
+                                payload: {
+                                    format: format,
+                                    zipUrl: `/${format}.zip`,
+                                },
+                            });
+                        }
                         this.miniDatabaseInformations[optionsStore.locale] = {
                             url: '/minifiedData.v1.json',
                             db_name: `mini-pictohub-${optionsStore.locale}`,
                             date_created: new Date(),
                         };
-                        }
                     }
+                }
             } else {
                 console.debug('MiniDatabase has already been fully ingested');
             }

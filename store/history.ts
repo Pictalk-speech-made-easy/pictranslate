@@ -8,6 +8,14 @@ export const useHistoryDatabase = defineStore('history', {
     }),
     persist: {
         storage: persistedState.localStorage,
+        serializer: {
+            serialize: (state) => {
+                // Create a copy of the state excluding the 'db' property
+                const { db, ...stateWithoutDb } = state;
+                return JSON.stringify(stateWithoutDb);
+            },
+            deserialize: JSON.parse
+        }
     },
     actions: {
         async initialize_database() {
@@ -107,6 +115,6 @@ export const useHistoryDatabase = defineStore('history', {
             }
             await this.db.table('history').put(data);
             this.getHistory();
-        }
+        },
     }
 });

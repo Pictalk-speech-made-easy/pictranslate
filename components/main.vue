@@ -58,16 +58,23 @@ const onClickDownload = () => {
 onMounted(async () => {
   miniPictohubDatabase.initialize_database();
   stimulusDatabase.initialize_database();
-  if ($pwa?.offlineReady || process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development') {
+    miniPictohubDatabase.startWorker();
+    stimulusDatabase.startWorker();
+  }
+});
+
+watch(() => $pwa?.offlineReady, () => {
+    if ($pwa?.isInstalled || $pwa?.offlineReady || process.env.NODE_ENV === 'development') {
     // We will implement custom user pictograms later
     // const authenticated = await auth.getAuthenticated();
     stimulusDatabase.startWorker();
     miniPictohubDatabase.startWorker();
   }
-})
+});
 
 watch(() => options.locale, () => {
-  if ($pwa?.offlineReady || process.env.NODE_ENV === 'development') {
+  if ($pwa?.isInstalled || $pwa?.offlineReady || process.env.NODE_ENV === 'development') {
     miniPictohubDatabase.initialize_database();
     miniPictohubDatabase.startWorker();
   } 

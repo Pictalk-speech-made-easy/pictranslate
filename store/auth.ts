@@ -1,44 +1,46 @@
-import Keycloak, { KeycloakInitOptions, KeycloakProfile } from 'keycloak-js';
+import Keycloak, { KeycloakInitOptions } from 'keycloak-js';
 const keycloakConfig = {
         url: 'https://auth.picmind.org',
         realm: 'master',
         clientId: 'pictranslate',
 };
-const keycloak = new Keycloak(keycloakConfig);
-const initOptions = {
+
+const initOptions: KeycloakInitOptions = {
         flow: 'implicit',
         onLoad: 'check-sso',
 };
-const authenticated = keycloak.init(initOptions as KeycloakInitOptions);
 
 export const useAuth = defineStore('authentication', {
         state: () => ({
                 davUsername: undefined as string | undefined,
                 davPassword: undefined as string | undefined,
+                isAuthenticated: false,
+                keycloak: undefined as Keycloak | undefined,
         }),
         persist: {
                 storage: persistedState.localStorage,
         },
         actions: {
                 async login() {
-                        if (await authenticated) {
+                        if (this.isAuthenticated || !navigator.onLine) {
                                 return;
                         } else {
-                                return;
+                                this.keycloak = new Keycloak(keycloakConfig);
+                                this.isAuthenticated = await this.keycloak.init(initOptions);
                                 // TODO Popup showing login advantages
                                 //keycloak.login(); // Redirect to the login page if needed
                         }
                 },
                 async logout() {
-                        if (await authenticated) {
+                        if (this.isAuthenticated && navigator.onLine && this.keycloak) {
                                 console.debug("logging out of keycloak");
-                                await keycloak.logout();
+                                await this.keycloak.logout();
                         } else {
                                 return;
                         }
                 },
-                async getAuthenticated() {
-                        return authenticated;
+                getAuthenticated() {
+                        return this.isAuthenticated;
                 }
         },
 });

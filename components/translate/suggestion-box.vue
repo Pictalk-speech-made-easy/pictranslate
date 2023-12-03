@@ -52,7 +52,7 @@ watch(() => main.pictogramsPropositions, async (value) => {
     console.debug("[suggestion-box] getStimulusPictograms", value, stimulusdb.suggestions)
     stimulusdb.getStimulusPictograms();
     }
-}, { immediate: true, deep: true });
+}, {  deep: true });
 
 function onSuggestionConfirmed(pictogram: any) {
   const newWord = pictogram['pictograms'][0]['keywords'][options.locale][0]['keyword'].replace(' ', '-');

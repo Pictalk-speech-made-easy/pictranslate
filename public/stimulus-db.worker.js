@@ -59,7 +59,7 @@ const save_data_to_indexeddb = async (db, data) => {
  * @returns {Promise<JSON>} The JSON data
  */
 const download_latest_datafile_version = async () => {
-    const response = await fetch("/output.json");
-    console.debug(`[Worker] Downloaded file ${response} output.json`)
+    const response = await fetch("/output.reduced.json");
+    console.debug(`[Worker] Downloaded file ${response} output.reduced.json`)
     return response.json();
 }

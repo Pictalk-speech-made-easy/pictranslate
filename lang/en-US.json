@@ -7,11 +7,19 @@
         "tap_picto": "Tap on any pictogram to change its image",
         "history": "History"
     },
+    "pwa": {
+        "install_message": "Install this application on your device",
+        "install": "Install",
+        "cancel": "Cancel"
+    },
     "menu": {
         "logout": "Logout",
         "change_theme": "Change theme",
         "violence_filter": "Violence filter",
         "sex_filter": "Sex filter",
-        "simple_translation": "Simple translation"
+        "simple_translation": "Simple translation",
+        "offline_ready": "Application is ready to work offline",
+        "offline_not_ready": "Application is not ready to work offline",
+        "update_available": "Update available"
     }
 }

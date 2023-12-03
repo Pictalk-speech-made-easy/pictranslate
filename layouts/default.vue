@@ -5,43 +5,18 @@
       <slot />
     </body>
       <div
-        v-if="$pwa?.offlineReady || $pwa?.needRefresh"
-        class="pwa-toast"
-        role="alert"
+        v-if="$pwa && !$pwa?.offlineReady && !$pwa?.needRefresh"
+        role="alert" class="alert alert-info"
       >
-        <div class="message">
-          <span v-if="$pwa.offlineReady">
-            App ready to work offline
-          </span>
-          <span v-else>
-            New content available, click on reload button to update.
-          </span>
-        </div>
-        <button
-          v-if="$pwa.needRefresh"
-          @click="$pwa.updateServiceWorker()"
-        >
-          Reload
-        </button>
-        <button @click="$pwa.cancelPrompt()">
-          Close
-        </button>
-      </div>
-      <div
-        v-if="$pwa?.showInstallPrompt && !$pwa?.offlineReady && !$pwa?.needRefresh"
-        class="pwa-toast"
-        role="alert"
-      >
-        <div class="message">
+      {{ $pwa }}
           <span>
-            Install PWA
+            {{  $t('pwa.install_message') }}
           </span>
-        </div>
-        <button @click="$pwa.install()">
-          Install
+        <button class="btn btn-primary" @click="$pwa.install()">
+          {{  $t('pwa.install') }}
         </button>
-        <button @click="$pwa.cancelInstall()">
-          Cancel
+        <button class="btn btn-active" @click="$pwa.cancelInstall()">
+          {{  $t('pwa.cancel') }}
         </button>
       </div>
     </html>
