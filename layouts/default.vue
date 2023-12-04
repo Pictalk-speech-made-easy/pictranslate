@@ -5,10 +5,9 @@
       <slot />
     </body>
       <div
-        v-if="$pwa && !$pwa?.offlineReady && !$pwa?.needRefresh"
+        v-if="$pwa && !$pwa?.offlineReady && !$pwa?.needRefresh && $pwa.swActivated"
         role="alert" class="alert alert-info"
       >
-      {{ $pwa }}
           <span>
             {{  $t('pwa.install_message') }}
           </span>

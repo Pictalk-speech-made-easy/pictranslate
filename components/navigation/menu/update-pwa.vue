@@ -15,6 +15,9 @@
         >
             {{ $t('menu.update_available') }}
         </button>
+        <div>SIZE OF THE APPLICATION</div>
+        <br>
+        <div>Tags that are installed</div>
       </div>
       <div v-else>
         <span role="alert" class="alert alert-info">

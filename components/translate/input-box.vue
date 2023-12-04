@@ -26,7 +26,6 @@ import { useHistoryDatabase } from '~/store/history';
 import Speak from '~/components/translate/speak.vue';
 const main = useMain();
 const options = useOptions();
-const config = useRuntimeConfig();
 const { speak, speaking } = useSpeech();
 const { addHistory, getHistory, searchHistory } = useHistoryDatabase();
 watch(() => main.textInput, debounce(async (newText: string) => {
@@ -45,6 +44,7 @@ watch(() => main.textInput, debounce(async (newText: string) => {
         newText = removePrepositions(newText, options.locale).join(' ');
     }
     main.traduction(newText);
+    
 }, 500));
 
 function readSentence() {

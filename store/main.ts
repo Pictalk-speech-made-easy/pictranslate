@@ -1,4 +1,4 @@
-import { PictogramPropositions } from "./store-types";
+import { BasePictogram, PictogramPropositions } from "./store-types";
 import { useMiniPictohubDatabase } from "./mini-pictohub-db";
 import { MiniPictogram, Pictogram } from "./store-types";
 export const useMain = defineStore('main', {
@@ -11,17 +11,17 @@ export const useMain = defineStore('main', {
         storage: persistedState.localStorage,
     },
     actions: {
-        async getPictogram(keyword: string, locale = "fr"): Promise<BasePictogram> {
+        async getPictogram(keyword: string, locale = "fr"): Promise<BasePictogram[]> {
             const options = useOptions();
             const config = useRuntimeConfig();
             const useMiniPictohubDb = useMiniPictohubDatabase();
-            let singleWordPictogram = await useMiniPictohubDb.getMiniPictogram(keyword, locale);
+            let singleWordPictogram: BasePictogram[] | undefined = await useMiniPictohubDb.getMiniPictogram(keyword, locale);
             if (!singleWordPictogram) {
                 singleWordPictogram = await getPictoFromPictohub(config, keyword, locale, [options.locale, 'en'], 5);
             }
             return singleWordPictogram;
         },
-        async traduction(textInput: string): Sentence {
+        async traduction(textInput: string): Promise<Sentence> {
             const options = useOptions();
             const config = useRuntimeConfig();
             const useMiniPictohubDb = useMiniPictohubDatabase();
@@ -42,13 +42,15 @@ export const useMain = defineStore('main', {
                         const phrase = tokens.slice(start, end).join(' ');
                         const pictogram = await useMiniPictohubDb.getMiniPictogram(phrase);
                         if (pictogram) {
+                            usePreferences().accessObject("preferredSearchTerms",phrase);
                             sentence.items.push({
                                 token: phrase,
                                 state: {
                                     status: 'fetched',
                                     error: undefined,
+                                    data: ""
                                 },
-                                pictogramPropositions: { selected: 0, pictograms: pictogram},
+                                pictogramPropositions: { selected: 0, pictograms: pictogram} as PictogramPropositions,
                                 source: 'mini-pictohub',
                             });
                             start = end;
@@ -62,6 +64,7 @@ export const useMain = defineStore('main', {
                     // Handling single word (no match found in phrases)
                     let singleWordPictogram = await this.getPictogram(tokens[start]);
                     if (singleWordPictogram) {
+                        usePreferences().accessObject("preferredSearchTerms",tokens[start]);
                         sentence.items.push({
                             token: tokens[start],
                             state: {

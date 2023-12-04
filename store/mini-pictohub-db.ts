@@ -130,6 +130,13 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
                 // Order the result by exact match first
                 data.sort((a, b) => (a.keyword === search ? -1 : b.keyword === search ? 1 : 0));
                 data = data.slice(0, limit);
+                if (data.length > 0) {
+                    usePreferences().accessObject("preferredTags",data[0].tags[0]);
+                    // Extract the ID of the pictogram from the external_alt_image
+                    // https://images.pictohub.org/1111?preferred_format=avif
+                    const pictogramId = data[0].external_alt_image.match(/\/(\d+)\?preferredformat/)?.[1];
+                    usePreferences().accessObject("preferredPictograms",pictogramId!);
+                }
                 return data;
             }
             return undefined;

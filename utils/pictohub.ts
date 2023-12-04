@@ -1,6 +1,6 @@
 import { RuntimeConfig } from "nuxt/schema";
 
-export const getPictoFromPictohub = async (config: RuntimeConfig,search: string, searchLocale: string, additionnalLocales: string[] = [], limit=1): BasePictogram => {
+export const getPictoFromPictohub = async (config: RuntimeConfig,search: string, searchLocale: string, additionnalLocales: string[] = [], limit=1): Promise<BasePictogram[]> => {
     // For words that have a dash, replace it with a space
     // Pictogram suggestions that have more than a word are separated by a dash
     search = search.replace('-', ' ');
@@ -27,7 +27,7 @@ export const getPictoFromPictohub = async (config: RuntimeConfig,search: string,
     }
     // Gracefully handle the case where the pictohub API is not available with a try/catch
     try {
-      let data: any[] = await $fetch(`${config.public.pictohub.PICTOHUB_API_URL}?${queryParams}`, {
+      let data: BasePictogram[] = await $fetch(`${config.public.pictohub.PICTOHUB_API_URL}?${queryParams}`, {
         method: 'GET',
         headers: {
           'x-api-key': config.public.pictohub.PICTOHUB_API_KEY
@@ -37,6 +37,6 @@ export const getPictoFromPictohub = async (config: RuntimeConfig,search: string,
       return data;
     } catch (e) {
       console.error(e);
-      return;
+      return [];
     }
   }

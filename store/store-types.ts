@@ -95,3 +95,8 @@ export type StimulusResponse = {
     probability: number,
     responses: BasePictogram[],
 }
+
+export type ObjectAccessInfo = {
+    count: number;
+    lastAccessed: number;
+}
