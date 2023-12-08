@@ -5,7 +5,7 @@
       <slot />
     </body>
       <div
-        v-if="$pwa && !$pwa?.offlineReady && !$pwa?.needRefresh && $pwa.swActivated"
+        v-if="$pwa && $pwa.isInstalled === false"
         role="alert" class="alert alert-info"
       >
           <span>

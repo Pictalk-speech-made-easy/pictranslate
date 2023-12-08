@@ -22,7 +22,6 @@
         </svg>
       </button>
     </div>
-    <button @click="updateLocalBundles()">Click to update local bundles</button>
     <History/>
   </div>
 </template>
@@ -57,7 +56,7 @@ const onClickDownload = () => {
 }
 
 onMounted(async () => {
-  console.log($pwa);
+  updateLocalBundles();
   stimulusDatabase.initialize_database();
   stimulusDatabase.startWorker();
   miniPictohubDatabase.initialize_database();
@@ -68,7 +67,7 @@ watch(() => $pwa?.offlineReady, () => {
     if ($pwa?.isInstalled || $pwa?.offlineReady || process.env.NODE_ENV === 'development') {
     // We will implement custom user pictograms later
     // const authenticated = await auth.getAuthenticated();
-    updateLocalBundles();
+    
   }
 });
 

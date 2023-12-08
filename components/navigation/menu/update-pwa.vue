@@ -1,10 +1,10 @@
 <template>
     <div>
     <div
-        v-if="$pwa?.offlineReady || $pwa?.needRefresh"
+        v-if="$pwa?.needRefresh || $pwa?.isInstalled"
       >
         <div>
-          <span role="alert" class="alert alert-success" v-if="$pwa.offlineReady">
+          <span role="alert" class="alert alert-success" v-if="$pwa.offlineReady || $pwa.isInstalled">
             {{ $t('menu.offline_ready')}}✈️
           </span>
         </div>
@@ -15,9 +15,11 @@
         >
             {{ $t('menu.update_available') }}
         </button>
-        <div>SIZE OF THE APPLICATION</div>
+        <div>{{  storageUsage() }}</div>
         <br>
-        <div>Tags that are installed</div>
+        <div class="flex">
+          <div class="bg-blue-100 dark:bg-grey-base-50 rounded-full" v-for="tag in storedTags()">{{ tag }}</div>
+        </div>
       </div>
       <div v-else>
         <span role="alert" class="alert alert-info">
@@ -26,3 +28,17 @@
       </div>
     </div>
 </template>
+<script setup lang="ts">
+const quota: StorageEstimate = await navigator.storage.estimate();
+const { bundleInformations } = useMiniPictohubDatabase();
+function storageUsage() {
+  if (quota.usage === undefined) {
+    return 'Unknown';
+  }
+  return `${(quota.usage / 1000000).toFixed(2)} MB`;
+}
+
+function storedTags() {
+  return bundleInformations.map((bundle) => bundle.tag);
+}
+</script>
