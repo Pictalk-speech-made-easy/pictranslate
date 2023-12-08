@@ -57,6 +57,7 @@ const onClickDownload = () => {
 }
 
 onMounted(async () => {
+  console.log($pwa);
   stimulusDatabase.initialize_database();
   stimulusDatabase.startWorker();
   miniPictohubDatabase.initialize_database();
