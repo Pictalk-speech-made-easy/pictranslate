@@ -100,3 +100,15 @@ export type ObjectAccessInfo = {
     count: number;
     lastAccessed: number;
 }
+
+export type BundleInformations = {
+    packs: Array<Bundle>,
+}
+
+export type Bundle = {
+    name: string,
+    url: string,
+    tag: string,
+    type: 'avif' | 'webp' | 'png' | 'jpg' | 'jpeg',
+    date_created: Date,
+}

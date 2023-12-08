@@ -20,6 +20,12 @@ export const useStimulusDatabase = defineStore('stimulus', {
         }
     },
     actions: {
+        async deleteDatabase() {
+            const db = new Dexie('eat-stimulus-response');
+            await db.delete();
+            this.db_filled = false;
+            this.suggestions = [];
+        },
         startWorker() {
             if (this.worker === undefined && this.db_filled === false) {
                 this.worker = new Worker('/stimulus-db.worker.js');

@@ -1,5 +1,5 @@
 import Dexie from 'dexie';
-import { MiniPictogram } from './store-types';
+import { BundleInformations, MiniPictogram } from './store-types';
 import { useOptions } from './option';
 import { checkAvifSupport } from '../utils/browser-support';
 export const useMiniPictohubDatabase = defineStore('minipictohub', {
@@ -8,71 +8,92 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
         worker: undefined as Worker | undefined,
         imagesWorker: undefined as Worker | undefined,
         miniDatabaseInformations: {} as { [key: string]: MiniDatabaseInformations },
+        bundleInformations: [] as Array<Bundle>,
+        bundleSizes: {} as Record<string, number>,
+        format: '' as 'avif' | 'png',
     }),
     persist: {
         storage: persistedState.localStorage,
         serializer: {
             serialize: (state) => {
                 // Create a copy of the state excluding the 'db' property
-                const { db, ...stateWithoutDb } = state;
+                const { db, worker, imagesWorker, ...stateWithoutDb } = state;
                 return JSON.stringify(stateWithoutDb);
             },
             deserialize: JSON.parse
         }
     },
     actions: {
+        async deleteDatabase() {
+            const optionsStore = useOptions();
+            const db = new Dexie(`mini-pictohub-${optionsStore.locale}`);
+            await db.delete();
+            this.miniDatabaseInformations = {};
+        },
+        async startImagesWorker(tag: string) {
+            const config = useRuntimeConfig();
+            if (this.imagesWorker === undefined) {
+                this.imagesWorker = new Worker('/inflate-pictohub.worker.js');
+            }
+            // Check how many storage space is left
+            const quota = await navigator.storage.estimate();
+            if (quota.quota === undefined || quota.usage === undefined) {
+                console.debug("Storage quota is not available");
+                return;
+            }
+            console.debug(`Storage quota: ${quota.usage} / ${quota.quota}`);
+            
+            // Check if the app is running in PWA mode
+            if (!useNuxtApp().$pwa?.isInstalled && process.env.NODE_ENV !== 'development') {
+                console.debug("App is not running in PWA mode, not storing images for tag: ", tag);
+                return;
+            }
+            
+            if (quota.quota - quota.usage < this.bundleSizes[tag]*1000000) {
+                console.debug("Not enough storage space left, not storing the images for tag: ", tag);
+                return;
+            }
+            console.debug("Worker status is: ", this.imagesWorker);
+            this.imagesWorker.postMessage({
+                action: 'ingestMiniPictohubImages',
+                payload: {
+                    format: this.format,
+                    zipUrl: `${config.public.pictohub.PICTOHUB_TAGS_URL}/${tag}/${this.format}.zip`,
+                },
+            });
+            this.imagesWorker.onmessage = async (event) => {
+                if( event.data.status !== 'success') {
+                    return;
+                }
+                this.bundleInformations.push({
+                    name: `${tag}.${this.format}.zip`,
+                    url: `${config.public.pictohub.PICTOHUB_TAGS_URL}/${tag}/${this.format}.zip`,
+                    tag: tag,
+                    type: this.format,
+                    date_created: new Date(),
+                });
+            }
+        },
         async startWorker() {
+            const config = useRuntimeConfig();
             const optionsStore = useOptions();
             if (this.worker === undefined) {
                 this.worker = new Worker('/minified-pictohub.worker.js');
-                //this.imagesWorker = new Worker('/images-pictohub.worker.js');
-                this.imagesWorker = new Worker('/inflate-pictohub.worker.js');
             }
             if (this.miniDatabaseInformations[optionsStore.locale] === undefined) {
-                const format = await checkAvifSupport() ? 'avif' : 'png';
                 this.worker.postMessage({
                     action: 'ingestMiniPictohub',
                     payload: {
-                        url: `/minifiedData.${optionsStore.locale}.v1.json`,
+                        url: `${config.public.pictohub.PICTOHUB_DB_URL}/minifiedData.${optionsStore.locale}.v1.json`,
                         db_name: `mini-pictohub-${optionsStore.locale}`,
-                        format: format
+                        format: this.format
                     },
                 });
                 this.worker.onmessage = async (event) => {
-                    // Check how many storage space is left
-                    const quota = await navigator.storage.estimate();
-                    console.debug(`Storage quota: ${quota.usage} / ${quota.quota}`);
-                    
-                    // If there is more than 150MB left, we can store the data
-                    if (quota.quota === undefined || quota.usage === undefined) {
-                        return;
-                    }
-                    if (quota.quota - quota.usage < 120000000) {
-                        console.debug("Not enough space left on device to store the mini database");
-                        return;
-                    }
-
                     // self.postMessage({ status: 'success', message: 'Data fetched and stored in IndexedDB' });
                     if (event.data.status === 'success') {
-                        if (Object.keys(this.miniDatabaseInformations).length === 0) {
-                            // Check browser support for avif 
-                            /* this.imagesWorker?.postMessage({
-                                action: 'ingestMiniPictohubImages',
-                                payload: {
-                                    format: format,
-                                    db_name: `mini-pictohub-${optionsStore.locale}`,
-                                },
-                            }); */
-                            this.imagesWorker?.postMessage({
-                                action: 'ingestMiniPictohubImages',
-                                payload: {
-                                    format: format,
-                                    zipUrl: `/${format}.zip`,
-                                },
-                            });
-                        }
                         this.miniDatabaseInformations[optionsStore.locale] = {
-                            url: '/minifiedData.v1.json',
+                            url: `${config.public.pictohub.PICTOHUB_DB_URL}/minifiedData.v1.json`,
                             db_name: `mini-pictohub-${optionsStore.locale}`,
                             date_created: new Date(),
                         };
@@ -82,6 +103,7 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
                 console.debug('MiniDatabase has already been fully ingested');
             }
         },
+
         stopWorker() {
             if (this.worker !== undefined) {
                 this.worker.terminate();
@@ -97,6 +119,8 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
                 });
                 await db.open();
                 this.db = db;
+                this.format = await checkAvifSupport() ? 'avif' : 'png';
+                this.getBundleSizes(this.format);
             } catch (error) {
                 console.debug(error);
                 this.db = undefined;
@@ -151,5 +175,22 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
           checkIfExactMatch(data: Array<MiniPictogram>, search: string): Array<MiniPictogram> {
             return data.filter((picto) => picto.keyword === search);
           },
+          async getBundleSizes(format: string) {
+            const config = useRuntimeConfig();
+            let response = await fetch(`${config.public.pictohub.PICTOHUB_TAGS_URL}/sizes.${format}.txt`);
+            let data = await response.text();
+            /*
+            urban_area 1 
+            music 1 
+            */
+            const lines = data.split('\n');
+            const sizes: Record<string, number> = {};
+            for (const line of lines) {
+                const [tag, size] = line.split(' ');
+                sizes[tag] = parseInt(size);
+            }
+            this.bundleSizes = sizes;
+            return sizes;
+        }
     },
 });

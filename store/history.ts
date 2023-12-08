@@ -18,6 +18,11 @@ export const useHistoryDatabase = defineStore('history', {
         }
     },
     actions: {
+        async deleteDatabase() {
+            const db = new Dexie('history');
+            await db.delete();
+            this.history = [];
+        },
         async initialize_database() {
             try {
                 const db = new Dexie('history');

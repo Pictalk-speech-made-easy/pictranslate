@@ -8,9 +8,9 @@ export const useOptions = defineStore('options', {
         TTSVoice: undefined as SpeechSynthesisVoice | undefined,
         TTSRate: 1 as number,
         TTSPitch: 1 as number,
-        sexFilter: false as Boolean,
-        violenceFilter: false as Boolean,
-        simplifyTranslation: false as Boolean,
+        sexFilter: true as Boolean,
+        violenceFilter: true as Boolean,
+        simplifyTranslation: true as Boolean,
     }),
     persist: {
         storage: persistedState.localStorage,

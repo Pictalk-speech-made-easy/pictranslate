@@ -20,6 +20,13 @@
         "simple_translation": "Traduction simple",
         "offline_ready": "L'application est prête à être utilisée hors ligne",
         "offline_not_ready": "L'application n'est pas prête à être utilisée hors ligne",
-        "update_available": "Mise à jour disponible"
+        "update_available": "Mise à jour disponible",
+        "erase": "Effacer toutes les données",
+        "advanced_translation_alert": "La traduction avancée est une fonctionnalité expérimentale. Elle peut ne pas fonctionner correctement.",
+        "licences_viewer": {
+            "title": "Licences",
+            "ARASAAC": "ARASAAC est une association sans but lucratif qui développe des ressources et des images pour faciliter l'accès à la communication sous licence Creative Commons (BY-NC-SA). Plus d'informations sur https://arasaac.org",
+            "pictalk": "Le code de cette application est sous licence GNU GPL v3.0."
+        }
     }
 }

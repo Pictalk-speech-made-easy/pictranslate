@@ -37,7 +37,7 @@ export const useMain = defineStore('main', {
         
             while (start < tokens.length) {
                 let found = false;
-                if (options.simplifyTranslation) {
+                if (options.simplifyTranslation === false) {
                     for (let end = tokens.length; end > start; end--) {
                         const phrase = tokens.slice(start, end).join(' ');
                         const pictogram = await useMiniPictohubDb.getMiniPictogram(phrase);

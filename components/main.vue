@@ -22,6 +22,7 @@
         </svg>
       </button>
     </div>
+    <button @click="updateLocalBundles()">Click to update local bundles</button>
     <History/>
   </div>
 </template>
@@ -36,12 +37,12 @@ import { useStimulusDatabase } from '~/store/stiumulus-db';
 import { useMiniPictohubDatabase } from '~/store/mini-pictohub-db';
 import { useHistoryDatabase } from '~/store/history';
 import { useMain } from '~/store/main';
-
+import { usePreferences } from '~/store/preferences';
+const { updateLocalBundles } = usePreferences()
 const miniPictohubDatabase = useMiniPictohubDatabase();
 const stimulusDatabase = useStimulusDatabase();
 const { addHistory } = useHistoryDatabase();
 const main = useMain();
-const auth = useAuth();
 const options = useOptions();
 const clipboard = useClipboard();
 const { $pwa } = useNuxtApp()
@@ -56,20 +57,17 @@ const onClickDownload = () => {
 }
 
 onMounted(async () => {
-  miniPictohubDatabase.initialize_database();
   stimulusDatabase.initialize_database();
-  if (process.env.NODE_ENV === 'development') {
-    miniPictohubDatabase.startWorker();
-    stimulusDatabase.startWorker();
-  }
+  stimulusDatabase.startWorker();
+  miniPictohubDatabase.initialize_database();
+  miniPictohubDatabase.startWorker();
 });
 
 watch(() => $pwa?.offlineReady, () => {
     if ($pwa?.isInstalled || $pwa?.offlineReady || process.env.NODE_ENV === 'development') {
     // We will implement custom user pictograms later
     // const authenticated = await auth.getAuthenticated();
-    stimulusDatabase.startWorker();
-    miniPictohubDatabase.startWorker();
+    updateLocalBundles();
   }
 });
 
@@ -77,7 +75,7 @@ watch(() => options.locale, () => {
   if ($pwa?.isInstalled || $pwa?.offlineReady || process.env.NODE_ENV === 'development') {
     miniPictohubDatabase.initialize_database();
     miniPictohubDatabase.startWorker();
-  } 
+  }
 })
 
 </script>

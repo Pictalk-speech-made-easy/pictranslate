@@ -14,6 +14,8 @@ export default defineNuxtConfig({
       pictohub: {
         PICTOHUB_API_KEY: process.env.PICTOHUB_API_KEY,
         PICTOHUB_API_URL: process.env.PICTOHUB_API_URL,
+        PICTOHUB_TAGS_URL: process.env.PICTOHUB_TAGS_URL,
+        PICTOHUB_DB_URL: process.env.PICTOHUB_DB_URL,
       },
       sentry: {
         dsn: 'https://94cd8599e4797300f9151e648d73de13@o1135783.ingest.sentry.io/4505997994164224',

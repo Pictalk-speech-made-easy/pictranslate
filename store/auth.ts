@@ -12,8 +12,6 @@ const initOptions: KeycloakInitOptions = {
 
 export const useAuth = defineStore('authentication', {
         state: () => ({
-                davUsername: undefined as string | undefined,
-                davPassword: undefined as string | undefined,
                 isAuthenticated: false,
                 keycloak: undefined as Keycloak | undefined,
         }),
@@ -32,12 +30,27 @@ export const useAuth = defineStore('authentication', {
                         }
                 },
                 async logout() {
+                        
+
+                        // Use Dexie to clear the database
+                        await useMiniPictohubDatabase().deleteDatabase();
+                        await useHistoryDatabase().deleteDatabase();
+                        await useStimulusDatabase().deleteDatabase();
+
+                        usePreferences().$reset();
+                        useMiniPictohubDatabase().$reset();
+                        useOptions().$reset();
+                        useHistoryDatabase().$reset();
+                        useStimulusDatabase().$reset();
+                        // Clear all caches
+                        await caches.delete('images-pictohub');
+
                         if (this.isAuthenticated && navigator.onLine && this.keycloak) {
                                 console.debug("logging out of keycloak");
                                 await this.keycloak.logout();
-                        } else {
-                                return;
                         }
+
+                        this.$reset();
                 },
                 getAuthenticated() {
                         return this.isAuthenticated;
