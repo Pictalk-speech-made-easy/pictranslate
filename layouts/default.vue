@@ -4,11 +4,27 @@
     <body>
       <slot />
     </body>
-  
+    <DevOnly>
+      <div
+        v-if="$pwa && $pwa.isInstalled === false"
+        role="alert" class="alert alert-info"
+      >
+          <span>
+            {{  $t('pwa.install_message') }}
+          </span>
+        <button class="btn btn-primary" @click="$pwa.install()">
+          {{  $t('pwa.install') }}
+        </button>
+        <button class="btn btn-active" @click="$pwa.cancelInstall()">
+          {{  $t('pwa.cancel') }}
+        </button>
+      </div>
+    </DevOnly>
     </html>
   </template>
   <script setup lang="ts">
   import { onMounted } from "vue";
+  const { $pwa } = useNuxtApp()
   import { useOptions } from "~/store/option";
   const options = useOptions();
   const theme = options.theme === "dark" || 'light' ? options.theme : "light";

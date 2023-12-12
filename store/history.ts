@@ -8,8 +8,21 @@ export const useHistoryDatabase = defineStore('history', {
     }),
     persist: {
         storage: persistedState.localStorage,
+        serializer: {
+            serialize: (state) => {
+                // Create a copy of the state excluding the 'db' property
+                const { db, ...stateWithoutDb } = state;
+                return JSON.stringify(stateWithoutDb);
+            },
+            deserialize: JSON.parse
+        }
     },
     actions: {
+        async deleteDatabase() {
+            const db = new Dexie('history');
+            await db.delete();
+            this.history = [];
+        },
         async initialize_database() {
             try {
                 const db = new Dexie('history');
@@ -107,6 +120,6 @@ export const useHistoryDatabase = defineStore('history', {
             }
             await this.db.table('history').put(data);
             this.getHistory();
-        }
+        },
     }
 });

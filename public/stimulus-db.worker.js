@@ -1,6 +1,5 @@
 console.debug('Worker started')
 importScripts('https://npmcdn.com/dexie@3.2.4/dist/dexie.min.js');
-importScripts('https://unpkg.com/pako@2.1.0/dist/pako_inflate.min.js');
 const EXPECTED_ENTRY_COUNT = 8211;
 
 /**

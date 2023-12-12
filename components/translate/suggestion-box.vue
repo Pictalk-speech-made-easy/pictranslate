@@ -22,55 +22,43 @@
 import { useMain } from '~/store/main';
 import { useStimulusDatabase } from '~/store/stiumulus-db';
 import { useOptions } from '~/store/option';
-import { getPictoFromPictohub } from '~/utils/pictohub';
 const main = useMain();
 const stimulusdb = useStimulusDatabase();
 const options = useOptions();
-const config = useRuntimeConfig()
 
-watch(() => stimulusdb.suggestions, async (value) => {
-  console.debug("[main] pictohub value", value)
-  if (value.length == 0 || value == undefined) {
+watch(() => main.pictogramsPropositions, async (value) => {
+  console.log("[suggestion-box],", value)
+  console.log("[suggestion-box] watch triggered")
+  if (value.length == 0) {
+    console.log("[suggestion-box] empty pictograms")
+    stimulusdb.suggestions = [];
     main.suggestedPictograms = []
     return;
   }
-  // Only get the first 5 elements
-  value = value.slice(0, 5);
-  let wordToPictogramPromises = value.map((suggestion: string) => {
-    return getPictoFromPictohub(config, suggestion.toLocaleLowerCase(), 'en', [options.locale], 1); // Change the limit to 3 for example to have 3 pictograms per word
-  });
-  console.debug("[main] pictohub wordsPromise", wordToPictogramPromises)
-  let unfilteredPictograms = await Promise.all(wordToPictogramPromises);
-  unfilteredPictograms = unfilteredPictograms.map((picto) => { return { 'selected': 0, 'pictograms': picto } })
-  // Remove the empty elements and only keep the first 3 elements
-  main.suggestedPictograms = unfilteredPictograms.filter((picto: any) => (picto.pictograms != undefined && picto.pictograms[0]?.external_alt_image != undefined)).slice(0, 3); // Change the slice number to 3 for example to have 3 suggestions per word
-}, { immediate: true, deep: true });
-
-watch(() => main.pictogramsPropositions, async (value) => {
-  console.log("[pictogram-viewer],", value)
-  console.log("[pictogram-viewer] watch triggered")
-  if (value.length == 0) {
-    console.log("[pictogram-viewer] empty pictograms")
-    stimulusdb.suggestion = '';
-    stimulusdb.suggestions = [];
-    return;
-  }
   const picto = value[value.length - 1];
-  console.debug("[pictogram-viewer] pictogram", picto)
+  console.debug("[suggestion-box] pictogram", picto)
   const stimulus = picto['pictograms'][picto['selected']]['keywords']['en'][0]['keyword']
   const response = await stimulusdb.getStimulus(stimulus)
-  console.debug("[pictogram-viewer] response", value)
+  console.debug("[suggestion-box] response", response)
   if (response) {
-    stimulusdb.suggestion = response[0]['word']
-    stimulusdb.suggestions = response.map((r: any) => r['word'])
-  }
-}, { immediate: true, deep: true });
+    stimulusdb.suggestions = response.map((r: any) => {
+      return {
+        stimulus: r["word"],
+        probability: r["n"],
+        responses: []
+        // Add more properties as needed
+    } as StimulusResponse;
+    })
+    console.debug("[suggestion-box] getStimulusPictograms", value, stimulusdb.suggestions)
+    stimulusdb.getStimulusPictograms();
+    }
+}, {  deep: true });
 
 function onSuggestionConfirmed(pictogram: any) {
   const newWord = pictogram['pictograms'][0]['keywords'][options.locale][0]['keyword'].replace(' ', '-');
   main.pictogramsPropositions.push(pictogram);
   main.textInput += ' ' + newWord;
-  console.debug("[main] suggestionConfirmed", pictogram);
+  console.debug("[suggestion-box] suggestionConfirmed", pictogram);
 }
 
 </script>

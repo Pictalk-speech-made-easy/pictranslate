@@ -33,15 +33,18 @@ import History from '~/components/translate/history.vue';
 import { useClipboard } from '~/composables/clipboard';
 import { useAuth } from '~/store/auth';
 import { useStimulusDatabase } from '~/store/stiumulus-db';
+import { useMiniPictohubDatabase } from '~/store/mini-pictohub-db';
 import { useHistoryDatabase } from '~/store/history';
 import { useMain } from '~/store/main';
-
+import { usePreferences } from '~/store/preferences';
+const { updateLocalBundles } = usePreferences()
+const miniPictohubDatabase = useMiniPictohubDatabase();
 const stimulusDatabase = useStimulusDatabase();
 const { addHistory } = useHistoryDatabase();
 const main = useMain();
-const auth = useAuth();
+const options = useOptions();
 const clipboard = useClipboard();
-
+const { $pwa } = useNuxtApp()
 const onClickCopy = () => {
   clipboard.copyPictosToClipboard();
   addHistory(main.textInput, toRaw(main.pictogramsPropositions));
@@ -53,8 +56,26 @@ const onClickDownload = () => {
 }
 
 onMounted(async () => {
-  const authenticated = auth.getAuthenticated();
+  updateLocalBundles();
+  stimulusDatabase.initialize_database();
   stimulusDatabase.startWorker();
+  miniPictohubDatabase.initialize_database();
+  miniPictohubDatabase.startWorker();
+});
+
+watch(() => $pwa?.offlineReady, () => {
+    if ($pwa?.isInstalled || $pwa?.offlineReady || process.env.NODE_ENV === 'development') {
+    // We will implement custom user pictograms later
+    // const authenticated = await auth.getAuthenticated();
+    
+  }
+});
+
+watch(() => options.locale, () => {
+  if ($pwa?.isInstalled || $pwa?.offlineReady || process.env.NODE_ENV === 'development') {
+    miniPictohubDatabase.initialize_database();
+    miniPictohubDatabase.startWorker();
+  }
 })
 
 </script>

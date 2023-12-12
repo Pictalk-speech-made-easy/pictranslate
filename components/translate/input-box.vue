@@ -26,7 +26,6 @@ import { useHistoryDatabase } from '~/store/history';
 import Speak from '~/components/translate/speak.vue';
 const main = useMain();
 const options = useOptions();
-const config = useRuntimeConfig();
 const { speak, speaking } = useSpeech();
 const { addHistory, getHistory, searchHistory } = useHistoryDatabase();
 watch(() => main.textInput, debounce(async (newText: string) => {
@@ -37,18 +36,15 @@ watch(() => main.textInput, debounce(async (newText: string) => {
         return;
     }
     searchHistory(newText);
-    const wordsArray = removePrepositions(newText.toLocaleLowerCase(), options.locale);
-    const lemmatized = lemmatize(wordsArray.join(' '));
-    // Condition is useful to avoid triggering the watcher when a suggestion is selected
-    if (lemmatized.length != main.pictogramsPropositions.length) {
-        const wordToPictogramPromises = lemmatized.map((word: string) => {
-            return getPictoFromPictohub(config, word, options.locale, [options.locale, 'en'], 5); // Change the limit to 3 for example to have 3 pictograms per word
-        });
-        let unfilteredPictograms = await Promise.all(wordToPictogramPromises);
-        unfilteredPictograms = unfilteredPictograms.map((picto) => { return { 'selected': 0, 'pictograms': picto } })
-        unfilteredPictograms = unfilteredPictograms.filter((picto: any) => (picto.pictograms != undefined && picto.pictograms[0]?.external_alt_image != undefined))
-        main.pictogramsPropositions = unfilteredPictograms;
+    newText = newText.toLocaleLowerCase();
+    if (options.locale == "fr") {
+        newText = removePrepositionsManually(newText);
     }
+    if (options.simplifyTranslation) {
+        newText = removePrepositions(newText, options.locale).join(' ');
+    }
+    main.traduction(newText);
+    
 }, 500));
 
 function readSentence() {

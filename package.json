@@ -12,28 +12,28 @@
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "@types/lodash.debounce": "^4.0.9",
-    "nuxt": "^3.7.3"
+    "nuxt": "^3.8.2"
   },
   "dependencies": {
-    "@nuxt/image": "1.0.0-rc.3",
+    "@nuxt/image": "1.1.0",
     "@nuxtjs/i18n": "8.0.0-rc.5",
-    "@nuxtjs/tailwindcss": "^6.2.0",
-    "@nuxtseo/module": "2.0.0-beta.15",
-    "@pinia-plugin-persistedstate/nuxt": "^1.1.2",
-    "@pinia/nuxt": "^0.4.11",
-    "@sentry/vue": "^7.73.0",
+    "@nuxtjs/tailwindcss": "^6.10.1",
+    "@nuxtseo/module": "2.0.0-beta.45",
+    "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
+    "@pinia/nuxt": "^0.5.1",
+    "@sentry/vue": "^7.84.0",
     "@tailwindcss/typography": "^0.5.10",
-    "@vite-pwa/nuxt": "^0.1.1",
+    "@vite-pwa/nuxt": "^0.3.2",
     "bowser": "^2.11.0",
-    "daisyui": "^3.9.2",
+    "daisyui": "^4.4.17",
     "dexie": "^3.2.4",
     "fr-compromise": "^0.2.8",
     "fuse.js": "^7.0.0",
-    "keycloak-js": "^22.0.3",
+    "keycloak-js": "^23.0.1",
     "lodash.debounce": "^4.0.8",
     "merge-images-horizontally-with-text": "^1.0.2",
     "nuxt-proxy": "^0.4.1",
-    "pinia": "^2.1.6",
+    "pinia": "^2.1.7",
     "vue-matomo": "^4.2.0"
   }
 }

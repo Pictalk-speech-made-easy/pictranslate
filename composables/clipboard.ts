@@ -32,7 +32,7 @@ export function useClipboard() {
         } else {
             preGeneratedBlob.value = null;
         }
-    }, { immediate: true, deep: true });
+    }, { deep: true });
 
     function copyPictosToClipboard() {
         if (!navigatorPermission && detectBrowser().browser != "Safari") {
