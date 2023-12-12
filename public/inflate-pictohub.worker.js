@@ -13,6 +13,7 @@ self.addEventListener('message', async (e) => {
     if (action !== 'ingestMiniPictohubImages') return;
     const zipUrl = payload.zipUrl;
     const format = payload.format; // e.g., 'avif', 'png'
+    const tag = payload.tag; // e.g., 'feeding'
     try {
         if (!zipUrl) throw new Error('GZIP URL not provided');
         if (!format) throw new Error('format not provided');
@@ -36,7 +37,7 @@ self.addEventListener('message', async (e) => {
         const timeDifferenceInSeconds = (end - start) / 1000;
         console.log('Time difference in seconds:', timeDifferenceInSeconds);
         console.debug('Cache is populated');
-        self.postMessage({ status: 'success', message: 'Images cached successfully' });
+        self.postMessage({ status: 'success', message: 'Images cached successfully', payload: { tag: tag } });
     } catch (error) {
         self.postMessage({ status: 'error', message: error.message });
         console.error(error);

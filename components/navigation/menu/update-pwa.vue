@@ -15,11 +15,13 @@
         >
             {{ $t('menu.update_available') }}
         </button>
+        <DevOnly>
         <div>{{  storageUsage() }}</div>
-        <br>
-        <div class="flex">
-          <div class="bg-blue-100 dark:bg-grey-base-50 rounded-full" v-for="tag in storedTags()">{{ tag }}</div>
-        </div>
+          <br>
+          <div class="flex">
+            <div class="bg-blue-100 dark:bg-grey-base-50 rounded-full" v-for="tag in storedTags()">{{ tag }}</div>
+          </div>
+        </DevOnly>
       </div>
       <div v-else>
         <span role="alert" class="alert alert-info">

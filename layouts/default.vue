@@ -4,6 +4,7 @@
     <body>
       <slot />
     </body>
+    <DevOnly>
       <div
         v-if="$pwa && $pwa.isInstalled === false"
         role="alert" class="alert alert-info"
@@ -18,6 +19,7 @@
           {{  $t('pwa.cancel') }}
         </button>
       </div>
+    </DevOnly>
     </html>
   </template>
   <script setup lang="ts">

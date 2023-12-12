@@ -61,10 +61,14 @@ export const usePreferences = defineStore('preferences', {
             // Check if the first five bundles are downloaded
             // If not, download them
             for (const tag of preferredTags) {
+                console.debug("[Preferences] Checking tag: ", tag);
+                console.debug("[Preferences] Tags downloaded: ", useMiniPictohubDatabase().bundleInformations);
                 if (!useMiniPictohubDatabase().bundleInformations.find((pack) => (pack.tag === tag) || (pack.tag === 'all'))) {
+                    console.debug("[Preferences] Tag not downloaded yet: ", tag);
                     if (bundleSizes[tag] && bundleSizes[tag] < spaceLeft) {
                         bundlesToDownload.push(tag);
                         spaceLeft -= bundleSizes[tag];
+                        console.debug("[Preferences] Tag to download: ", tag);
                     }
                 }
             }

@@ -59,16 +59,20 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
                 payload: {
                     format: this.format,
                     zipUrl: `${config.public.pictohub.PICTOHUB_TAGS_URL}/${tag}/${this.format}.zip`,
+                    tag: tag,
                 },
             });
             this.imagesWorker.onmessage = async (event) => {
                 if( event.data.status !== 'success') {
                     return;
                 }
+                if (this.bundleInformations.find((pack) => pack.tag === event.data.payload.tag)) {
+                    return;
+                }
                 this.bundleInformations.push({
-                    name: `${tag}.${this.format}.zip`,
-                    url: `${config.public.pictohub.PICTOHUB_TAGS_URL}/${tag}/${this.format}.zip`,
-                    tag: tag,
+                    name: `${event.data.payload.tag}.${this.format}.zip`,
+                    url: `${config.public.pictohub.PICTOHUB_TAGS_URL}/${event.data.payload.tag}/${this.format}.zip`,
+                    tag: event.data.payload.tag,
                     type: this.format,
                     date_created: new Date(),
                 });
