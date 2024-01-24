@@ -11,6 +11,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
+      clientVersion: process.env.npm_package_version,
       pictohub: {
         PICTOHUB_API_KEY: process.env.PICTOHUB_API_KEY,
         PICTOHUB_API_URL: process.env.PICTOHUB_API_URL,

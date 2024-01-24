@@ -11,8 +11,8 @@
                                 d="M6 18L18 6M6 6l12 12" />
                         </svg></button></span>
             </label>
-            <input :placeholder="$t('main.input')" class="input input-bordered w-full rounded-full pr-10" type="text" id="search"
-                v-model="main.textInput" />
+            <input :placeholder="$t('main.input')" class="input input-bordered w-full rounded-full pr-10" type="text"
+                id="search" v-model="main.textInput" />
         </div>
         <Speak :animated="speaking!" class="btn rounded-full h-16 w-16 ml-4 p-4 bg-blue-100 dark:bg-grey-base-50"
             @click="readSentence"> {{ $t('main.speak') }}></Speak>
@@ -37,14 +37,20 @@ watch(() => main.textInput, debounce(async (newText: string) => {
     }
     searchHistory(newText);
     newText = newText.toLocaleLowerCase();
+    console.log("[main] textInput", newText)
     if (options.locale == "fr") {
+        console.debug("[main] textInput", newText)
         newText = removePrepositionsManually(newText);
+        console.debug("[main] textInput after removePrepositionsManually", newText)
     }
+    console.log("[main] textInput", newText)
     if (options.simplifyTranslation) {
+        console.debug("[main] textInput before removePrepositions", newText)
         newText = removePrepositions(newText, options.locale).join(' ');
+        console.debug("[main] textInput after removePrepositions", newText)
     }
     main.traduction(newText);
-    
+
 }, 500));
 
 function readSentence() {
