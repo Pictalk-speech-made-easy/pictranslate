@@ -37,7 +37,7 @@ watch(() => main.textInput, debounce(async (newText: string) => {
     }
     searchHistory(newText);
     newText = newText.toLocaleLowerCase();
-    console.log("[main] textInput", newText)
+    console.log("[main] textInput", newText, "locale", options.locale)
     if (options.locale == "fr") {
         console.debug("[main] textInput", newText)
         newText = removePrepositionsManually(newText);
