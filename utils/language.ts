@@ -7,10 +7,20 @@
 export function removePrepositions(sentence: string, lang: 'en' | 'fr' | 'es' | 'pt'): string[] {
   console.log(sentence);
   if (lang === "fr") {
+    console.debug("[RemovePrepositions] Removing prepositions from french sentence");
     sentence = sentence.replace("l'", "");
-    sentence = sentence.replace("d'", "");
-    sentence = sentence.replace("'ai ", "'avoir ");
+    console.log("replace l' by nothing", sentence);
     sentence = sentence.replace("j'", "je ");
+    console.log("replace j' by je", sentence);
+    sentence = sentence.replace("d'", "");   
+    console.log("replace d' by nothing", sentence);
+    sentence = sentence.replace("qu'", "que ");
+    console.log("replace qu' by que", sentence);
+    sentence = sentence.replace("n'", "");
+    console.log("replace n' by nothing", sentence);
+    sentence = sentence.replace(" ai ", " avoir ");
+    console.log("replace ai by avoir", sentence);
+    console.log(sentence);
   }
   sentence = sentence.replace(/[^A-zÀ-ÿ\s]|_/g, "").replace(/\s+/g, " ");
   const words = sentence.split(" ");
