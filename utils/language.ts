@@ -7,7 +7,8 @@
 export function removePrepositions(sentence: string, lang: 'en' | 'fr' | 'es' | 'pt'): string[] {
   console.log(sentence);
   if (lang === "fr") {
-    sentence.replace("’", "'")
+    console.log("replace ’ by '", sentence)
+    sentence = sentence.replace("’", "'")
     console.debug("[RemovePrepositions] Removing prepositions from french sentence");
     sentence = sentence.replace("l'", "");
     console.log("replace l' by nothing", sentence);
