@@ -1,3 +1,114 @@
+// Variable that contains the prepositions of various languages
+export const prepositions = {
+  en: ["a", "an", "the", "of", "in", "for", "on", "with", "to", "by", "about"],
+  es: [
+    "el",
+    "la",
+    "los",
+    "las",
+    "de",
+    "en",
+    "para",
+    "por",
+    "sobre",
+    "con",
+    "a",
+    "al",
+    "ante",
+    "bajo",
+    "cabe",
+    "contra",
+    "desde",
+    "durante",
+    "entre",
+    "hacia",
+    "hasta",
+    "mediante",
+    "salvo",
+    "según",
+    "sin",
+    "so",
+    "sobre",
+    "tras",
+    "versus",
+    "vía",
+  ],
+  pt: [
+    "o",
+    "a",
+    "os",
+    "as",
+    "um",
+    "uma",
+    "uns",
+    "umas",
+    "de",
+    "em",
+    "para",
+    "por",
+    "sobre",
+    "com",
+    "a",
+    "ao",
+    "à",
+    "às",
+    "ante",
+    "após",
+    "até",
+    "com",
+    "contra",
+    "de",
+    "desde",
+    "entre",
+    "para",
+    "per",
+    "perante",
+    "por",
+    "sem",
+    "sob",
+    "sobre",
+    "trás",
+  ],
+  fr: [
+    "un",
+    "ce",
+    "une",
+    "le",
+    "la",
+    "les",
+    "de",
+    "du",
+    "des",
+    "à",
+    "au",
+    "aux",
+    "en",
+    "pour",
+    "sur",
+    "par",
+    "dans",
+    "sous",
+    "entre",
+    "vers",
+    "contre",
+    "chez",
+    "pendant",
+    "depuis",
+    "jusqu'à",
+    "selon",
+    "sans",
+    "versus",
+    "via",
+  ],
+};
+
+const personal_pronouns: { [key: string]: { [key: string]: string } } = {
+  fr: { je: "moi", tu: "toi", il: "il", elle: "elle", nous: "nous", vous: "vous", ils: "ils", elles: "elles" },
+  en: { i: "me", you: "you", he: "him", she: "her", we: "us", they: "them" },
+  es: {},
+  pt: {},
+}
+
 /**
  * @param sentence The sentence to remove prepositions from
  * @param lang The language of the sentence
@@ -26,7 +137,17 @@ export function removePrepositions(sentence: string, lang: 'en' | 'fr' | 'es' | 
   }
   sentence = sentence.replace(/[^A-zÀ-ÿ\s]|_/g, "").replace(/\s+/g, " ");
   const words = sentence.split(" ");
-  return words
+  if (prepositions[lang] === undefined ||useOptions().removePrepositions === false) {
+    return words;
+  }
+  const preps = prepositions[lang];
+  // We need to filter empty strings
+  let filteredWords = words.filter((word) => !preps.includes(word) && word !== "");
+  filteredWords = filteredWords.map((word) => {
+    const pronoun = personal_pronouns[lang][word]
+    return pronoun ? pronoun : word;
+  });
+  return filteredWords;
 }
 
 import nlp from 'fr-compromise'

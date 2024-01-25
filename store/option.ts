@@ -11,6 +11,7 @@ export const useOptions = defineStore('options', {
         sexFilter: true as Boolean,
         violenceFilter: true as Boolean,
         simplifyTranslation: true as Boolean,
+        removePrepositions: true as Boolean,
     }),
     persist: {
         storage: persistedState.localStorage,

@@ -5,6 +5,7 @@
             <ThemeSwitch class="my-4" />
             <SearchFiltersSelectors class="my-4" />
             <SimpleTranslation class="my-4" />
+            <PrepositionSelector class="my-4" />
             <UpdatePwa class="my-4" />
             <div class="divider mb-0 mt-auto"></div>
             <LicenceViewer class="my-4" />
@@ -28,6 +29,7 @@ import ThemeSwitch from './menu/theme-switch.vue';
 import SearchFiltersSelectors from './menu/search-filters-selectors.vue';
 import SimpleTranslation from './menu/simple-translation.vue';
 import LicenceViewer from './menu/licences-viewer.vue';
+import PrepositionSelector from './menu/prepositions-selector.vue';
 import UpdatePwa from './menu/update-pwa.vue';
 import { useAuth } from "~/store/auth";
 const { logout, isAuthenticated } = useAuth();
