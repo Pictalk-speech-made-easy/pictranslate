@@ -5,7 +5,8 @@
       class="btn h-auto mx-4 my-2 px-2 py-1 justify-start rounded-lg shadow-md bg-blue-100 dark:bg-blue-900"
       v-for="(historyItem, index) in historyDatabase.history">
       <div class="flex justify-start p-1 pb-0 overflow-x-auto">
-        <btn class="max-w-[15%]" tabindex="0" v-for="(pictogramPropositions, index) in historyItem.pictogramsPropositions">
+        <btn class="max-w-[15%]" tabindex="0"
+          v-for="(pictogramPropositions, index) in historyItem.pictogramsPropositions">
           <img crossorigin="anonymous" class="!m-0 aspect-square object-contain rounded-sm zoom-in"
             :src="pictogramPropositions['pictograms'][pictogramPropositions.selected].external_alt_image.toString()"
             :alt="pictogramPropositions['pictograms'][pictogramPropositions.selected]['keywords'][options.locale][0]['keyword']" />
@@ -18,7 +19,7 @@
 <script setup lang="ts">
 import { useOptions } from '~/store/option';
 import { useHistoryDatabase } from '~/store/history';
-import { HistoryItem } from '~/store/store-types';
+import type { HistoryItem } from '~/store/store-types';
 const options = useOptions();
 const historyDatabase = useHistoryDatabase();
 const main = useMain();

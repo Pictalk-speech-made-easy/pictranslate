@@ -1,6 +1,6 @@
 import Dexie from 'dexie';
 import Fuse from 'fuse.js';
-import { HistoryItem, PictogramPropositions } from './store-types';
+import type { HistoryItem, PictogramPropositions } from './store-types';
 export const useHistoryDatabase = defineStore('history', {
     state: () => ({
         db: undefined as Dexie | undefined,

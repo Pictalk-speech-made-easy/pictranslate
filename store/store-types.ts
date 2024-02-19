@@ -1,4 +1,4 @@
-export interface HistoryItem {
+export type HistoryItem = {
     text_input: string,
     pictogramsPropositions: Array<PictogramPropositions>,
     created: Date,
