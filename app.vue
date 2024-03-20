@@ -12,12 +12,16 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useStimulusDatabase } from './store/stiumulus-db';
+// import { useStimulusDatabase } from './store/stiumulus-db';
+import {useGramDatabase} from './store/gram-db';
 import { useHistoryDatabase } from './store/history';
 import { useMiniPictohubDatabase } from './store/mini-pictohub-db';
 // Initialize stimulus database
-const stimulusDatabase = useStimulusDatabase();
-await stimulusDatabase.initialize_database();
+// const stimulusDatabase = useStimulusDatabase();
+// await stimulusDatabase.initialize_database();
+
+const GramDatabase = useGramDatabase();
+await GramDatabase.initialize_database();
 
 // Initialize history database
 const historyDatabase = useHistoryDatabase();

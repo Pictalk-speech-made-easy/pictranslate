@@ -90,10 +90,15 @@ export interface MiniDatabaseInformations {
     date_created: Date,
 }
 
-export type StimulusResponse = {
-    stimulus: string,
-    probability: number,
-    responses: BasePictogram[],
+// export type StimulusResponse = {
+//     stimulus: string,
+//     probability: number,
+//     responses: BasePictogram[],
+// }
+
+export type GramResponse = {
+    word: string,
+    count: number, 
 }
 
 export type ObjectAccessInfo = {
