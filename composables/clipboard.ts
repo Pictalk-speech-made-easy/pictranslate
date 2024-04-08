@@ -27,6 +27,7 @@ export function useClipboard() {
                 });
                 preGeneratedBlob.value = b64toBlob(b64);
             } catch (e) {
+                console.log(paths)
                 console.error(e);
             }
         } else {

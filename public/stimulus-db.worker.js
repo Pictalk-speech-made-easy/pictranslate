@@ -1,4 +1,4 @@
-console.debug('Worker started')
+console.debug('Worker S started')
 importScripts('https://npmcdn.com/dexie@3.2.4/dist/dexie.min.js');
 const EXPECTED_ENTRY_COUNT = 8211;
 
@@ -12,16 +12,16 @@ self.addEventListener('message', async (e) => {
     if (action !== 'populateStimulusDatabase') return;
     const db = await initialize_indexeddb();
     const entry_count = await db.stimulus_response.count();
-    console.debug(`[Worker] IndexedDB entry count: ${entry_count}`)
+    console.debug(`[Worker S] IndexedDB entry count: ${entry_count}`)
     if (db && entry_count === EXPECTED_ENTRY_COUNT) {
         self.postMessage({ action: 'populateStimulusDatabase', success: true });
     }
     else {
         try {
-            console.debug('[Worker] Starting download process')
+            console.debug('[Worker S] Starting download process')
             const data_json = await download_latest_datafile_version();
             save_data_to_indexeddb(db, data_json);
-            console.debug(`[Worker] Save data is a success`)
+            console.debug(`[Worker S] Save data is a success`)
             self.postMessage({ action: 'populateStimulusDatabase', success: true });
         } catch (error) {
             console.debug(error)
@@ -59,6 +59,6 @@ const save_data_to_indexeddb = async (db, data) => {
  */
 const download_latest_datafile_version = async () => {
     const response = await fetch("/output.reduced.json");
-    console.debug(`[Worker] Downloaded file ${response} output.reduced.json`)
+    console.debug(`[Worker stimulus] Downloaded file ${response} output.reduced.json`)
     return response.json();
 }

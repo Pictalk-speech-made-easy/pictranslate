@@ -32,14 +32,16 @@ import PictosViewer from '~/components/translate/pictos-viewer.vue';
 import History from '~/components/translate/history.vue';
 import { useClipboard } from '~/composables/clipboard';
 import { useAuth } from '~/store/auth';
-import { useStimulusDatabase } from '~/store/stiumulus-db';
+// import { useStimulusDatabase } from '~/store/stiumulus-db';
+import { useGramDatabase } from '~/store/gram-db';
 import { useMiniPictohubDatabase } from '~/store/mini-pictohub-db';
 import { useHistoryDatabase } from '~/store/history';
 import { useMain } from '~/store/main';
 import { usePreferences } from '~/store/preferences';
 const { updateLocalBundles } = usePreferences()
 const miniPictohubDatabase = useMiniPictohubDatabase();
-const stimulusDatabase = useStimulusDatabase();
+// const stimulusDatabase = useStimulusDatabase();
+const GramDatabase = useGramDatabase();  
 const { addHistory } = useHistoryDatabase();
 const main = useMain();
 const options = useOptions();
@@ -57,8 +59,11 @@ const onClickDownload = () => {
 
 onMounted(async () => {
   updateLocalBundles();
-  stimulusDatabase.initialize_database();
-  stimulusDatabase.startWorker();
+  // stimulusDatabase.initialize_database();
+  // stimulusDatabase.startWorker();
+
+  GramDatabase.initialize_database();
+  GramDatabase.startWorker();
   miniPictohubDatabase.initialize_database();
   miniPictohubDatabase.startWorker();
 });

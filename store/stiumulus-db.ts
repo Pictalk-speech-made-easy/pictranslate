@@ -78,6 +78,7 @@ export const useStimulusDatabase = defineStore('stimulus', {
             let tempSuggestions = this.suggestions.slice(0, 5);
             tempSuggestions = await Promise.all(tempSuggestions.map(async (suggestion: StimulusResponse) => {
                 suggestion.responses = await main.getPictogram(suggestion.stimulus, "en");
+
                 return suggestion;
             }));
             console.debug("[main] pictohub tempSuggestions", JSON.parse(JSON.stringify(tempSuggestions)))
@@ -88,4 +89,3 @@ export const useStimulusDatabase = defineStore('stimulus', {
         },
     },
 });
-

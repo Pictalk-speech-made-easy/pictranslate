@@ -83,6 +83,7 @@ export const useMain = defineStore('main', {
             sentencePictogramPropositions = sentencePictogramPropositions.filter((pictogramPropositions: PictogramPropositions) => pictogramPropositions && pictogramPropositions.pictograms.length > 0);
             console.log("Final sentence: ", sentence);
             this.pictogramsPropositions = sentencePictogramPropositions;
+            // console.log("Final sentence pictograms: ", sentencePictogramPropositions);
             return sentence;
         },        
         isSentenceComplete(sentence: Sentence): boolean {
@@ -90,4 +91,3 @@ export const useMain = defineStore('main', {
         }
     },
 });
-

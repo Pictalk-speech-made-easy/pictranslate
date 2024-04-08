@@ -20,6 +20,7 @@ import { useMiniPictohubDatabase } from './store/mini-pictohub-db';
 // const stimulusDatabase = useStimulusDatabase();
 // await stimulusDatabase.initialize_database();
 
+// Initialize gram database
 const GramDatabase = useGramDatabase();
 await GramDatabase.initialize_database();
 

@@ -111,6 +111,7 @@ export const useHistoryDatabase = defineStore('history', {
                 };
             } else {
                 data = {
+                    // text_input: '[$START]'+textInput+'[$END]',
                     text_input: textInput,
                     pictogramsPropositions: pictogramsPropositions,
                     created: new Date(),
