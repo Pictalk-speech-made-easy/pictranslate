@@ -6,11 +6,15 @@ type Entry = {
         word: string;
         count: number;
 }
-function sanitize(input: string) {
+function sanitize(input: string | undefined): string {
+        if (typeof input !== 'string') {
+            console.error('sanitize function received non-string input:', input);
+            return '';
+        }
         return input.normalize('NFC')
-                .replace('+', '')
-                .toLowerCase()
-                .trim();
+                    .replace('+', '')
+                    .toLowerCase()
+                    .trim();
 }
 function compose(key: string[]) {
         key.forEach((key) => sanitize(key));
@@ -44,16 +48,36 @@ export class Gram {
                         this.deserialize(data);
                 }
         }
+        init_gram(filePath: string) { // Initialize the gram from a text file
+
+                const fileContent = fs.readFileSync(filePath, 'utf-8');
+                const lines = fileContent.split('\n');
+
+                lines.forEach((line) => {
+                        if (line === '\n') {
+                                return; // Skip empty lines
+                        }
+                        const words = line.split(' ');
+                        // console.log(words);
+                        this.add(['$START', words[0]], words[1])
+                        for (let i = 0; i < words.length - 2; i++) {
+                                this.add([words[i], words[i+1]], words[i+2]);
+                                // console.log(words[i], words[i+1], words[i+2])
+                        } 
+                        this.add([words[words.length - 2], words[words.length - 1]], '$END')
+                });     
+
+        }
         set(keys: string[], item: Entry[]) {
                 const ckey = compose(keys);
                 this.map.set(ckey, item);
         }
         add(keys: string[], word: string) {
-                const ckey = compose(keys);
+                const ckey = compose(keys); 
                 const current = this.map.get(ckey) || [];
-                const found = current.find(entry => entry.word === word);
                 const gram = keys.join(' ');
-
+                // console.log(gram)
+                const found = current.find(entry => entry.word === word);
                 if (found) {
                         found.count++;
                 } else {
@@ -107,3 +131,5 @@ export class Gram {
                 }
         }
 }
+
+                 
