@@ -176,8 +176,7 @@ export default defineNuxtConfig({
       ]
     },
     workbox: {
-      // Register the stimulus-db.worker.js file in the service worker
-      importScripts: ['stimulus-db.worker.js', 'minified-pictohub.worker.js', 'images-pictohub.worker.js'],
+      importScripts: ['gram-db.worker.js', 'minified-pictohub.worker.js', 'images-pictohub.worker.js'],
       runtimeCaching: [
         {
           urlPattern: new RegExp(`^https://pictohub-api.gandi.asidiras.dev/collection/keyword*`, 'i'),

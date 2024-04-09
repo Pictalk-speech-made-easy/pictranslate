@@ -1,6 +1,7 @@
 <template>
   <Transition name="fade">
-    <div class="flex mx-auto p-1 items-center justify-center max-w-lg h-28 max-h-28" v-if="main.suggestedPictograms.length > 0">
+    <div class="flex mx-auto p-1 items-center justify-center max-w-lg h-28 max-h-28"
+      v-if="main.suggestedPictograms.length > 0">
       <TransitionGroup name="list">
         <div v-for="pictogram in main.suggestedPictograms"
           :key="pictogram['pictograms'][pictogram['selected']]['keywords'][options.locale][0]['keyword']">
@@ -20,10 +21,11 @@
 </template>
 <script setup lang="ts">
 import { useMain } from '~/store/main';
-import { useStimulusDatabase } from '~/store/stiumulus-db';
+import { useGramDatabase } from '~/store/gram-db';
+
 import { useOptions } from '~/store/option';
 const main = useMain();
-const stimulusdb = useStimulusDatabase();
+const gramdb = useGramDatabase();
 const options = useOptions();
 
 watch(() => main.pictogramsPropositions, async (value) => {
@@ -31,28 +33,27 @@ watch(() => main.pictogramsPropositions, async (value) => {
   console.log("[suggestion-box] watch triggered")
   if (value.length == 0) {
     console.log("[suggestion-box] empty pictograms")
-    stimulusdb.suggestions = [];
+    gramdb.suggestions = [];
     main.suggestedPictograms = []
     return;
   }
-  const picto = value[value.length - 1];
-  console.debug("[suggestion-box] pictogram", picto)
-  const stimulus = picto['pictograms'][picto['selected']]['keywords']['en'][0]['keyword']
-  const response = await stimulusdb.getStimulus(stimulus)
+  const stimulus = value.map((p) => p['pictograms'][p['selected']]['keywords']['en'][0]['keyword'])
+  console.debug("[suggestion-box] pictograms", stimulus)
+  const response = await gramdb.getGram(stimulus)
   console.debug("[suggestion-box] response", response)
   if (response) {
-    stimulusdb.suggestions = response.map((r: any) => {
+    gramdb.suggestions = response.map((r: any) => {
       return {
-        stimulus: r["word"],
-        probability: r["n"],
-        responses: []
-        // Add more properties as needed
-    } as StimulusResponse;
+        word: r["word"],
+        count: r["count"],
+        predictions: [], // Add this line
+        gram: r["gram"]
+      } as GramResponse;
     })
-    console.debug("[suggestion-box] getStimulusPictograms", value, stimulusdb.suggestions)
-    stimulusdb.getStimulusPictograms();
-    }
-}, {  deep: true });
+    console.debug("[suggestion-box] getGramPictograms", value, gramdb.suggestions)
+    gramdb.getGramPictograms();
+  }
+}, { deep: true });
 
 function onSuggestionConfirmed(pictogram: any) {
   const newWord = pictogram['pictograms'][0]['keywords'][options.locale][0]['keyword'].replace(' ', '-');

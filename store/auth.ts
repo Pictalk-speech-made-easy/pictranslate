@@ -35,13 +35,11 @@ export const useAuth = defineStore('authentication', {
                         // Use Dexie to clear the database
                         await useMiniPictohubDatabase().deleteDatabase();
                         await useHistoryDatabase().deleteDatabase();
-                        await useStimulusDatabase().deleteDatabase();
-
+                        
                         usePreferences().$reset();
                         useMiniPictohubDatabase().$reset();
                         useOptions().$reset();
                         useHistoryDatabase().$reset();
-                        useStimulusDatabase().$reset();
                         // Clear all caches
                         await caches.delete('images-pictohub');
 

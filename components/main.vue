@@ -1,8 +1,8 @@
 <template>
   <div class="my-20 h-[calc(100vh - 64px)] max-w-2xl mx-auto">
-    <InputBox/>
-    <SuggestionBox/>
-    <PictosViewer/>
+    <InputBox />
+    <SuggestionBox />
+    <PictosViewer />
     <div class="flex justify-end items-center my-4 mx-4 gap-2">
       <button class="btn btn-sm btn-primary rounded-2xl" @click="onClickCopy">{{ $t('main.copy') }}
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
@@ -22,7 +22,7 @@
         </svg>
       </button>
     </div>
-    <History/>
+    <History />
   </div>
 </template>
 <script setup lang="ts">
@@ -31,15 +31,14 @@ import SuggestionBox from '~/components/translate/suggestion-box.vue';
 import PictosViewer from '~/components/translate/pictos-viewer.vue';
 import History from '~/components/translate/history.vue';
 import { useClipboard } from '~/composables/clipboard';
-import { useAuth } from '~/store/auth';
-import { useStimulusDatabase } from '~/store/stiumulus-db';
+import { useGramDatabase } from '~/store/gram-db';
 import { useMiniPictohubDatabase } from '~/store/mini-pictohub-db';
 import { useHistoryDatabase } from '~/store/history';
 import { useMain } from '~/store/main';
 import { usePreferences } from '~/store/preferences';
 const { updateLocalBundles } = usePreferences()
 const miniPictohubDatabase = useMiniPictohubDatabase();
-const stimulusDatabase = useStimulusDatabase();
+const GramDatabase = useGramDatabase();
 const { addHistory } = useHistoryDatabase();
 const main = useMain();
 const options = useOptions();
@@ -57,22 +56,23 @@ const onClickDownload = () => {
 
 onMounted(async () => {
   updateLocalBundles();
-  stimulusDatabase.initialize_database();
-  stimulusDatabase.startWorker();
+
+  GramDatabase.initialize_database();
+  GramDatabase.startWorker();
   miniPictohubDatabase.initialize_database();
   miniPictohubDatabase.startWorker();
 });
 
 watch(() => $pwa?.offlineReady, () => {
-    if ($pwa?.isInstalled || $pwa?.offlineReady || process.env.NODE_ENV === 'development') {
+  if ($pwa?.isPWAInstalled || $pwa?.offlineReady || process.env.NODE_ENV === 'development') {
     // We will implement custom user pictograms later
     // const authenticated = await auth.getAuthenticated();
-    
+
   }
 });
 
 watch(() => options.locale, () => {
-  if ($pwa?.isInstalled || $pwa?.offlineReady || process.env.NODE_ENV === 'development') {
+  if ($pwa?.isPWAInstalled || $pwa?.offlineReady || process.env.NODE_ENV === 'development') {
     miniPictohubDatabase.initialize_database();
     miniPictohubDatabase.startWorker();
   }

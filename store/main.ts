@@ -15,6 +15,7 @@ export const useMain = defineStore('main', {
             const options = useOptions();
             const config = useRuntimeConfig();
             const useMiniPictohubDb = useMiniPictohubDatabase();
+            console.log("locale: ", locale);
             let singleWordPictogram: BasePictogram[] | undefined = await useMiniPictohubDb.getMiniPictogram(keyword, locale);
             if (!singleWordPictogram) {
                 singleWordPictogram = await getPictoFromPictohub(config, keyword, locale, [options.locale, 'en'], 5);
@@ -83,6 +84,7 @@ export const useMain = defineStore('main', {
             sentencePictogramPropositions = sentencePictogramPropositions.filter((pictogramPropositions: PictogramPropositions) => pictogramPropositions && pictogramPropositions.pictograms.length > 0);
             console.log("Final sentence: ", sentence);
             this.pictogramsPropositions = sentencePictogramPropositions;
+            // console.log("Final sentence pictograms: ", sentencePictogramPropositions);
             return sentence;
         },        
         isSentenceComplete(sentence: Sentence): boolean {
@@ -90,4 +92,3 @@ export const useMain = defineStore('main', {
         }
     },
 });
-

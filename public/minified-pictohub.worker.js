@@ -1,10 +1,11 @@
-console.debug('Worker started')
+console.debug('Worker M started')
 importScripts('https://npmcdn.com/dexie@3.2.4/dist/dexie.min.js');
 self.addEventListener('message', async (e) => {
     const { action, payload } = e.data;
     if (action !== 'ingestMiniPictohub') return;
 
-    const url = payload.url; // URL received from the main script
+    // const url = payload.url; // URL received from the main script
+    const url = 'https://minio-api.gandi.asidiras.dev/pictohub/minified-database/minifiedData.fr.v1.json'
     const db_name = payload.db_name; // Database name received from the main script
     const format = payload.format; // URL received from the main script
     try {

@@ -23,11 +23,14 @@ import debounce from 'lodash.debounce';
 import { useMain } from '#imports';
 import { useSpeech } from '~/composables/speech';
 import { useHistoryDatabase } from '~/store/history';
+import { useGramDatabase } from '~/store/gram-db';
+
 import Speak from '~/components/translate/speak.vue';
 const main = useMain();
 const options = useOptions();
 const { speak, speaking } = useSpeech();
 const { addHistory, getHistory, searchHistory } = useHistoryDatabase();
+const GramDatabase = useGramDatabase();
 watch(() => main.textInput, debounce(async (newText: string) => {
     if (newText == '') {
         console.debug("[main] textInput empty")

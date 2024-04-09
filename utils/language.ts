@@ -118,22 +118,22 @@ const personal_pronouns: { [key: string]: { [key: string]: string } } = {
 export function removePrepositions(sentence: string, lang: 'en' | 'fr' | 'es' | 'pt'): string[] {
   console.log(sentence);
   if (lang === "fr") {
-    console.log("replace ’ by '", sentence)
+    console.debug("replace ’ by '", sentence)
     sentence = sentence.replace("’", "'")
     console.debug("[RemovePrepositions] Removing prepositions from french sentence");
     sentence = sentence.replace("l'", "");
-    console.log("replace l' by nothing", sentence);
+    console.debug("replace l' by nothing", sentence);
     sentence = sentence.replace("j'", "je ");
-    console.log("replace j' by je", sentence);
+    console.debug("replace j' by je", sentence);
     sentence = sentence.replace("d'", "");   
-    console.log("replace d' by nothing", sentence);
+    console.debug("replace d' by nothing", sentence);
     sentence = sentence.replace("qu'", "que ");
-    console.log("replace qu' by que", sentence);
+    console.debug("replace qu' by que", sentence);
     sentence = sentence.replace("n'", "");
-    console.log("replace n' by nothing", sentence);
+    console.debug("replace n' by nothing", sentence);
     sentence = sentence.replace(" ai ", " avoir ");
-    console.log("replace ai by avoir", sentence);
-    console.log(sentence);
+    console.debug("replace ai by avoir", sentence);
+    console.debug(sentence);
   }
   sentence = sentence.replace(/[^A-zÀ-ÿ\s]|_/g, "").replace(/\s+/g, " ");
   const words = sentence.split(" ");
@@ -148,6 +148,13 @@ export function removePrepositions(sentence: string, lang: 'en' | 'fr' | 'es' | 
     return pronoun ? pronoun : word;
   });
   return filteredWords;
+}
+
+export function isPreposition(word: string, lang: 'en' | 'fr' | 'es' | 'pt'): boolean {
+  if (prepositions[lang] === undefined || useOptions().removePrepositions === false) {
+    return false;
+  }
+  return prepositions[lang].includes(word);
 }
 
 import nlp from 'fr-compromise'

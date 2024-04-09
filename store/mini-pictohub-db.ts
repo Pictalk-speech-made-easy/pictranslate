@@ -156,7 +156,14 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
                 // Be carefull to not return objects with the same external_alt_image
                 data = this.removeDuplicates(data);
                 // Order the result by exact match first
-                data.sort((a, b) => (a.keyword === search ? -1 : b.keyword === search ? 1 : 0));
+                if (locale == "fr") {
+                    data.sort((a, b) => (a.keyword === search ? -1 : b.keyword === search ? 1 : 0));
+                    data.sort((a, b) => (a.tags.includes("core vocabulary") && a.keyword === search ? -1 : b.tags.includes("core vocabulary") && b.keyword === search ? 1 : 0));
+                } else if (locale == "en") {
+                    data.sort((a, b) => (a.keyword_en === search ? -1 : b.keyword_en === search ? 1 : 0));
+                    data.sort((a, b) => (a.tags.includes("core vocabulary") && a.keyword_en === search ? -1 : b.tags.includes("core vocabulary") && b.keyword_en === search ? 1 : 0));
+                }
+                // If multiple elements have an exact match, put the ones with that containt the tags ""core vocabulary" first
                 data = data.slice(0, limit);
                 if (data.length > 0) {
                     usePreferences().accessObject("preferredTags",data[0].tags[0]);
