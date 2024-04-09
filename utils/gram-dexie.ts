@@ -1,5 +1,5 @@
 import Dexie from "dexie"
-import { Gram } from '../gram yo/gram';  
+import { Gram } from '../devops/gram';  
 
 export const download_latest_gram_version = async () => {
     // The file is stored in the /public folder

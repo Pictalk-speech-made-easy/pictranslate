@@ -14,11 +14,11 @@ export function useClipboard() {
         navigatorPermission = await navigatorAskWritePermission();
     });
     watch(() => main.pictogramsPropositions, async (value) => {
-        console.log("[Clipboard] watch triggered")
+        console.debug("[Clipboard] watch triggered")
         if (value.length > 0) {
             console.debug("[Clipboard] Pictograms changed, generating new blob")
             const paths = value.map((picto: any) => picto['pictograms'][picto['selected']].external_alt_image);
-            console.log("[Clipboard] paths", paths)
+            console.debug("[Clipboard] paths", paths)
             try {
                 const b64 = await mergeImages(paths, {
                     crossOrigin: "Anonymous",

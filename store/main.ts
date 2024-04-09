@@ -15,6 +15,7 @@ export const useMain = defineStore('main', {
             const options = useOptions();
             const config = useRuntimeConfig();
             const useMiniPictohubDb = useMiniPictohubDatabase();
+            console.log("locale: ", locale);
             let singleWordPictogram: BasePictogram[] | undefined = await useMiniPictohubDb.getMiniPictogram(keyword, locale);
             if (!singleWordPictogram) {
                 singleWordPictogram = await getPictoFromPictohub(config, keyword, locale, [options.locale, 'en'], 5);

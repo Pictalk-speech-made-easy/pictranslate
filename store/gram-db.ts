@@ -1,6 +1,7 @@
 import Dexie from 'dexie';
-import { GramResponse } from './store-types';
+import type { GramResponse } from './store-types';
 import { useMain } from './main';
+import { isPreposition } from '~/utils/language';
 
 export const useGramDatabase = defineStore('gram', {
     state: () => ({
@@ -60,59 +61,47 @@ export const useGramDatabase = defineStore('gram', {
             }
         },
 
-        async getGram(gramInput: string) {
-            console.log("Getting gram from database")
+        async getGram(gramInput: string[]) {
+            console.debug("[Gram-db] Getting gram from database")
             if (this.db === undefined  ) {
-                console.log("Database not initialized")
+                console.debug("[Gram-db] Database not initialized")
                 return undefined;
             }
             //@ts-ignore
-            console.log("Database initialized, searching for gram", gramInput.toUpperCase());
-            // const data = await this.db.gram_response.get(gramInput.toUpperCase());
-            // const data = await this.db.gram_response.get("$START+Accept");
-            const words = [gramInput.toUpperCase().split(" ")];
+            
+            const words = gramInput.map((word: string) => word.toUpperCase())
             // console.log('words',words)
-            const result = [];
-            result.push(`$START+${words[0][0]}`);
-            for (let i = 1; i < words[0].length; i++) {
-                result.push(`${words[0][i - 1]}+${words[0][i]}`);
-            } 
-
-            // const result = words[0].map((word,index) => {
-            //     if(index ==0){
-            //         console.log("First word", word)
-            //         return `$START+${word}`;
-            //     }else{
-            //         console.log("Other words", word)
-            //         return `${words[index - 1]}+${word}`;
-            //     }
-            // });
-    
-
-            console.log("Result", result[result.length - 1])
-
-            const data = await this.db.gram_response.get(result[result.length - 1]);
-            // const data = await this.db.gram_response.get("$START+Accept");
-            console.log("Data", data)
+            let result = "";
+            console.log("Words", words)
+            if (words.length === 1) {
+                result = `$START+${words[0]}`;
+            } else {
+                result = `${words[words.length - 2]}+${words[words.length - 1]}`
+            }
+            console.log("Database initialized, searching for gram", result);
+             
+            const data = await this.db.gram_response.get(result);
             if (data?.predictions.length > 0) {
-                console.log("Found gram", data?.predictions);
+                console.debug("[Gram-db] Found gram", data?.predictions);
                 return data?.predictions;
             }
-            console.log("Gram not found");
+            console.debug("[Gram-db]Gram not found");
             return undefined;
         }, 
         async getGramPictograms() {
-            console.log("Getting pictograms from gram")
             const main = useMain();
+            // Order this.suggestions by count
+            this.suggestions.sort((a, b) => (a.count > b.count) ? -1 : 1);
+            // Filter specific words that start with a $ or a #
+            this.suggestions = this.suggestions.filter((suggestion: GramResponse) => !suggestion.word.startsWith("$") && !suggestion.word.startsWith("#") && !isPreposition(suggestion.word, "en"));
+            // Also filter out the prepositions
+            
             let tempSuggestions = this.suggestions.slice(0, 5);
-            console.log("Temp suggestions", tempSuggestions)
-
             tempSuggestions = await Promise.all(tempSuggestions.map(async (suggestion: GramResponse) => {
-                suggestion.predictions = await main.getPictogram(suggestion.gram, "fr");
-                console.log("Pictograms for gram", suggestion.predictions)
+                suggestion.predictions = await main.getPictogram(suggestion.word, "en");
                 return suggestion;
             }));
-            console.debug("[main] pictohub tempSuggestions", JSON.parse(JSON.stringify(tempSuggestions)))
+            console.debug("[Gram-db] Suggestions", JSON.parse(JSON.stringify(tempSuggestions)))
             let unfilteredPictograms: PictogramPropositions = tempSuggestions.map((gramResponse: GramResponse) => { return { 'selected': 0, 'pictograms': gramResponse.predictions } })
             // Remove the empty elements and only keep the first 3 elements
 

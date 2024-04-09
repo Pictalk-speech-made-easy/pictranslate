@@ -1,15 +1,13 @@
 console.debug('Worker G started')
 importScripts('https://npmcdn.com/dexie@3.2.4/dist/dexie.min.js');
-const EXPECTED_ENTRY_COUNT = 8211;
 
- 
 self.addEventListener('message', async (e) => {
     const { action, payload } = e.data;
     if (action !== 'populateGramDatabase') return;
     const db = await initialize_indexeddb();
     const entry_count = await db.gram_response.count();
     console.debug(`[Worker Gram] IndexedDB entry count: ${entry_count}`)
-    
+
     try {
         console.debug('[Worker Gram] Starting download process')
         const data_json = await download_latest_datafile_version();
@@ -19,7 +17,7 @@ self.addEventListener('message', async (e) => {
     } catch (error) {
         console.debug(error)
     }
-    
+
 });
 
 const initialize_indexeddb = async () => {
@@ -41,14 +39,13 @@ const save_data_to_indexeddb = async (db, data) => {
     // const jdata = JSON.parse(data[0]);
     // console.log('jdata', jdata );
     const List = data.map(item => ({
-        gram : item[0].toUpperCase(),
-        predictions : item[1]
+        gram: item[0].toUpperCase(),
+        predictions: item[1]
     }));
     db.gram_response.bulkPut(List)
-    console.log('List', List);
 }
 
- 
+
 const download_latest_datafile_version = async () => {
     const response = await fetch("/output.gram.json");
     console.debug(`[Worker gram] Downloaded file ${response} output.gram.json`)

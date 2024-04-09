@@ -61,6 +61,7 @@ export type MiniPictogram = BasePictogram & {
         $numberInt: string,
     };
     keyword: string,
+    keyword_en: string,
     hasLocution: boolean,
     plural?: string,
     linguistic_category?: string,
@@ -88,12 +89,6 @@ export interface MiniDatabaseInformations {
     url: string,
     db_name: string,
     date_created: Date,
-}
-
-export type StimulusResponse = {
-    stimulus: string,
-    probability: number,
-    responses: BasePictogram[],
 }
 
 export type GramResponse = {
