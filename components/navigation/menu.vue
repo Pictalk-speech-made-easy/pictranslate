@@ -41,7 +41,6 @@ import SearchFiltersSelectors from './menu/search-filters-selectors.vue';
 import SimpleTranslation from './menu/simple-translation.vue';
 import LicenceViewer from './menu/licences-viewer.vue';
 import PrepositionSelector from './menu/prepositions-selector.vue';
-import UpdatePwa from './menu/update-pwa.vue';
 import { useAuth } from "~/store/auth";
 const { logout, isAuthenticated } = useAuth();
 </script>
