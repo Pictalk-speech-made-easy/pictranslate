@@ -1,5 +1,5 @@
 {
-  "version": "0.1",
+  "version": "0.2",
   "name": "nuxt-app",
   "private": true,
   "type": "module",
@@ -26,8 +26,9 @@
     "@tailwindcss/typography": "^0.5.10",
     "@vite-pwa/nuxt": "^0.3.6",
     "bowser": "^2.11.0",
-    "daisyui": "^4.7.0",
+    "daisyui": "^4.10.1",
     "dexie": "^3.2.5",
+    "easy-speech": "^2.3.1",
     "fr-compromise": "^0.2.8",
     "fuse.js": "^7.0.0",
     "keycloak-js": "^23.0.6",

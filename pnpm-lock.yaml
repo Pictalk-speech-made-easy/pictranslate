@@ -36,11 +36,14 @@ dependencies:
     specifier: ^2.11.0
     version: 2.11.0
   daisyui:
-    specifier: ^4.7.0
-    version: 4.7.0(postcss@8.4.35)
+    specifier: ^4.10.1
+    version: 4.10.1(postcss@8.4.35)
   dexie:
     specifier: ^3.2.5
     version: 3.2.5(karma@6.4.2)
+  easy-speech:
+    specifier: ^2.3.1
+    version: 2.3.1
   fr-compromise:
     specifier: ^0.2.8
     version: 0.2.8
@@ -5267,8 +5270,8 @@ packages:
     resolution: {integrity: sha512-GAj5FOq0Hd+RsCGVJxZuKaIDXDf3h6GQoNEjFgbLLI/trgtavwUbSnZ5pVfg27DVCaWjIohryS0JFwIJyT2cMg==}
     dev: false
 
-  /daisyui@4.7.0(postcss@8.4.35):
-    resolution: {integrity: sha512-3IHnwpdQszy3Dl9UyTUAAPRX7CWSc4eoruOC1/FA71Rk9suD4dUW2v55UUwCnFArWhvIO7u87n+vU/Np0xeoWA==}
+  /daisyui@4.10.1(postcss@8.4.35):
+    resolution: {integrity: sha512-Ds0Z0Fv+Xf6ZEqV4Q5JIOeKfg83xxnww0Lzid0V94vPtlQ0yYmucEa33zSctsX2VEgBALtmk5zVEqd59pnUbuQ==}
     engines: {node: '>=16.9.0'}
     dependencies:
       css-selector-tokenizer: 0.8.0
@@ -5496,6 +5499,11 @@ packages:
 
   /eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
+
+  /easy-speech@2.3.1:
+    resolution: {integrity: sha512-oM7vvpbjmC9Ci/6CR/9DnGHci5hCSkXtlSy1aAFzXGdQPR4IH4jqkc/hQAM+slhCLM/wn/QrpgPOUGbxuR+Z3g==}
+    engines: {node: '>= 14.x'}
+    dev: false
 
   /ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}

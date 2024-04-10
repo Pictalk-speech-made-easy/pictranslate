@@ -5,9 +5,9 @@
             <AppNavbar />
             <Main />
         </div>
-        <div class="drawer-side">
+        <div class="drawer-side z-50">
             <label for="menu-drawer" class="drawer-overlay"></label>
-            <div class="menu p-6 w-80 bg-base-200 h-screen text-base-content shadow-2xl border-0 border-r-2 border-gray-300 dark:border-gray-700">
+            <div class="menu w-80 bg-base-200 h-full text-base-content shadow-2xl">
                 <Menu />
             </div>
         </div>

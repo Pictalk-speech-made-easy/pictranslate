@@ -15,19 +15,35 @@
     "menu": {
         "logout": "Déconnexion",
         "change_theme": "Changer de thème",
-        "violence_filter": "Filtre de violence",
-        "sex_filter": "Filtre de sexe",
-        "simple_translation": "Traduction simple",
+        "filters": {
+            "label": "Filtres",
+            "violence_filter": "Filtre de violence",
+            "sex_filter": "Filtre de sexe"
+        },
+        "translation": {
+            "label": "Paramètres de traduction",
+            "simple_translation": "Traduction simple",
+            "advanced_translation_alert": "La traduction avancée est une fonctionnalité expérimentale. Elle peut ne pas fonctionner correctement.",
+            "prepositions": "Supprimer les prepositions"
+        },
         "offline_ready": "L'application est prête à être utilisée hors ligne",
         "offline_not_ready": "L'application n'est pas prête à être utilisée hors ligne",
         "update_available": "Mise à jour disponible",
         "erase": "Effacer toutes les données",
-        "advanced_translation_alert": "La traduction avancée est une fonctionnalité expérimentale. Elle peut ne pas fonctionner correctement.",
         "licences_viewer": {
             "title": "Licences",
             "ARASAAC": "ARASAAC est une association sans but lucratif qui développe des ressources et des images pour faciliter l'accès à la communication sous licence Creative Commons (BY-NC-SA). Plus d'informations sur https://arasaac.org",
             "pictalk": "Le code de cette application est sous licence GNU GPL v3.0."
         },
-        "prepositions": "Supprimer les prepositions"
+        "language": {
+            "label": "Langue",
+            "tooltip": "Changer de langue"
+          },
+          "theme": {
+            "label": "Thème",
+            "tooltip": "Changer de thème",
+            "light": "Clair",
+            "dark": "Sombre"
+          }
     }
 }

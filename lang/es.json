@@ -13,21 +13,28 @@
         "install": "Instalar"
     },
     "menu": {
+        "translation": {
+            "label": "Configuración de traducción",
+            "simple_translation": "traducción sencilla",
+            "advanced_translation_alert": "La traducción avanzada puede producir resultados inesperados",
+            "prepositions": "Quitar preposiciones"
+        },
         "logout": "Cerrar sesión",
         "change_theme": "Cambiar de tema",
         "violence_filter": "Filtro de violencia",
-        "sex_filter": "Filtro de sexo",
-        "simple_translation": "traducción sencilla",
+        "filters": {
+            "label": "Filtros",
+            "sex_filter": "Filtro de sexo" 
+        },
         "offline_ready": "La aplicación está lista para funcionar sin conexión",
         "offline_not_ready": "La aplicación no está lista para funcionar sin conexión",
         "update_available": "Actualización disponible",
         "erase": "Borrar los datos",
-        "advanced_translation_alert": "La traducción avanzada puede producir resultados inesperados",
+        
         "licences_viewer": {
             "title": "Licencias",
             "ARASAAC": "ARASAAC es una organización aragonesa que ofrece pictogramas y otros materiales para personas con algún tipo de discapacidad bajo la licencia Creative Commons. Puedes encontrar más información en su sitio web: http://www.arasaac.org",
             "pictalk": "Este código de aplicación está bajo licencia GNU GPL V3."
-        },
-        "prepositions": "Quitar preposiciones"
+        }
     }
 }

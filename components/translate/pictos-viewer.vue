@@ -6,19 +6,20 @@
       <span v-if="pictogramPropositions.pictograms.length > 1"
         class="z-0 indicator-item indicator-top indicator-start badge badge-sm bg-slate-500 text-white px-1 top-1 left-2">+{{
           pictogramPropositions.pictograms.length - 1 }}</span>
-      <btn tabindex="0" @click="openModal(index)" @keyup.enter="openModal(index)">
+      <button tabindex="0" @click="openModal(index)" @keyup.enter="openModal(index)">
         <img crossorigin="anonymous" class="!m-0 aspect-square object-contain rounded-sm zoom-in"
           :src="pictogramPropositions['pictograms'][pictogramPropositions.selected].external_alt_image.toString()"
           :alt="pictogramPropositions['pictograms'][pictogramPropositions.selected]['keywords'][options.locale][0]['keyword']" />
         <p class="mt-1 font-semibold text-lg text-center">{{
-          pictogramPropositions['pictograms'][pictogramPropositions.selected]['keywords'][options.locale][0]['keyword'] }}
+          pictogramPropositions['pictograms'][pictogramPropositions.selected]['keywords'][options.locale][0]['keyword']
+        }}
         </p>
-      </btn>
+      </button>
     </div>
 
     <dialog id="picto_selector" class="modal">
       <div class="modal-box bg-gray-200 dark:bg-slate-800 flex flex-wrap">
-        <btn class="w-1/3 p-1" tabindex="0"
+        <button class="w-1/3 p-1" tabindex="0"
           v-for="(pictogram, index) in main.pictogramsPropositions[modalIndex]?.['pictograms']"
           @click="selectedPictogram(index)">
           <img crossorigin="anonymous" class="!m-0 aspect-square object-contain rounded-sm zoom-in"
@@ -26,7 +27,7 @@
           <p class="mt-1 font-semibold text-lg text-center">{{
             pictogram['keywords'][options.locale][0]['keyword']
           }}</p>
-        </btn>
+        </button>
       </div>
       <form method="dialog" class="modal-backdrop">
         <button>close</button>

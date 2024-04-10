@@ -28,7 +28,7 @@ export default defineNuxtConfig({
     head: {
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
-      title: 'Pictranslate',
+      title: 'CAA Facile - Pictranslate',
       link: [ { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }, { rel: 'apple-touch-icon', sizes: "180x180", href: '/apple-touch-icon.png' }, {rel:"mask-icon", href:"/safari-pinned-tab.svg", color:"#6A97DF"}, { rel:"icon", type:"image/png", sizes:"32x32", href:"/favicon-32x32.png"}, { rel:"icon", type:"image/png", sizes:"16x16", href:"/favicon-16x16.png"}, {
         rel: 'canonical',
         href: 'https://www.pictranslate.org'
@@ -120,12 +120,12 @@ export default defineNuxtConfig({
         } */
       ],
       shortcuts: [
-        { name: 'Pictranslate', short_name: 'Pictranslate', url: '/', icons: [{ src: '/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' }] },
+        { name: 'CAA Facile', short_name: 'CAA Facile', url: '/', icons: [{ src: '/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' }] },
       ],
       id: 'org.pictranslate.www.twa',
       categories: ['education', 'productivity', 'utilities', 'communication', 'social'],
-      name: 'Pictranslate AAC',
-      short_name: 'Pictranslate',
+      name: 'CAA Facile AAC',
+      short_name: 'CAA Facile',
       theme_color: '#6A97DF',
       orientation: "any",
       display: 'standalone',

@@ -15,19 +15,37 @@
     "menu": {
         "logout": "Logout",
         "change_theme": "Change theme",
-        "violence_filter": "Violence filter",
-        "sex_filter": "Sex filter",
-        "simple_translation": "Simple translation",
+        "filters": {
+            "label": "Filters",
+            "violence_filter": "Violence filter",
+            "sex_filter": "Sex filter"
+        },
+        "translation": {
+            "label": "Translation settings",
+            "simple_translation": "Simple translation",
+            "advanced_translation_alert": "Advanced translation can produce unexpected results",
+            "prepositions": "Remove prepositions"
+        },
         "offline_ready": "Application is ready to work offline",
         "offline_not_ready": "Application is not ready to work offline",
         "update_available": "Update available",
         "erase": "Erase all data",
-        "advanced_translation_alert": "Advanced translation can produce unexpected results",
+        
         "licences_viewer": {
             "title": "Licences",
             "ARASAAC": "ARASAAC is an aragoneese organization that offers pictograms and other materials for people with some kind of disability under the Creative Commons licence. You can find more information in their website: http://www.arasaac.org",
             "pictalk": "This application code is under GNU GPL V3 licence."
         },
-        "prepositions": "Remove prepositions"
+        
+        "language": {
+            "label": "Language",
+            "tooltip": "Change language"
+        },
+        "theme": {
+            "label": "Theme",
+            "tooltip": "Change theme",
+            "light": "Light",
+            "dark": "Dark"
+        }
     }
 }

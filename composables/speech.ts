@@ -1,18 +1,29 @@
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import Bowser from 'bowser';
+import EasySpeech from 'easy-speech'
 import { preferedVoices } from '~/utils/voice-preferences';
 import { useOptions } from '~/store/option';
-// by convention, composable function names start with "use"
+
 export function useSpeech() {
-    // state encapsulated and managed by the composable
     const speaking = ref(false)
     const TTSVoiceList = ref<SpeechSynthesisVoice[]>([]);
     const TTSVoice = ref<SpeechSynthesisVoice>();
+    const TTS_ON_BOUNDARY_SUPPORT = ref(false);
     const options = useOptions();
     onMounted(async () => {
-        if (!TTSBrowserCompatibility()) return
-        TTSVoiceList.value = await getTTSVoices();
-        TTSVoice.value = getPreferedVoice();
+        const speechInfo = EasySpeech.detect();
+        if(!speechInfo.speechSynthesis || !speechInfo.speechSynthesisUtterance){
+            console.error("Speech synthesis is not supported in this browser.");
+            return;
+        }
+        if(speechInfo.onboundary) TTS_ON_BOUNDARY_SUPPORT.value = true;
+        try {
+            await EasySpeech.init({ maxTimeout: 500, interval: 50 });
+            TTSVoiceList.value = EasySpeech.voices();
+            TTSVoice.value = getPreferedVoice();
+        } catch (error) {
+            console.error("Failed to initialize EasySpeech", error);
+        }
     });
     watch(() => options.locale, () => {
         TTSVoice.value = getPreferedVoice();
@@ -24,9 +35,9 @@ export function useSpeech() {
     */
     function speak(text: string) {
         const message = new SpeechSynthesisUtterance(text);
-        message.rate = options.TTSRate ? options.TTSRate : 1;
-        message.pitch = options.TTSPitch ? options.TTSPitch : 1;
-        message.voice = TTSVoice.value ? TTSVoice.value : null;
+        message.rate = options.TTSRate ?? 1;
+        message.pitch = options.TTSPitch ?? 1;
+        message.voice = TTSVoice.value ?? null;
         // Speak the message
         window.speechSynthesis.speak(message);
         speaking.value = true;
@@ -34,6 +45,7 @@ export function useSpeech() {
         message.onend = () => {
             speaking.value = false;
         }
+        return message;
     }
     /**
      * Returns the prefered voice for the current OS and browser.
@@ -58,41 +70,9 @@ export function useSpeech() {
         const browser = Bowser.getParser(window.navigator.userAgent);
         return { os: browser.getOSName(), browser: browser.getBrowserName(), type: browser.getPlatformType() };
     }
-    /**
-     * Returns true if the browser supports speech synthesis, false otherwise.
-     * @returns {boolean} True if the browser supports speech synthesis, false otherwise.
-     */
-    function TTSBrowserCompatibility(): boolean {
-        return "speechSynthesis" in window ? true : false;
-    }
-
-    /**
-     * Get all the voices available for speech synthesis.
-     * @returns {SpeechSynthesisVoice[]} The list of voices available for speech synthesis.
-     */
-    async function getTTSVoices(): Promise<SpeechSynthesisVoice[]> {
-        let voices = window.speechSynthesis.getVoices();
-        if (voices.length === 0) {
-            voices = await waitForTTSVoices();
-        }
-        return voices;
-    }
-
-    /**
-     * Wait for the speech synthesis voices to be loaded by listening to the 'onvoiceschanged' event.
-     * @returns {Promise<SpeechSynthesisVoice[]>} The list of voices available for speech synthesis.
-     */
-    function waitForTTSVoices(): Promise<SpeechSynthesisVoice[]> {
-        const promise = new Promise<SpeechSynthesisVoice[]>((resolve) => {
-            window.speechSynthesis.onvoiceschanged = () => {
-                resolve(window.speechSynthesis.getVoices());
-            }
-        });
-        return promise;
-    }
-
     return {
         speak,
         speaking,
+        TTS_ON_BOUNDARY_SUPPORT,
     }
 }
