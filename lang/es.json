@@ -21,16 +21,14 @@
         },
         "logout": "Cerrar sesión",
         "change_theme": "Cambiar de tema",
-        "violence_filter": "Filtro de violencia",
         "filters": {
             "label": "Filtros",
-            "sex_filter": "Filtro de sexo" 
+            "sex_filter": "Filtro de sexo"
         },
         "offline_ready": "La aplicación está lista para funcionar sin conexión",
         "offline_not_ready": "La aplicación no está lista para funcionar sin conexión",
         "update_available": "Actualización disponible",
         "erase": "Borrar los datos",
-        
         "licences_viewer": {
             "title": "Licencias",
             "ARASAAC": "ARASAAC es una organización aragonesa que ofrece pictogramas y otros materiales para personas con algún tipo de discapacidad bajo la licencia Creative Commons. Puedes encontrar más información en su sitio web: http://www.arasaac.org",
