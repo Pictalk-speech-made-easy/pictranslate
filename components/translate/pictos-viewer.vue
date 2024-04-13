@@ -8,11 +8,11 @@
           pictogramPropositions.pictograms.length - 1 }}</span>
       <button tabindex="0" @click="openModal(index)" @keyup.enter="openModal(index)">
         <img crossorigin="anonymous" class="!m-0 aspect-square object-contain rounded-sm zoom-in"
-          :src="pictogramPropositions['pictograms'][pictogramPropositions.selected].external_alt_image.toString()"
-          :alt="pictogramPropositions['pictograms'][pictogramPropositions.selected]['keywords'][options.locale][0]['keyword']" />
+          :src="miniPictohubDatabase.getImage(pictogramPropositions['pictograms'][pictogramPropositions.selected].images)"
+          :alt="pictogramPropositions['pictograms'][pictogramPropositions.selected]['translations'][options.locale][0]['word']" />
         <p class="mt-1 font-semibold text-lg text-center">{{
-          pictogramPropositions['pictograms'][pictogramPropositions.selected]['keywords'][options.locale][0]['keyword']
-        }}
+          pictogramPropositions['pictograms'][pictogramPropositions.selected]['translations'][options.locale][0]['word']
+          }}
         </p>
       </button>
     </div>
@@ -22,11 +22,16 @@
         <button class="w-1/3 p-1" tabindex="0"
           v-for="(pictogram, index) in main.pictogramsPropositions[modalIndex]?.['pictograms']"
           @click="selectedPictogram(index)">
+          <div v-for="image in pictogram.images" :key="image">
+            <img crossorigin="anonymous" class="!m-0 aspect-square object-contain rounded-sm zoom-in" :src="image.url"
+              :alt="pictogram['translations'][options.locale][0]['word']" />
+          </div>
           <img crossorigin="anonymous" class="!m-0 aspect-square object-contain rounded-sm zoom-in"
-            :src="pictogram.external_alt_image.toString()" :alt="pictogram['keywords'][options.locale][0]['keyword']" />
+            :src="miniPictohubDatabase.getImage(pictogram.images)"
+            :alt="pictogram['translations'][options.locale][0]['word']" />
           <p class="mt-1 font-semibold text-lg text-center">{{
-            pictogram['keywords'][options.locale][0]['keyword']
-          }}</p>
+            pictogram['translations'][options.locale][0]['word']
+            }}</p>
         </button>
       </div>
       <form method="dialog" class="modal-backdrop">
@@ -41,6 +46,7 @@ import { useMain } from '~/store/main';
 const main = useMain();
 const options = useOptions();
 const modalIndex = ref(0);
+const miniPictohubDatabase = useMiniPictohubDatabase();
 
 watch(() => main.pictogramsPropositions, (newValue, oldValue) => {
   if (newValue.length <= oldValue.length) return;

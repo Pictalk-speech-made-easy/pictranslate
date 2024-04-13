@@ -5,7 +5,7 @@ self.addEventListener('message', async (e) => {
     if (action !== 'ingestMiniPictohub') return;
 
     // const url = payload.url; // URL received from the main script
-    const url = 'https://minio-api.gandi.asidiras.dev/pictohub/minified-database/minifiedData.fr.v1.json'
+    const url = payload.url; // URL received from the main script
     const db_name = payload.db_name; // Database name received from the main script
     const format = payload.format; // URL received from the main script
     try {
@@ -25,8 +25,9 @@ self.addEventListener('message', async (e) => {
         // Iterate over the data and modify the external_alt_image property
         // to point to the images.pictohub.org domain
         data = data.map(pictogram => {
-            const id = pictogram.external_alt_image.split('/').pop();
-            pictogram.external_alt_image = `https://images.pictohub.org/${id}?preferredformat=${format}`
+            pictogram.images.map(image => {
+                image.url = `https://images.pictohub.org/${image.url}?preferredformat=${format}`
+            });
             return pictogram;
         });
 
@@ -46,7 +47,7 @@ function openDB(db_name) {
     const db = new Dexie(db_name);
 
     db.version(1).stores({
-        pictograms: '++id, keyword, keyword_en' // Define your schema
+        pictograms: '++id, word, word_en' // Define your schema
     });
 
     return db;

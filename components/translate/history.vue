@@ -22,21 +22,21 @@ import type { HistoryItem } from '~/store/store-types';
 const options = useOptions();
 const historyDatabase = useHistoryDatabase();
 const main = useMain();
-
+const miniPictohubDatabase = useMiniPictohubDatabase();
 onMounted(async () => {
   await historyDatabase.getHistory();
   console.debug("[history]", historyDatabase.history)
 })
 
 const getPictogram = function (pictogramPropositions: PictogramPropositions) {
-  return pictogramPropositions['pictograms'][pictogramPropositions.selected].external_alt_image.toString();
+  return miniPictohubDatabase.getImage(pictogramPropositions['pictograms'][pictogramPropositions.selected].images);
 }
 
 const getAlt = function (pictogramPropositions: PictogramPropositions) {
-  if (pictogramPropositions['pictograms'][pictogramPropositions.selected]['keywords'][options.locale]?.length > 0) {
-    return pictogramPropositions['pictograms'][pictogramPropositions.selected]['keywords'][options.locale][0]['keyword'];
+  if (pictogramPropositions['pictograms'][pictogramPropositions.selected]['translations'][options.locale]?.length > 0) {
+    return pictogramPropositions['pictograms'][pictogramPropositions.selected]['translations'][options.locale][0]['word'];
   }
-  return pictogramPropositions['pictograms'][pictogramPropositions.selected]['keywords']["en"][0]['keyword'];
+  return pictogramPropositions['pictograms'][pictogramPropositions.selected]['translations']["en"][0]['word'];
 }
 
 const onHistoryClick = function (record: HistoryItem) {

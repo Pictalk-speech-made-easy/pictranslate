@@ -176,7 +176,7 @@ export default defineNuxtConfig({
       ]
     },
     workbox: {
-      importScripts: ['gram-db.worker.js', 'minified-pictohub.worker.js', 'images-pictohub.worker.js'],
+      importScripts: ['gram-db.worker.js', 'minified-pictohub.worker.js',],
       runtimeCaching: [
         {
           urlPattern: new RegExp(`^https://pictohub-api.gandi.asidiras.dev/collection/keyword*`, 'i'),

@@ -17,7 +17,8 @@
             "label": "Configuración de traducción",
             "simple_translation": "traducción sencilla",
             "advanced_translation_alert": "La traducción avanzada puede producir resultados inesperados",
-            "prepositions": "Quitar preposiciones"
+            "prepositions": "Quitar preposiciones",
+            "preferred_pictogram_source": "Fuente de pictogramas preferida"
         },
         "logout": "Cerrar sesión",
         "change_theme": "Cambiar de tema",

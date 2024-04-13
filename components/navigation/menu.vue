@@ -16,6 +16,7 @@
             <div class="my-4">
                 <SimpleTranslation />
                 <PrepositionSelector />
+                <PictogramSourceSelector />
             </div>
             <div class="mt-auto">
                 <LicenceViewer class="my-4" />
@@ -41,6 +42,7 @@ import SearchFiltersSelectors from './menu/search-filters-selectors.vue';
 import SimpleTranslation from './menu/simple-translation.vue';
 import LicenceViewer from './menu/licences-viewer.vue';
 import PrepositionSelector from './menu/prepositions-selector.vue';
+import PictogramSourceSelector from './menu/pictogram-source-selector.vue';
 import { useAuth } from "~/store/auth";
 const { logout, isAuthenticated } = useAuth();
 </script>

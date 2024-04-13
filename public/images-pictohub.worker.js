@@ -51,7 +51,7 @@ function openDB(db_name) {
     const db = new Dexie(db_name);
 
     db.version(1).stores({
-        pictograms: '++id, keyword, keyword_en' // Define your schema
+        pictograms: '++id, word, word_en' // Define your schema
     });
 
     return db;
