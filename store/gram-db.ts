@@ -105,7 +105,7 @@ export const useGramDatabase = defineStore('gram', {
             let unfilteredPictograms: PictogramPropositions = tempSuggestions.map((gramResponse: GramResponse) => { return { 'selected': 0, 'pictograms': gramResponse.predictions } })
             // Remove the empty elements and only keep the first 3 elements
 
-            main.suggestedPictograms = unfilteredPictograms.filter((picto: any) => (picto.pictograms != undefined && picto.pictograms[0]?.external_alt_image != undefined)).slice(0, 3); // Change the slice number to 3 for example to have 3 suggestions per word
+            main.suggestedPictograms = unfilteredPictograms.filter((picto: any) => (picto.pictograms != undefined && picto.pictograms[0]?.images[0]?.url != undefined)).slice(0, 3); // Change the slice number to 3 for example to have 3 suggestions per word
         },
     },
 });

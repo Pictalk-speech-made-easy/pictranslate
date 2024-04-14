@@ -1,5 +1,4 @@
 import { getStorageQuota, getStorageSpaceLeft } from "~/utils/storage";
-import { ObjectAccessInfo } from "./store-types";
 
 type State = {
     preferredTags: Record<string, ObjectAccessInfo>,
@@ -55,27 +54,6 @@ export const usePreferences = defineStore('preferences', {
             // Check first the 5 preferred tags
             const preferredTags = this.getSortedObjects('preferredTags').slice(0, 5);
             console.debug("[Preferences] Preferred Tags: ", preferredTags);
-            const bundleSizes = useMiniPictohubDatabase().bundleSizes;
-            console.debug("[Preferences] Bundle Sizes: ", bundleSizes);
-            const bundlesToDownload = [];
-            // Check if the first five bundles are downloaded
-            // If not, download them
-            for (const tag of preferredTags) {
-                console.debug("[Preferences] Checking tag: ", tag);
-                console.debug("[Preferences] Tags downloaded: ", useMiniPictohubDatabase().bundleInformations);
-                if (!useMiniPictohubDatabase().bundleInformations.find((pack) => (pack.tag === tag) || (pack.tag === 'all'))) {
-                    console.debug("[Preferences] Tag not downloaded yet: ", tag);
-                    if (bundleSizes[tag] && bundleSizes[tag] < spaceLeft) {
-                        bundlesToDownload.push(tag);
-                        spaceLeft -= bundleSizes[tag];
-                        console.debug("[Preferences] Tag to download: ", tag);
-                    }
-                }
-            }
-            console.debug("[Preferences] Bundles to download: ", bundlesToDownload);
-            for (const tag of bundlesToDownload) {
-                await useMiniPictohubDatabase().startImagesWorker(tag);
-            }
         },
     },
 });

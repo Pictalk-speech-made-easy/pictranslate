@@ -8,26 +8,27 @@
           pictogramPropositions.pictograms.length - 1 }}</span>
       <button tabindex="0" @click="openModal(index)" @keyup.enter="openModal(index)">
         <img crossorigin="anonymous" class="!m-0 aspect-square object-contain rounded-sm zoom-in"
-          :src="pictogramPropositions['pictograms'][pictogramPropositions.selected].external_alt_image.toString()"
-          :alt="pictogramPropositions['pictograms'][pictogramPropositions.selected]['keywords'][options.locale][0]['keyword']" />
+          :src="miniPictohubDatabase.getImage(pictogramPropositions['pictograms'][pictogramPropositions.selected].images, pictogramPropositions.selectedImage)"
+          :alt="pictogramPropositions['pictograms'][pictogramPropositions.selected]['translations'][options.locale][0]['word']" />
         <p class="mt-1 font-semibold text-lg text-center">{{
-          pictogramPropositions['pictograms'][pictogramPropositions.selected]['keywords'][options.locale][0]['keyword']
-        }}
+          pictogramPropositions['pictograms'][pictogramPropositions.selected]['translations'][options.locale][0]['word']
+          }}
         </p>
       </button>
     </div>
 
     <dialog id="picto_selector" class="modal">
       <div class="modal-box bg-gray-200 dark:bg-slate-800 flex flex-wrap">
-        <button class="w-1/3 p-1" tabindex="0"
-          v-for="(pictogram, index) in main.pictogramsPropositions[modalIndex]?.['pictograms']"
-          @click="selectedPictogram(index)">
-          <img crossorigin="anonymous" class="!m-0 aspect-square object-contain rounded-sm zoom-in"
-            :src="pictogram.external_alt_image.toString()" :alt="pictogram['keywords'][options.locale][0]['keyword']" />
-          <p class="mt-1 font-semibold text-lg text-center">{{
-            pictogram['keywords'][options.locale][0]['keyword']
-          }}</p>
-        </button>
+        <div tabindex="0" v-for="(pictogram, index) in main.pictogramsPropositions[modalIndex]?.['pictograms']">
+          <button class="w-1/3 p-1" @click="selectedPictogram(index, imageIndex)"
+            v-for="image, imageIndex in pictogram.images" :key="index">
+            <img crossorigin="anonymous" class="!m-0 aspect-square object-contain rounded-sm zoom-in" :src="image.url"
+              :alt="pictogram['translations'][options.locale][0]['word']" />
+            <p class="mt-1 font-semibold text-lg text-center">{{
+              pictogram['translations'][options.locale][0]['word']
+            }}</p>
+          </button>
+        </div>
       </div>
       <form method="dialog" class="modal-backdrop">
         <button>close</button>
@@ -41,6 +42,7 @@ import { useMain } from '~/store/main';
 const main = useMain();
 const options = useOptions();
 const modalIndex = ref(0);
+const miniPictohubDatabase = useMiniPictohubDatabase();
 
 watch(() => main.pictogramsPropositions, (newValue, oldValue) => {
   if (newValue.length <= oldValue.length) return;
@@ -52,13 +54,15 @@ watch(() => main.pictogramsPropositions, (newValue, oldValue) => {
       behavior: 'smooth'
     });
   }, 1000);
-})
+});
+
 function openModal(index: number) {
   modalIndex.value = index;
   document.getElementById('picto_selector')?.setAttribute('open', '');
 }
-function selectedPictogram(index: number) {
+function selectedPictogram(index: number, imageIndex: number) {
   main.pictogramsPropositions[modalIndex.value].selected = index;
+  main.pictogramsPropositions[modalIndex.value].selectedImage = imageIndex;
   document.getElementById('picto_selector')?.removeAttribute('open');
 }
 </script>

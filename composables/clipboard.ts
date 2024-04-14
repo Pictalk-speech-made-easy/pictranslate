@@ -5,6 +5,7 @@ import Bowser from 'bowser';
 import { useMain } from "~/store/main";
 export function useClipboard() {
     const main = useMain();
+    const miniPictohubDb = useMiniPictohubDatabase();
     const preGeneratedBlob: Ref<Blob | null> = ref(null);
     const getPreGeneratedBlob = () => {
         return preGeneratedBlob.value;
@@ -13,11 +14,12 @@ export function useClipboard() {
     onMounted(async () => {
         navigatorPermission = await navigatorAskWritePermission();
     });
-    watch(() => main.pictogramsPropositions, async (value) => {
+    watch(() => main.pictogramsPropositions, async (value: PictogramPropositions[]) => {
         console.debug("[Clipboard] watch triggered")
         if (value.length > 0) {
             console.debug("[Clipboard] Pictograms changed, generating new blob")
-            const paths = value.map((picto: any) => picto['pictograms'][picto['selected']].external_alt_image);
+            console.debug
+            const paths = value.map((picto: any) => miniPictohubDb.getImage(picto['pictograms'][picto['selected']].images, picto['selectedImage']));
             console.debug("[Clipboard] paths", paths)
             try {
                 const b64 = await mergeImages(paths, {

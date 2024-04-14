@@ -4,14 +4,14 @@
       v-if="main.suggestedPictograms.length > 0">
       <TransitionGroup name="list">
         <div v-for="pictogram in main.suggestedPictograms"
-          :key="pictogram['pictograms'][pictogram['selected']]['keywords'][options.locale][0]['keyword']">
+          :key="pictogram['pictograms'][pictogram['selected']]['translations'][options.locale][0]['word']">
           <button @click="onSuggestionConfirmed(pictogram)"
             class="aspect-square p-1 bg-blue-100 dark:bg-blue-900 rounded-lg mx-1 max-h-24">
             <img height="80px" crossorigin="anonymous" class="w-full rounded-sm zoom-in"
-              :src="pictogram['pictograms'][pictogram['selected']].external_alt_image.toString()"
-              :alt="pictogram['pictograms'][pictogram['selected']]['keywords'][options.locale][0]['keyword']" />
+              :src="miniPictohubDatabase.getImage(pictogram['pictograms'][pictogram['selected']].images, 0)"
+              :alt="pictogram['pictograms'][pictogram['selected']]['translations'][options.locale][0]['word']" />
             <span class="text-sm tracking-wide font-normal dark:text-gray-200">{{
-              pictogram['pictograms'][pictogram['selected']]['keywords'][options.locale][0]['keyword'].toUpperCase()
+              pictogram['pictograms'][pictogram['selected']]['translations'][options.locale][0]['word'].toUpperCase()
             }}</span>
           </button>
         </div>
@@ -27,6 +27,7 @@ import { useOptions } from '~/store/option';
 const main = useMain();
 const gramdb = useGramDatabase();
 const options = useOptions();
+const miniPictohubDatabase = useMiniPictohubDatabase();
 
 watch(() => main.pictogramsPropositions, async (value) => {
   console.log("[suggestion-box],", value)
@@ -37,7 +38,7 @@ watch(() => main.pictogramsPropositions, async (value) => {
     main.suggestedPictograms = []
     return;
   }
-  const stimulus = value.map((p) => p['pictograms'][p['selected']]['keywords']['en'][0]['keyword'])
+  const stimulus = value.map((p) => p['pictograms'][p['selected']]['translations']['en'][0]['word'])
   console.debug("[suggestion-box] pictograms", stimulus)
   const response = await gramdb.getGram(stimulus)
   console.debug("[suggestion-box] response", response)
@@ -56,7 +57,7 @@ watch(() => main.pictogramsPropositions, async (value) => {
 }, { deep: true });
 
 function onSuggestionConfirmed(pictogram: any) {
-  const newWord = pictogram['pictograms'][0]['keywords'][options.locale][0]['keyword'].replace(' ', '-');
+  const newWord = pictogram['pictograms'][0]['translations'][options.locale][0]['word'].replace(' ', '-');
   main.pictogramsPropositions.push(pictogram);
   main.textInput += ' ' + newWord;
   console.debug("[suggestion-box] suggestionConfirmed", pictogram);

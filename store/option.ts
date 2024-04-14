@@ -1,4 +1,4 @@
-import { MiniDatabaseInformations } from "./store-types";
+import { ImageSource, type MiniDatabaseInformations } from "./store-types";
 
 export const useOptions = defineStore('options', {
     state: () => ({
@@ -12,6 +12,7 @@ export const useOptions = defineStore('options', {
         violenceFilter: true as Boolean,
         simplifyTranslation: true as Boolean,
         removePrepositions: true as Boolean,
+        preferredSources: 'arasaac' as typeof ImageSource[number],
     }),
     persist: {
         storage: persistedState.localStorage,

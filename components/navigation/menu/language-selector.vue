@@ -1,11 +1,11 @@
 <template>
     <details class="dropdown no-animation" ref="languageSelector">
-        <summary class="m-1 btn bg-secondary/75 w-full rounded-lg justify-start"
+        <summary class="my-1 btn bg-secondary/75 w-full rounded-lg justify-start"
             @click="dropdownState = !dropdownState">
             <img :src="getFlag(options.locale)" class="h-4 rounded-sm" />
             {{ getLanguageName(options.locale) }}
             <label class="swap swap-rotate ml-auto pointer-events-none">
-                <input v-model="dropdownState" type="checkbox" aria-label="togglePageTheme" />
+                <input v-model="dropdownState" type="checkbox" aria-label="toggle language" />
                 <svg class="swap-off h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path class="fill-primary" d="M7.41 8.58L12 13.17l4.59-4.59L18 10l-6 6l-6-6l1.41-1.42Z" />
                 </svg>

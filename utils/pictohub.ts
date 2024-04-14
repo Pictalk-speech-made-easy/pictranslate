@@ -1,6 +1,6 @@
-import { RuntimeConfig } from "nuxt/schema";
+import type { RuntimeConfig } from "nuxt/schema";
 
-export const getPictoFromPictohub = async (config: RuntimeConfig,search: string, searchLocale: string, additionnalLocales: string[] = [], limit=1): Promise<BasePictogram[]> => {
+export const getPictoFromPictohub = async (config: RuntimeConfig,search: string, searchLocale: string, additionnalLocales: string[] = [], limit=1, format='png'): Promise<PictohubV2Document[]> => {
     // For words that have a dash, replace it with a space
     // Pictogram suggestions that have more than a word are separated by a dash
     search = search.replace('-', ' ');
@@ -8,13 +8,14 @@ export const getPictoFromPictohub = async (config: RuntimeConfig,search: string,
     console.debug("[main] getPictoFromPictohub", search, searchLocale, additionnalLocales)
     let queryParams = [
       `term=${search}`,
-      `path[]=keywords.${searchLocale}.keyword`,
-      `index=keyword`,
-      `path[]=keywords.${searchLocale}.synonymes`,
-      `path[]=keywords.${searchLocale}.lexical_siblings`,
-      `path[]=keywords.${searchLocale}.conjugates.verbe_m`,
-      `path[]=keywords.${searchLocale}.conjugates.verbe_f`,
-      `path[]=keywords.${searchLocale}.plural`,
+      `path[]=translations.${searchLocale}.word`,
+      `index=search`,
+      `path[]=translations.${searchLocale}.synonyms`,
+      `path[]=translations.${searchLocale}.definition`,
+      `path[]=translations.${searchLocale}.lexical_siblings`,
+      `path[]=translations.${searchLocale}.lvf_entries.meaning`,
+      `path[]=translations.${searchLocale}.fr_domain_desc`,
+      `path[]=translations.${searchLocale}.plural`,
       `lang[]=${searchLocale}`,
       `completeIfEmpty=true`,
       `limit=${limit}`,
@@ -27,12 +28,19 @@ export const getPictoFromPictohub = async (config: RuntimeConfig,search: string,
     }
     // Gracefully handle the case where the pictohub API is not available with a try/catch
     try {
-      let data: BasePictogram[] = await $fetch(`${config.public.pictohub.PICTOHUB_API_URL}?${queryParams}`, {
+      let data: PictohubV2Document[] = await $fetch(`${config.public.pictohub.PICTOHUB_API_URL}?${queryParams}`, {
         method: 'GET',
         headers: {
           'x-api-key': config.public.pictohub.PICTOHUB_API_KEY
         }
       });
+      // For each pictogram, replace the image URL with the one from the pictohub
+      data = data.map(pictogram => {
+        pictogram.images.map(image => {
+            image.url = `https://images.pictohub.org/${image.url}?preferredformat=${format}`
+        });
+        return pictogram;
+    });
       console.log("[main] getPictoFromPictohub", data)
       return data;
     } catch (e) {

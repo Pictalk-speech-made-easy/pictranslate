@@ -1,6 +1,5 @@
-import { BasePictogram, PictogramPropositions } from "./store-types";
+import type { MiniPictogram, PictogramPropositions } from "./store-types";
 import { useMiniPictohubDatabase } from "./mini-pictohub-db";
-import { MiniPictogram, Pictogram } from "./store-types";
 export const useMain = defineStore('main', {
     state: () => ({
         textInput: '' as string,
@@ -11,14 +10,22 @@ export const useMain = defineStore('main', {
         storage: persistedState.localStorage,
     },
     actions: {
-        async getPictogram(keyword: string, locale = "fr"): Promise<BasePictogram[]> {
+        async getPictogram(keyword: string, locale = "fr"): Promise<PictohubV2Document[]> {
             const options = useOptions();
             const config = useRuntimeConfig();
             const useMiniPictohubDb = useMiniPictohubDatabase();
             console.log("locale: ", locale);
-            let singleWordPictogram: BasePictogram[] | undefined = await useMiniPictohubDb.getMiniPictogram(keyword, locale);
+            let singleWordPictogram: MiniPictogram[] | undefined = await useMiniPictohubDb.getMiniPictogram(keyword, locale);
             if (!singleWordPictogram) {
-                singleWordPictogram = await getPictoFromPictohub(config, keyword, locale, [options.locale, 'en'], 5);
+                // we should also register the search in the indexeddb
+                const pictogram: PictohubV2Document[] = await getPictoFromPictohub(config, keyword, locale, [options.locale, 'en'], 5, useMiniPictohubDb.format);
+                pictogram.forEach(async (picto: PictohubV2Document) => {
+                    const miniPictogram = picto as MiniPictogram;
+                    miniPictogram.word_en = picto.translations.en[0].word;
+                    miniPictogram.word = picto.translations[options.locale][0].word;
+                    await useMiniPictohubDb.addMiniPictogram(miniPictogram);
+                });
+                return pictogram;
             }
             return singleWordPictogram;
         },
@@ -80,7 +87,12 @@ export const useMain = defineStore('main', {
                     start++;
                 }
             }
+            console.log("Final sentence: ", sentence);
             let sentencePictogramPropositions: PictogramPropositions[] =  sentence.items.map((item: SentenceItems) => item.pictogramPropositions);
+            console.log("Sentence pictogram propositions: ", sentencePictogramPropositions);
+            console.log(sentencePictogramPropositions[0]);
+            console.log(sentencePictogramPropositions[0].pictograms);
+            console.log(sentencePictogramPropositions[0].pictograms.length);
             sentencePictogramPropositions = sentencePictogramPropositions.filter((pictogramPropositions: PictogramPropositions) => pictogramPropositions && pictogramPropositions.pictograms.length > 0);
             console.log("Final sentence: ", sentence);
             this.pictogramsPropositions = sentencePictogramPropositions;
