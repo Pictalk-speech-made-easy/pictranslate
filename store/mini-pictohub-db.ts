@@ -118,7 +118,6 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
                 if (optionsStore.violenceFilter) {
                     data = data.filter((picto) => picto.filters.violence === false)
                 }
-                // Be carefull to not return objects with the same external_alt_image
                 data = this.removeDuplicates(data);
                 // Order the result by exact match first
                 if (locale == "fr") {
@@ -132,7 +131,6 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
                 data = data.slice(0, limit);
                 if (data.length > 0) {
                     usePreferences().accessObject("preferredTags",data[0].tags[0]);
-                    // Extract the ID of the pictogram from the external_alt_image
                     // https://images.pictohub.org/1111?preferred_format=avif
                     usePreferences().accessObject("preferredPictograms",data[0].word!);
                 }
