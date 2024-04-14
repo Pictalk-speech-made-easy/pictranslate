@@ -8,6 +8,7 @@ export type HistoryItem = {
 
 export interface PictogramPropositions {
     selected: number,
+    selectedImage?: number,
     pictograms: Array<PictohubV2Document | MiniPictogram>,
 }
 

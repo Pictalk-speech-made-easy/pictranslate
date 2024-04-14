@@ -16,6 +16,9 @@
             <div class="my-4">
                 <SimpleTranslation />
                 <PrepositionSelector />
+            </div>
+            <div class="divider mt-0">{{ $t('menu.image-source.label') }}</div>
+            <div class="my-4">
                 <PictogramSourceSelector />
             </div>
             <div class="mt-auto">

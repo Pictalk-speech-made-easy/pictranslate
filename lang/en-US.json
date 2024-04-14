@@ -47,6 +47,10 @@
             "tooltip": "Change theme",
             "light": "Light",
             "dark": "Dark"
-        }
+        },
+        "image-source" : {
+            "label": "Source of images",
+            "tooltip": "Change image source"
+          }
     }
 }

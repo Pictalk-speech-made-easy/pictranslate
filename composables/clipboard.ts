@@ -19,7 +19,7 @@ export function useClipboard() {
         if (value.length > 0) {
             console.debug("[Clipboard] Pictograms changed, generating new blob")
             console.debug
-            const paths = value.map((picto: any) => miniPictohubDb.getImage(picto['pictograms'][picto['selected']].images));
+            const paths = value.map((picto: any) => miniPictohubDb.getImage(picto['pictograms'][picto['selected']].images, picto['selectedImage']));
             console.debug("[Clipboard] paths", paths)
             try {
                 const b64 = await mergeImages(paths, {

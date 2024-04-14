@@ -24,8 +24,12 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
         }
     },
     actions: {
-        getImage(images: Image[]) {
+        getImage(images: Image[], selectedImage: number | undefined) {
             // Check if this.format is in the image formats
+            if (selectedImage !== undefined) {
+                return images[selectedImage].url;
+            }
+
             const preferredSourceImages = images.filter((image) => image.source == useOptions().preferredSources);
             if (preferredSourceImages.length === 0) {
                 // Return the first arasaac image

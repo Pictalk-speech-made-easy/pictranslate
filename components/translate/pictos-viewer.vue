@@ -8,7 +8,7 @@
           pictogramPropositions.pictograms.length - 1 }}</span>
       <button tabindex="0" @click="openModal(index)" @keyup.enter="openModal(index)">
         <img crossorigin="anonymous" class="!m-0 aspect-square object-contain rounded-sm zoom-in"
-          :src="miniPictohubDatabase.getImage(pictogramPropositions['pictograms'][pictogramPropositions.selected].images)"
+          :src="miniPictohubDatabase.getImage(pictogramPropositions['pictograms'][pictogramPropositions.selected].images, pictogramPropositions.selectedImage)"
           :alt="pictogramPropositions['pictograms'][pictogramPropositions.selected]['translations'][options.locale][0]['word']" />
         <p class="mt-1 font-semibold text-lg text-center">{{
           pictogramPropositions['pictograms'][pictogramPropositions.selected]['translations'][options.locale][0]['word']
@@ -19,20 +19,16 @@
 
     <dialog id="picto_selector" class="modal">
       <div class="modal-box bg-gray-200 dark:bg-slate-800 flex flex-wrap">
-        <button class="w-1/3 p-1" tabindex="0"
-          v-for="(pictogram, index) in main.pictogramsPropositions[modalIndex]?.['pictograms']"
-          @click="selectedPictogram(index)">
-          <div v-for="image in pictogram.images" :key="image">
+        <div tabindex="0" v-for="(pictogram, index) in main.pictogramsPropositions[modalIndex]?.['pictograms']">
+          <button class="w-1/3 p-1" @click="selectedPictogram(index, imageIndex)"
+            v-for="image, imageIndex in pictogram.images" :key="index">
             <img crossorigin="anonymous" class="!m-0 aspect-square object-contain rounded-sm zoom-in" :src="image.url"
               :alt="pictogram['translations'][options.locale][0]['word']" />
-          </div>
-          <img crossorigin="anonymous" class="!m-0 aspect-square object-contain rounded-sm zoom-in"
-            :src="miniPictohubDatabase.getImage(pictogram.images)"
-            :alt="pictogram['translations'][options.locale][0]['word']" />
-          <p class="mt-1 font-semibold text-lg text-center">{{
-            pictogram['translations'][options.locale][0]['word']
+            <p class="mt-1 font-semibold text-lg text-center">{{
+              pictogram['translations'][options.locale][0]['word']
             }}</p>
-        </button>
+          </button>
+        </div>
       </div>
       <form method="dialog" class="modal-backdrop">
         <button>close</button>
@@ -58,13 +54,15 @@ watch(() => main.pictogramsPropositions, (newValue, oldValue) => {
       behavior: 'smooth'
     });
   }, 1000);
-})
+});
+
 function openModal(index: number) {
   modalIndex.value = index;
   document.getElementById('picto_selector')?.setAttribute('open', '');
 }
-function selectedPictogram(index: number) {
+function selectedPictogram(index: number, imageIndex: number) {
   main.pictogramsPropositions[modalIndex.value].selected = index;
+  main.pictogramsPropositions[modalIndex.value].selectedImage = imageIndex;
   document.getElementById('picto_selector')?.removeAttribute('open');
 }
 </script>

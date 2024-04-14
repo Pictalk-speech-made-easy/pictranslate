@@ -29,7 +29,7 @@ onMounted(async () => {
 })
 
 const getPictogram = function (pictogramPropositions: PictogramPropositions) {
-  return miniPictohubDatabase.getImage(pictogramPropositions['pictograms'][pictogramPropositions.selected].images);
+  return miniPictohubDatabase.getImage(pictogramPropositions['pictograms'][pictogramPropositions.selected].images, pictogramPropositions.selectedImage);
 }
 
 const getAlt = function (pictogramPropositions: PictogramPropositions) {

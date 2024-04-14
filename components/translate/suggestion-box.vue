@@ -8,11 +8,11 @@
           <button @click="onSuggestionConfirmed(pictogram)"
             class="aspect-square p-1 bg-blue-100 dark:bg-blue-900 rounded-lg mx-1 max-h-24">
             <img height="80px" crossorigin="anonymous" class="w-full rounded-sm zoom-in"
-              :src="miniPictohubDatabase.getImage(pictogram['pictograms'][pictogram['selected']].images)"
+              :src="miniPictohubDatabase.getImage(pictogram['pictograms'][pictogram['selected']].images, 0)"
               :alt="pictogram['pictograms'][pictogram['selected']]['translations'][options.locale][0]['word']" />
             <span class="text-sm tracking-wide font-normal dark:text-gray-200">{{
               pictogram['pictograms'][pictogram['selected']]['translations'][options.locale][0]['word'].toUpperCase()
-              }}</span>
+            }}</span>
           </button>
         </div>
       </TransitionGroup>
