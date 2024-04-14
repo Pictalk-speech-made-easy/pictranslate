@@ -17,8 +17,7 @@
             "label": "Configuración de traducción",
             "simple_translation": "traducción sencilla",
             "advanced_translation_alert": "La traducción avanzada puede producir resultados inesperados",
-            "prepositions": "Quitar preposiciones",
-            "preferred_pictogram_source": "Fuente de pictogramas preferida"
+            "prepositions": "Quitar preposiciones"
         },
         "logout": "Cerrar sesión",
         "change_theme": "Cambiar de tema",
@@ -34,6 +33,10 @@
             "title": "Licencias",
             "ARASAAC": "ARASAAC es una organización aragonesa que ofrece pictogramas y otros materiales para personas con algún tipo de discapacidad bajo la licencia Creative Commons. Puedes encontrar más información en su sitio web: http://www.arasaac.org",
             "pictalk": "Este código de aplicación está bajo licencia GNU GPL V3."
+        },
+        "image-source" : {
+            "label": "Fuente de pictogramas",
+            "tooltip": "Cambiar la fuente de los pictogramas"
         }
     }
 }

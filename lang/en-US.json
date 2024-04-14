@@ -24,8 +24,7 @@
             "label": "Translation settings",
             "simple_translation": "Simple translation",
             "advanced_translation_alert": "Advanced translation can produce unexpected results",
-            "prepositions": "Remove prepositions",
-            "preferred_pictogram_source": "Preferred pictogram source"
+            "prepositions": "Remove prepositions"
         },
         "offline_ready": "Application is ready to work offline",
         "offline_not_ready": "Application is not ready to work offline",
@@ -51,6 +50,6 @@
         "image-source" : {
             "label": "Source of images",
             "tooltip": "Change image source"
-          }
+        }
     }
 }

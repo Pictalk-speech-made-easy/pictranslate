@@ -24,8 +24,7 @@
             "label": "Paramètres de traduction",
             "simple_translation": "Traduction simple",
             "advanced_translation_alert": "La traduction avancée est une fonctionnalité expérimentale. Elle peut ne pas fonctionner correctement.",
-            "prepositions": "Supprimer les prepositions",
-            "preferred_pictogram_source": "Source de pictogrammes préférée"
+            "prepositions": "Supprimer les prepositions"
         },
         "offline_ready": "L'application est prête à être utilisée hors ligne",
         "offline_not_ready": "L'application n'est pas prête à être utilisée hors ligne",
