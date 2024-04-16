@@ -3,8 +3,8 @@ import VueMatomo from 'vue-matomo'
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(VueMatomo, {
-    host: 'https://matomo.home.asidiras.dev',
-    siteId: 3, 
+    host: 'https://analytics.picmind.org',
+    siteId: 3,
     // Enables automatically registering pageviews on the router
     router: nuxtApp.$router,
     enableLinkTracking: true,
