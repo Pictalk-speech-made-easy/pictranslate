@@ -1,7 +1,7 @@
 <template>
   <div class="mt-12" v-if="historyDatabase.history.length > 0">
     <p class="ml-4 mb-2 text-2xl font-serif">{{ $t('main.history') }}</p>
-    <button @click="onHistoryClick(historyItem)"
+    <button :id="`history-${index}`" @click="onHistoryClick(historyItem)"
       class="btn w-full h-auto mx-4 my-2 px-2 py-1 block rounded-lg shadow-md bg-blue-100 dark:bg-blue-900"
       v-for="(historyItem, index) in historyDatabase.history">
       <div class="flex justify-center p-1 pb-0 overflow-x-auto">

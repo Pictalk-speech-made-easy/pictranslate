@@ -1,5 +1,5 @@
 <template>
-    <details class="dropdown no-animation w-full" ref="sourceSelector">
+    <details id="dropdown-pictogram-source" class="dropdown no-animation w-full" ref="sourceSelector">
         <summary class="my-1 btn bg-secondary/75 w-full rounded-lg justify-start"
             @click="dropdownState = !dropdownState">
             <img class="h-7 aspect-square object-contain rounded-sm"
@@ -17,7 +17,8 @@
         </summary>
         <div class="p-2 shadow menu dropdown-content z-[1] bg-secondary rounded-lg w-full">
             <div class="flex items-center" v-for="source in ImageSource">
-                <button @click="setSource(source)" class="btn btn-ghost btn-sm w-full justify-start">
+                <button :id="`dropdown-pictogram-source-${source}`" @click="setSource(source)"
+                    class="btn btn-ghost btn-sm w-full justify-start">
                     <img class="h-7 aspect-square object-contain rounded-sm"
                         :src="`/pictograms-sources/${source}.webp`" />
                     {{ source }}

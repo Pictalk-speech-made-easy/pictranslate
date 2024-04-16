@@ -1,5 +1,5 @@
 <template>
-    <button type="button" class="dark:bg-slate-800">
+    <button id="button-speak" type="button" class="dark:bg-slate-800">
         <svg v-if="props.animated" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="0" class="fill-primary">
                 <animate id="svgSpinnersPulse30" fill="freeze" attributeName="r" begin="0;svgSpinnersPulse32.begin+0.4s"
