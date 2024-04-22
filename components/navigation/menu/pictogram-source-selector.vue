@@ -4,7 +4,7 @@
             @click="dropdownState = !dropdownState">
             <img class="h-7 aspect-square object-contain rounded-sm"
                 :src="`/pictograms-sources/${options.preferredSources}.webp`" />
-            {{ options.preferredSources }}
+            {{ options.preferredSources.toLocaleUpperCase() }}
             <label class="swap swap-rotate ml-auto pointer-events-none">
                 <input v-model="dropdownState" type="checkbox" aria-label="toggle pictograms source" />
                 <svg class="swap-off h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -18,10 +18,10 @@
         <div class="p-2 shadow menu dropdown-content z-[1] bg-secondary rounded-lg w-full">
             <div class="flex items-center" v-for="source in ImageSource">
                 <button :id="`dropdown-pictogram-source-${source}`" @click="setSource(source)"
-                    class="btn btn-ghost btn-sm w-full justify-start">
+                    class="btn btn-ghost btn-sm w-full justify-start my-0.5">
                     <img class="h-7 aspect-square object-contain rounded-sm"
                         :src="`/pictograms-sources/${source}.webp`" />
-                    {{ source }}
+                    {{ source.toLocaleUpperCase() }}
                 </button>
             </div>
         </div>

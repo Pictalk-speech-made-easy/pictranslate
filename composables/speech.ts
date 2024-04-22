@@ -1,5 +1,5 @@
 import { ref, onMounted, onUnmounted } from 'vue'
-import Bowser from 'bowser';
+import { detectBrowser } from "~/utils/device";
 import EasySpeech from 'easy-speech'
 import { preferedVoices } from '~/utils/voice-preferences';
 import { useOptions } from '~/store/option';
@@ -61,14 +61,6 @@ export function useSpeech() {
         if (BROWSER) return TTSVoiceList.value.filter((voice) => voice.name === BROWSER)[0];
         if (OS_DEFAULT) return TTSVoiceList.value.filter((voice) => voice.name === OS_DEFAULT)[0];
         return FALLBACK;
-    }
-    /**
-     * Detects the browser.
-     * @returns {Bowser.Parser.Parser} The browser name, version, etc.
-     */
-    function detectBrowser(): { os: string; browser: string; type: string; } {
-        const browser = Bowser.getParser(window.navigator.userAgent);
-        return { os: browser.getOSName(), browser: browser.getBrowserName(), type: browser.getPlatformType() };
     }
     return {
         speak,

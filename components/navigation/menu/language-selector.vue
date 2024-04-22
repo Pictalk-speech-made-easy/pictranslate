@@ -34,7 +34,7 @@ onBeforeMount(() => {
     locale.value = options.locale;
 });
 function setLanguage(localeISO: string) {
-    options.locale = localeISO;
+    options.locale = localeISO as typeof availableLocales[number];
     locale.value = localeISO;
     dropdownState.value = false;
     if (!languageSelector.value) return;
@@ -51,6 +51,8 @@ function getFlag(path: string): string {
 }
 function getLanguageName(languageCode: string) {
     const languageNames = new Intl.DisplayNames([languageCode], { type: 'language' });
-    return languageNames.of(languageCode);
+    const name = languageNames.of(languageCode)
+    if(!name) return languageCode;
+    return name.charAt(0).toUpperCase() + name.slice(1);
 }
 </script>

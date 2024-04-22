@@ -1,9 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: false,
-  alias: {
-    assets: "/<rootDir>/assets",
-  },
   nitro: {
     prerender: {
       routes: ['/'],
@@ -67,7 +64,6 @@ export default defineNuxtConfig({
     // SEO '@nuxtseo/module',
     '@nuxtjs/i18n',
     'nuxt-proxy',
-    '@nuxt/image'
   ],
   pinia: {
     autoImports: [
@@ -236,7 +232,7 @@ export default defineNuxtConfig({
       {
         code: 'es',
         iso: 'es-ES',
-        file: 'es.json'
+        file: 'es-ES.json'
       }
     ],
     langDir: 'lang',

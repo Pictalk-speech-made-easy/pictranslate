@@ -1,7 +1,7 @@
 
 // @ts-ignore
 import mergeImages from "merge-images-horizontally-with-text";
-import Bowser from 'bowser';
+import { detectBrowser } from "~/utils/device";
 import { useMain } from "~/store/main";
 export function useClipboard() {
     const main = useMain();
@@ -105,14 +105,6 @@ export function useClipboard() {
             ia[i] = byteString.charCodeAt(i);
         }
         return new Blob([ab], { type: "image/png" });
-    }
-    /**
-     * Detects the browser.
-     * @returns {Bowser.Parser.Parser} The browser name, version, etc.
-     */
-    function detectBrowser(): { os: string; browser: string; type: string; } {
-        const browser = Bowser.getParser(window.navigator.userAgent);
-        return { os: browser.getOSName(), browser: browser.getBrowserName(), type: browser.getPlatformType() };
     }
 
     return {

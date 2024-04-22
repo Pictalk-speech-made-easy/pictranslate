@@ -12,6 +12,18 @@
         "install": "Install",
         "cancel": "Cancel"
     },
+    "marketing": {
+        "rate_modal": {
+          "title": "Do you like Easy AAC? Rate us!",
+          "description": "Help us improve Easy AAC by leaving a review on your Store. Thank you!",
+          "cta": "Rate Easy AAC"
+        },
+        "survey_modal": {
+          "title": "Help us improve Easy AAC 🙌",
+          "description": "Your feedback is crucial to help us improve Easy AAC. Please take a few minutes to respond to our survey.",
+          "cta": "Take the survey"
+        }
+    },      
     "menu": {
         "logout": "Logout",
         "change_theme": "Change theme",
@@ -50,6 +62,29 @@
         "image-source" : {
             "label": "Source of images",
             "tooltip": "Change image source"
-        }
+        },
+        "status": {
+            "label": "Status",
+            "tooltip": "Status of the application",
+            "offline_ready": "Application is ready to work offline",
+            "offline_not_ready": "Application is not ready to work offline yet",
+            "update_available": "Update available, click to downlaod"
+          },
+        "debug": {
+            "label": "You encountered a bug ?",
+            "clear_cache": "Empty the cache",
+            "clear_cache_tooltip": "Emptying the cache can solve some bugs. It will not delete your events but it will reset the application to the default settings.",
+            "title": "If you encountered a bug, you can :",
+            "bug_report": {
+              "title": "Send a bug report",
+              "email": "Email address",
+              "description": "Explain the bug you are encountering",
+              "show_info": "Show/Hide debug information",
+              "send": "Send the report",
+              "success": "Bug report has been sent",
+              "field_error": "Email and description fields are required",
+              "send_tooltip": "Bug reports contain information about your browser and the current state of the application including your events. You can review/modify the information before sending it."
+            }
+          }
     }
 }

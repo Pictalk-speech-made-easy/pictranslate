@@ -12,6 +12,18 @@
         "install": "Installer",
         "cancel": "Annuler"
     },
+    "marketing": {
+      "rate_modal": {
+        "title": "Vous aimez CAA facile ? Notez-nous !",
+        "description": "Aidez-nous à améliorer CAA facile en laissant un avis sur votre Store. Merci !",
+        "cta": "Noter CAA facile"
+      },
+      "survey_modal": {
+        "title": "Aidez nous à améliorer CAA facile 🙌",
+        "description": "Vos retours d'expérience sont cruciaux pour nous aider à améliorer CAA facile. Merci de prendre quelques minutes pour répondre à notre enquête.",
+        "cta": "Répondre à l'enquête"
+      }
+    },
     "menu": {
         "logout": "Déconnexion",
         "change_theme": "Changer de thème",
@@ -48,6 +60,29 @@
           "image-source" : {
             "label": "Source des images",
             "tooltip": "Changer la source des images"
+          },
+          "status": {
+            "label": "Statut",
+            "tooltip": "le statut de l'application",
+            "offline_ready": "Application prête à fonctionner hors ligne",
+            "offline_not_ready": "L'application n'est pas encore prête à fonctionner hors ligne",
+            "update_available": "Mise à jour est disponible, cliquez ici télécharger"
+          },
+          "debug": {
+            "label": "Vous rencontrez un bug ?",
+            "clear_cache": "Vider le cache",
+            "clear_cache_tooltip": "Vider le cache de l'application permet de résoudre certains problèmes. Cela ne supprimera pas vos évènements. Les paramètres seront réinitialisés.",
+            "title": "Si vous rencontrez un bug, vous pouvez :",
+            "bug_report": {
+              "title": "Envoyer un rapport de bug",
+              "email": "Adresse email",
+              "description": "Expliquez le problème que vous rencontrez",
+              "show_info": "Afficher/Cacher les informations de débogage",
+              "send": "Envoyer le rapport",
+              "success": "Le rapport a été envoyé",
+              "field_error": "Les champs email et description ne peuvent pas être vides",
+              "send_tooltip": "Les rapport de bug contienne des informations sur votre navigateur et sur l'application, incluant vos évènements. Vous pouvez les consulter/modifier avant de les envoyer."
+            }
           }
     }
 }

@@ -1,0 +1,88 @@
+{
+    "main": {
+        "copy": "Copiar",
+        "speak": "Hablar",
+        "history": "Historia",
+        "input": "Escribe algunas palabras para traducir",
+        "download": "Descargar",
+        "tap_picto": "Toca cualquier pictograma para cambiar su imagen."
+    },
+    "pwa": {
+        "install_message": "Instala esta aplicación en tu dispositivo",
+        "cancel": "Cancelar",
+        "install": "Instalar"
+    },
+    "marketing": {
+        "rate_modal": {
+          "title": "¿Te gusta CAA fácil? ¡Califícanos!",
+          "description": "Ayúdanos a mejorar CAA fácil dejando una reseña en tu tienda. ¡Gracias!",
+          "cta": "Calificar CAA fácil"
+        },
+        "survey_modal": {
+          "title": "Ayúdanos a mejorar CAA fácil 🙌",
+          "description": "Tus comentarios son cruciales para ayudarnos a mejorar CAA fácil. Por favor, dedica unos minutos para responder a nuestra encuesta.",
+          "cta": "Responder la encuesta"
+        }
+    },      
+    "menu": {
+        "translation": {
+            "label": "Configuración de traducción",
+            "simple_translation": "traducción sencilla",
+            "advanced_translation_alert": "La traducción avanzada puede producir resultados inesperados",
+            "prepositions": "Quitar preposiciones"
+        },
+        "logout": "Cerrar sesión",
+        "change_theme": "Cambiar de tema",
+        "filters": {
+            "label": "Filtros",
+            "sex_filter": "Filtro de sexo"
+        },
+        "offline_ready": "La aplicación está lista para funcionar sin conexión",
+        "offline_not_ready": "La aplicación no está lista para funcionar sin conexión",
+        "update_available": "Actualización disponible",
+        "erase": "Borrar los datos",
+        "licences_viewer": {
+            "title": "Licencias",
+            "ARASAAC": "ARASAAC es una organización aragonesa que ofrece pictogramas y otros materiales para personas con algún tipo de discapacidad bajo la licencia Creative Commons. Puedes encontrar más información en su sitio web: http://www.arasaac.org",
+            "pictalk": "Este código de aplicación está bajo licencia GNU GPL V3."
+        },
+        "language": {
+            "label": "Idioma",
+            "tooltip": "Cambiar de idioma"
+        },
+        "theme": {
+            "label": "Tema",
+            "tooltip": "Cambiar de tema",
+            "light": "Claro",
+            "dark": "Oscuro"
+        },
+        "image-source" : {
+            "label": "Fuente de pictogramas",
+            "tooltip": "Cambiar la fuente de los pictogramas"
+        },
+        "status": {
+            "label": "Estado",
+            "tooltip": "Estado de la aplicación",
+            "offline_ready": "La aplicación está lista para trabajar sin conexión",
+            "offline_not_ready": "La aplicación aún no está lista para trabajar sin conexión",
+            "update_available": "Actualización disponible, haga clic para descargar"
+          },
+          "debug": {
+            "label": "¿Has encontrado un error?",
+            "clear_cache": "Vaciar la caché",
+            "clear_cache_tooltip": "Vaciar la caché puede resolver algunos errores. No eliminará tus eventos pero restablecerá la aplicación a los ajustes predeterminados.",
+            "title": "Si has encontrado un error, puedes:",
+            "bug_report": {
+              "title": "Enviar un informe de error",
+              "email": "Dirección de correo electrónico",
+              "description": "Explica el error que estás encontrando",
+              "show_info": "Mostrar/Ocultar información de depuración",
+              "send": "Enviar el informe",
+              "success": "El informe de error ha sido enviado",
+              "field_error": "Los campos de correo electrónico y descripción son obligatorios",
+              "send_tooltip": "Los informes de errores contienen información sobre tu navegador y el estado actual de la aplicación, incluidos tus eventos. Puedes revisar/modificar la información antes de enviarla."
+            }
+          }
+          
+    }
+}

@@ -1,5 +1,5 @@
 <template>
-    <div class="menu  h-screen grid overflow-clip">
+    <div class="menu h-screen grid overflow-clip">
         <label tabindex="0" for="menu-drawer" class="btn btn-ghost btn-circle drawer-button">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
                 <path class="fill-primary"
@@ -7,23 +7,26 @@
             </svg>
         </label>
         <div class="flex flex-col overflow-x-hidden overflow-y-auto">
-            <div class="divider mt-0">{{ $t('menu.language.label') }} & {{ $t('menu.theme.label') }}</div>
+            <div class="divider">{{ $t('menu.language.label') }} & {{ $t('menu.theme.label') }}</div>
             <LanguageSelector class="my-4" />
             <ThemeSwitch class="my-4" />
-            <div class="divider mt-0">{{ $t('menu.filters.label') }}</div>
+            <div class="divider">{{ $t('menu.filters.label') }}</div>
             <SearchFiltersSelectors class="my-4" />
-            <div class="divider mt-0">{{ $t('menu.translation.label') }}</div>
+            <div class="divider">{{ $t('menu.translation.label') }}</div>
             <div class="my-4">
                 <SimpleTranslation />
                 <PrepositionSelector />
             </div>
-            <div class="divider mt-0">{{ $t('menu.image-source.label') }}</div>
+            <div class="divider">{{ $t('menu.image-source.label') }}</div>
             <div class="my-4">
                 <PictogramSourceSelector />
             </div>
-            <div class="mt-auto">
-                <LicenceViewer class="my-4" />
-                <Versioning />
+            <div class="divider mt-8">{{ $t('menu.status.label') }}</div>
+            <Versioning />
+            
+        </div>
+        <div class="mt-auto">
+                <LicencesViewer class="p-0" />
                 <button @click="logout()" class="btn btn-ghost justify-start">
                     <svg class="h-6 fill-secondary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                         <title>{{ $t('menu.logout') }}</title>
@@ -34,7 +37,6 @@
                     <div v-else>{{ $t('menu.erase') }}</div>
                 </button>
             </div>
-        </div>
     </div>
 </template>
 <script setup lang="ts">
@@ -43,7 +45,7 @@ import LanguageSelector from './menu/language-selector.vue';
 import ThemeSwitch from './menu/theme-switch.vue';
 import SearchFiltersSelectors from './menu/search-filters-selectors.vue';
 import SimpleTranslation from './menu/simple-translation.vue';
-import LicenceViewer from './menu/licences-viewer.vue';
+import LicencesViewer from './menu/licences-viewer.vue';
 import PrepositionSelector from './menu/prepositions-selector.vue';
 import PictogramSourceSelector from './menu/pictogram-source-selector.vue';
 import { useAuth } from "~/store/auth";

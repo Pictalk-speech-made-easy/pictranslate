@@ -1,7 +1,7 @@
 import Dexie from 'dexie';
 import type { BundleInformations, MiniPictogram } from './store-types';
 import { useOptions } from './option';
-import { checkAvifSupport } from '../utils/browser-support';
+import { supportsAvif } from '../utils/device';
 export const useMiniPictohubDatabase = defineStore('minipictohub', {
     state: () => ({
         db: undefined as Dexie | undefined,
@@ -88,7 +88,7 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
                 });
                 await db.open();
                 this.db = db;
-                this.format = await checkAvifSupport() ? 'avif' : 'png';
+                this.format = supportsAvif() ? 'avif' : 'png';
                 this.getBundleSizes(this.format);
             } catch (error) {
                 console.debug(error);

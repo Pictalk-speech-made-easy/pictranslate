@@ -13,10 +13,10 @@
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "@types/lodash.debounce": "^4.0.9",
+    "dayjs": "^1.11.10",
     "nuxt": "^3.10.1"
   },
   "dependencies": {
-    "@nuxt/image": "1.1.0",
     "@nuxtjs/i18n": "8.0.0-rc.5",
     "@nuxtjs/tailwindcss": "^6.11.4",
     "@nuxtseo/module": "2.0.0-beta.45",
