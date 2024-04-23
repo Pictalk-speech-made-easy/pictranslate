@@ -1,6 +1,6 @@
 <template>
     <details class="dropdown no-animation" ref="languageSelector">
-        <summary class="my-1 btn bg-secondary/75 w-full rounded-lg justify-start"
+        <summary class="my-1 btn w-full rounded-lg justify-start bg-base-300"
             @click="dropdownState = !dropdownState">
             <img :src="getFlag(options.locale)" class="h-4 rounded-sm" />
             {{ getLanguageName(options.locale) }}
@@ -14,7 +14,7 @@
                 </svg>
             </label>
         </summary>
-        <div class="p-2 shadow menu dropdown-content z-[1] bg-secondary rounded-lg w-full">
+        <div class="p-2 shadow menu dropdown-content z-[1] rounded-lg w-full bg-base-300">
             <div v-for="localeISO in options.availableLocales.filter((locale) => locale !== options.locale)">
                 <button @click="setLanguage(localeISO)" class="btn btn-ghost btn-sm w-full justify-start">
                     <img :src="getFlag(localeISO)" class="h-4 rounded-sm" />

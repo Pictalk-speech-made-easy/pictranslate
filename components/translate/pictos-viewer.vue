@@ -1,7 +1,7 @@
 <template>
   <p class="text-center mt-6 text-sm">{{ $t('main.tap_picto') }}</p>
   <div id="picto-viewer"
-    class="flex flex-wrap overflow-y-auto items-start min-h-[120px] max-h-[720px] bg-base-100 mx-2 p-2 shadow-xl dark:shadow-none dark:border dark:border-gray-600 rounded-xl bg-dotted-light">
+    class="flex flex-wrap overflow-y-auto items-start min-h-[120px] max-h-[720px] bg-base-100 mx-2 p-2 shadow-xl dark:shadow-none dark:border dark:border-gray-600 rounded-xl bg-dotted">
     <div class="indicator w-1/3" v-for="(pictogramPropositions, index) in main.pictogramsPropositions">
       <span v-if="pictogramPropositions.pictograms.length > 1"
         class="z-0 indicator-item indicator-top indicator-start badge badge-sm bg-slate-500 text-white px-1 top-1 left-2">+{{
@@ -39,6 +39,7 @@
 <script setup lang="ts">
 import { useOptions } from '~/store/option';
 import { useMain } from '~/store/main';
+import { watch } from 'vue';
 const main = useMain();
 const options = useOptions();
 const modalIndex = ref(0);
@@ -67,8 +68,8 @@ function selectedPictogram(index: number, imageIndex: number) {
 }
 </script>
 <style scoped>
-.bg-dotted-light {
-  background-image: radial-gradient(#00000020 1px, transparent 0);
+.bg-dotted {
+  background-image: radial-gradient(oklch(var(--nc) / 0.75) 1px, transparent 0);
   background-size: 16px 16px;
 }
 
