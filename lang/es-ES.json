@@ -82,7 +82,15 @@
               "field_error": "Los campos de correo electrónico y descripción son obligatorios",
               "send_tooltip": "Los informes de errores contienen información sobre tu navegador y el estado actual de la aplicación, incluidos tus eventos. Puedes revisar/modificar la información antes de enviarla."
             }
+          },
+          "layout": {
+            "interface": {
+                "label": "Tamaño de la interfaz",
+                "normal": "Normal",
+                "big": "Grande",
+                "xl": "XL"
+              }  
           }
-          
+             
     }
 }

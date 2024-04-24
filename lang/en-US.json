@@ -85,6 +85,15 @@
               "field_error": "Email and description fields are required",
               "send_tooltip": "Bug reports contain information about your browser and the current state of the application including your events. You can review/modify the information before sending it."
             }
+          },
+          "layout": {
+            "interface": {
+                "label": "Interface size",
+                "normal": "Normal",
+                "big": "Big",
+                "xl": "XL"
+              }
           }
+          
     }
 }

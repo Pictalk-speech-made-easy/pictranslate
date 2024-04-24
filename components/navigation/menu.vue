@@ -10,6 +10,8 @@
             <div class="divider">{{ $t('menu.language.label') }} & {{ $t('menu.theme.label') }}</div>
             <LanguageSelector class="my-4" />
             <ThemeSwitch class="my-4" />
+            <div class="divider">{{ $t('menu.layout.interface.label') }}</div>
+            <InterfaceSize />
             <div class="divider">{{ $t('menu.filters.label') }}</div>
             <SearchFiltersSelectors class="my-4" />
             <div class="divider">{{ $t('menu.translation.label') }}</div>
@@ -43,6 +45,7 @@
 import Versioning from './menu/versioning.vue';
 import LanguageSelector from './menu/language-selector.vue';
 import ThemeSwitch from './menu/theme-switch.vue';
+import InterfaceSize from './menu/interface-size.vue';
 import SearchFiltersSelectors from './menu/search-filters-selectors.vue';
 import SimpleTranslation from './menu/simple-translation.vue';
 import LicencesViewer from './menu/licences-viewer.vue';

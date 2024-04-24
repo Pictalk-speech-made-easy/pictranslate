@@ -83,6 +83,15 @@
               "field_error": "Les champs email et description ne peuvent pas être vides",
               "send_tooltip": "Les rapport de bug contienne des informations sur votre navigateur et sur l'application, incluant vos évènements. Vous pouvez les consulter/modifier avant de les envoyer."
             }
+          },
+          "layout": {
+            "interface": {
+              "label": "Taille de l'interface",
+              "normal": "Normal",
+              "big": "Grande",
+              "xl": "XL"
+            }
           }
+          
     }
 }
