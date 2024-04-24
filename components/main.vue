@@ -5,14 +5,14 @@
     <PictosViewer />
     <div class="flex justify-end items-center my-4 mx-4 gap-2">
       <button id="button-copy" class="btn btn-sm btn-primary rounded-2xl" @click="onClickCopy">{{ $t('main.copy') }}
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24">
           <path class="fill-primary-content"
             d="M9 18q-.825 0-1.413-.588T7 16V4q0-.825.588-1.413T9 2h9q.825 0 1.413.588T20 4v12q0 .825-.588 1.413T18 18H9Zm-4 4q-.825 0-1.413-.588T3 20V6h2v14h11v2H5Z" />
         </svg>
       </button>
       <button id="button-download" class="btn btn-sm btn-primary rounded-2xl" @click="onClickDownload">{{
         $t('main.download') }}
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
           <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
           <g id="SVGRepo_iconCarrier">

@@ -8,10 +8,10 @@
             <label class="swap swap-rotate ml-auto pointer-events-none">
                 <input v-model="dropdownState" type="checkbox" aria-label="toggle pictograms source" />
                 <svg class="swap-off h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path class="fill-primary" d="M7.41 8.58L12 13.17l4.59-4.59L18 10l-6 6l-6-6l1.41-1.42Z" />
+                    <path fill="currentColor" d="M7.41 8.58L12 13.17l4.59-4.59L18 10l-6 6l-6-6l1.41-1.42Z" />
                 </svg>
                 <svg class="swap-on h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path class="fill-primary" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6l-6 6l1.41 1.41Z" />
+                    <path fill="currentColor" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6l-6 6l1.41 1.41Z" />
                 </svg>
             </label>
         </summary>

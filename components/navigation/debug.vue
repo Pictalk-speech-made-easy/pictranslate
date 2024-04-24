@@ -2,7 +2,7 @@
     <dialog class="modal modal-open fixed">
         <div class="modal-box px-8 pt-12 pb-8 md:max-w-2xl lg:max-w-4xl max-w-full bg-base-100">
             <button @click="close" class="fixed left-2 top-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24">
                     <path class="fill-primary"
                         d="M19.1 4.9C15.2 1 8.8 1 4.9 4.9S1 15.2 4.9 19.1s10.2 3.9 14.1 0s4-10.3.1-14.2zm-4.3 11.3L12 13.4l-2.8 2.8l-1.4-1.4l2.8-2.8l-2.8-2.8l1.4-1.4l2.8 2.8l2.8-2.8l1.4 1.4l-2.8 2.8l2.8 2.8l-1.4 1.4z" />
                 </svg>

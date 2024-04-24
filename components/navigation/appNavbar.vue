@@ -4,7 +4,7 @@
         <div id="app-navbar" class="navbar min-h-[2rem] max-h-12 px-1 py-0">
             <div class="navbar-start">
                 <label tabindex="0" for="menu-drawer" class="btn btn-primary btn-ghost btn-circle drawer-button">
-                    <svg class="w-10 stroke-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <svg class="w-10" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
                             d="M4 6h16M4 12h16M4 18h7" />
                     </svg>
