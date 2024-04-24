@@ -107,6 +107,9 @@ export const useMiniPictohubDatabase = defineStore('minipictohub', {
                 if(data.length == 0 || this.checkIfExactMatch(data, search).length == 0) {
                     data = await this.db.table('pictograms').where('word').startsWithIgnoreCase(lemmatize(search).join(" ")).toArray();
                     console.debug("[MiniPictohub] No match found, trying lemmatization: ", data, lemmatize(search).join(" "));
+                    if (data.length == 0 || this.checkIfExactMatch(data, search).length == 0) {
+                        return undefined;
+                    }
                 }
             } else if (locale == "en") {
                 data = await this.db.table('pictograms').where('word_en').startsWithIgnoreCase(search).toArray();
