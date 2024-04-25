@@ -41,6 +41,8 @@ function setInterface(size: 'normal' | 'big' | 'xl'): void {
 }
 function setFontSize(pixels: number): void {
     const rootElement = document.querySelector('html');
+    const width = window.innerWidth;
+    if(pixels * 20 > width) pixels = (width / 20);
     if (!rootElement) return;
     rootElement.style.fontSize = `${pixels}px`;
 }
