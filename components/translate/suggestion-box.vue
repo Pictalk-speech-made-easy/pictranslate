@@ -52,7 +52,7 @@ watch(() => main.pictogramsPropositions, async (value) => {
       } as GramResponse;
     })
     console.debug("[suggestion-box] getGramPictograms", value, gramdb.suggestions)
-    gramdb.getGramPictograms();
+    gramdb.getGramPictograms(options.locale);
   }
 }, { deep: true });
 

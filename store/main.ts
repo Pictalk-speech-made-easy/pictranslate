@@ -10,7 +10,7 @@ export const useMain = defineStore('main', {
         storage: persistedState.localStorage,
     },
     actions: {
-        async getPictogram(keyword: string, locale = "fr"): Promise<PictohubV2Document[]> {
+        async getPictogram(keyword: string, locale = "fr",searchLang = "fr"): Promise<PictohubV2Document[]> {
             const options = useOptions();
             const config = useRuntimeConfig();
             const useMiniPictohubDb = useMiniPictohubDatabase();
@@ -18,7 +18,7 @@ export const useMain = defineStore('main', {
             let singleWordPictogram: MiniPictogram[] | undefined = await useMiniPictohubDb.getMiniPictogram(keyword, locale);
             if (!singleWordPictogram) {
                 // we should also register the search in the indexeddb
-                const pictogram: PictohubV2Document[] = await getPictoFromPictohub(config, keyword, locale, [options.locale, 'en'], 5, useMiniPictohubDb.format);
+                const pictogram: PictohubV2Document[] = await getPictoFromPictohub(config, keyword, searchLang, locale, 5, useMiniPictohubDb.format);
                 pictogram.forEach(async (picto: PictohubV2Document) => {
                     const miniPictogram = picto as MiniPictogram;
                     miniPictogram.word_en = picto.translations.en[0].word;

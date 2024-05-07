@@ -1,31 +1,17 @@
 import type { RuntimeConfig } from "nuxt/schema";
 
-export const getPictoFromPictohub = async (config: RuntimeConfig,search: string, searchLocale: string, additionnalLocales: string[] = [], limit=1, format='png'): Promise<PictohubV2Document[]> => {
+export const getPictoFromPictohub = async (config: RuntimeConfig,search: string, searchLocale: string, locale: string, limit=1, format='png'): Promise<PictohubV2Document[]> => {
     // For words that have a dash, replace it with a space
     // Pictogram suggestions that have more than a word are separated by a dash
     search = search.replace('-', ' ');
   
-    console.debug("[main] getPictoFromPictohub", search, searchLocale, additionnalLocales)
+    console.debug("[main] getPictoFromPictohub", search, searchLocale)
     let queryParams = [
       `term=${search}`,
-      `path[]=translations.${searchLocale}.word`,
-      `index=search`,
-      `path[]=translations.${searchLocale}.synonyms`,
-      `path[]=translations.${searchLocale}.definition`,
-      `path[]=translations.${searchLocale}.lexical_siblings`,
-      `path[]=translations.${searchLocale}.lvf_entries.meaning`,
-      `path[]=translations.${searchLocale}.fr_domain_desc`,
-      `path[]=translations.${searchLocale}.plural`,
-      `lang[]=${searchLocale}`,
-      `completeIfEmpty=true`,
+      `locale=${searchLocale}`,
+      `languages[]=${locale}`,
       `limit=${limit}`,
     ].join('&');
-  
-    if (additionnalLocales.length > 0) {
-      additionnalLocales.forEach((additionnalLocale) => {
-        queryParams += `&lang[]=${additionnalLocale}`
-      })
-    }
     // Gracefully handle the case where the pictohub API is not available with a try/catch
     try {
       let data: PictohubV2Document[] = await $fetch(`${config.public.pictohub.PICTOHUB_API_URL}?${queryParams}`, {

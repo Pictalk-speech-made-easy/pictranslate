@@ -88,7 +88,7 @@ export const useGramDatabase = defineStore('gram', {
             console.debug("[Gram-db]Gram not found");
             return undefined;
         }, 
-        async getGramPictograms() {
+        async getGramPictograms(locale: string) {
             const main = useMain();
             // Order this.suggestions by count
             this.suggestions.sort((a, b) => (a.count > b.count) ? -1 : 1);
@@ -98,7 +98,7 @@ export const useGramDatabase = defineStore('gram', {
             
             let tempSuggestions = this.suggestions.slice(0, 5);
             tempSuggestions = await Promise.all(tempSuggestions.map(async (suggestion: GramResponse) => {
-                suggestion.predictions = await main.getPictogram(suggestion.word, "en");
+                suggestion.predictions = await main.getPictogram(suggestion.word, locale,"en");
                 return suggestion;
             }));
             console.debug("[Gram-db] Suggestions", JSON.parse(JSON.stringify(tempSuggestions)))
