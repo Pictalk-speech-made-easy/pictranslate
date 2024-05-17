@@ -12,6 +12,9 @@
         "cancel": "Cancelar",
         "install": "Instalar"
     },
+    "error": {
+        "crash": "La aplicación ha fallado, recarga la página pulsando el botón."
+    },
     "marketing": {
         "rate_modal": {
           "title": "¿Te gusta CAA fácil? ¡Califícanos!",

@@ -12,6 +12,9 @@
         "install": "Install",
         "cancel": "Cancel"
     },
+    "error": {
+        "crash": "An error occurred, click the button to reload the application"
+    },
     "marketing": {
         "rate_modal": {
           "title": "Do you like Easy AAC? Rate us!",

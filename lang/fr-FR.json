@@ -12,6 +12,9 @@
         "install": "Installer",
         "cancel": "Annuler"
     },
+    "error": {
+      "crash": "Un erreur est survenue, veuillez cliquez sur le bouton pour recharger la page"
+  },
     "marketing": {
       "rate_modal": {
         "title": "Vous aimez CAA facile ? Notez-nous !",
