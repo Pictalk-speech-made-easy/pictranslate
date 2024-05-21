@@ -13,7 +13,7 @@
           </svg>
         </button>
         <pre v-for="key of Object.keys(error as any).filter((err) => err != 'cause')" data-prefix=">"
-          class="text-error"><code>{{ key }} : {{ error[key] }}</code></pre>
+          class="text-error"><code>{{ key }} : {{ (error as any)[key] }}</code></pre>
       </div>
     </div>
     <div class="flex items-end gap-1 mt-12 justify-center w-11/12 mx-auto">
