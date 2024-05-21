@@ -13,7 +13,12 @@
         "cancel": "Annuler"
     },
     "error": {
-      "crash": "Un erreur est survenue, veuillez cliquez sur le bouton pour recharger la page"
+      "crash": "Oops, une erreur {error} est survenue.",
+      "automatic_report": "Toutes les erreurs sont automatiquement envoyées à l'équipe de développement 👍",
+      "clear_cache": {
+        "label": "Vider le cache et recharger l'application",
+        "tooltip": "Vider le cache peut résoudre certains bugs. Cela ne supprimera pas vos données mais réinitialisera l'application aux paramètres par défaut."
+      }
   },
     "marketing": {
       "rate_modal": {

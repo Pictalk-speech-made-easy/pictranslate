@@ -13,7 +13,12 @@
         "cancel": "Cancel"
     },
     "error": {
-        "crash": "An error occurred, click the button to reload the application"
+        "crash": "Oops, an error {error} has occurred.",
+        "automatic_report": "All errors are automatically reported to the development team 👍",
+        "clear_cache":{
+            "label": "Clear cache and reload the application",
+            "tooltip": "Emptying the cache can solve some bugs. It will not delete your data but it will reset the application to the default settings."
+        }
     },
     "marketing": {
         "rate_modal": {

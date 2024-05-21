@@ -13,7 +13,12 @@
         "install": "Instalar"
     },
     "error": {
-        "crash": "La aplicación ha fallado, recarga la página pulsando el botón."
+        "crash": "Oops! un error {error} ha ocurrido.",
+        "automatic_report": "Todos los errores son reportados automáticamente al equipo de desarrollo 👍",
+        "clear_cache": {
+            "label": "Limpiar caché y recargar la aplicación",
+            "tooltip": "Vaciar la caché puede resolver algunos errores. No eliminará tus datos pero restablecerá la aplicación a los ajustes predeterminados."
+        }
     },
     "marketing": {
         "rate_modal": {
